@@ -147,3 +147,8 @@ dmypy.json
 # Caches and Datasets
 cache/
 data/
+
+
+# VRS data
+vrs_data/
+extracted_vrs/
