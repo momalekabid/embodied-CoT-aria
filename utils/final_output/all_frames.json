@@ -1,0 +1,3876 @@
+[
+  {
+    "frame_idx": 0,
+    "timestamp_ns": 77444953025,
+    "timestamp_us": 77444953
+  },
+  {
+    "frame_idx": 1,
+    "timestamp_ns": 77544953612,
+    "timestamp_us": 77544953
+  },
+  {
+    "frame_idx": 2,
+    "timestamp_ns": 77644954187,
+    "timestamp_us": 77644954
+  },
+  {
+    "frame_idx": 3,
+    "timestamp_ns": 77744953237,
+    "timestamp_us": 77744953
+  },
+  {
+    "frame_idx": 4,
+    "timestamp_ns": 77844956187,
+    "timestamp_us": 77844956
+  },
+  {
+    "frame_idx": 5,
+    "timestamp_ns": 77944955612,
+    "timestamp_us": 77944955
+  },
+  {
+    "frame_idx": 6,
+    "timestamp_ns": 78044958987,
+    "timestamp_us": 78044958
+  },
+  {
+    "frame_idx": 7,
+    "timestamp_ns": 78144951812,
+    "timestamp_us": 78144951
+  },
+  {
+    "frame_idx": 8,
+    "timestamp_ns": 78244951487,
+    "timestamp_us": 78244951
+  },
+  {
+    "frame_idx": 9,
+    "timestamp_ns": 78344950650,
+    "timestamp_us": 78344950
+  },
+  {
+    "frame_idx": 10,
+    "timestamp_ns": 78444958187,
+    "timestamp_us": 78444958
+  },
+  {
+    "frame_idx": 11,
+    "timestamp_ns": 78544956237,
+    "timestamp_us": 78544956
+  },
+  {
+    "frame_idx": 12,
+    "timestamp_ns": 78644951812,
+    "timestamp_us": 78644951
+  },
+  {
+    "frame_idx": 13,
+    "timestamp_ns": 78744952437,
+    "timestamp_us": 78744952
+  },
+  {
+    "frame_idx": 14,
+    "timestamp_ns": 78844953025,
+    "timestamp_us": 78844953
+  },
+  {
+    "frame_idx": 15,
+    "timestamp_ns": 78944955775,
+    "timestamp_us": 78944955
+  },
+  {
+    "frame_idx": 16,
+    "timestamp_ns": 79044953812,
+    "timestamp_us": 79044953
+  },
+  {
+    "frame_idx": 17,
+    "timestamp_ns": 79144960687,
+    "timestamp_us": 79144960
+  },
+  {
+    "frame_idx": 18,
+    "timestamp_ns": 79244957562,
+    "timestamp_us": 79244957
+  },
+  {
+    "frame_idx": 19,
+    "timestamp_ns": 79344958187,
+    "timestamp_us": 79344958
+  },
+  {
+    "frame_idx": 20,
+    "timestamp_ns": 79444957187,
+    "timestamp_us": 79444957
+  },
+  {
+    "frame_idx": 21,
+    "timestamp_ns": 79544955237,
+    "timestamp_us": 79544955
+  },
+  {
+    "frame_idx": 22,
+    "timestamp_ns": 79644952112,
+    "timestamp_us": 79644952
+  },
+  {
+    "frame_idx": 23,
+    "timestamp_ns": 79744952687,
+    "timestamp_us": 79744952
+  },
+  {
+    "frame_idx": 24,
+    "timestamp_ns": 79844953312,
+    "timestamp_us": 79844953
+  },
+  {
+    "frame_idx": 25,
+    "timestamp_ns": 79944947187,
+    "timestamp_us": 79944947
+  },
+  {
+    "frame_idx": 26,
+    "timestamp_ns": 80044959937,
+    "timestamp_us": 80044959
+  },
+  {
+    "frame_idx": 27,
+    "timestamp_ns": 80144957987,
+    "timestamp_us": 80144957
+  },
+  {
+    "frame_idx": 28,
+    "timestamp_ns": 80244959112,
+    "timestamp_us": 80244959
+  },
+  {
+    "frame_idx": 29,
+    "timestamp_ns": 80344955362,
+    "timestamp_us": 80344955
+  },
+  {
+    "frame_idx": 30,
+    "timestamp_ns": 80444954362,
+    "timestamp_us": 80444954
+  },
+  {
+    "frame_idx": 31,
+    "timestamp_ns": 80544961237,
+    "timestamp_us": 80544961
+  },
+  {
+    "frame_idx": 32,
+    "timestamp_ns": 80644958112,
+    "timestamp_us": 80644958
+  },
+  {
+    "frame_idx": 33,
+    "timestamp_ns": 80744964025,
+    "timestamp_us": 80744964
+  },
+  {
+    "frame_idx": 34,
+    "timestamp_ns": 80844957187,
+    "timestamp_us": 80844957
+  },
+  {
+    "frame_idx": 35,
+    "timestamp_ns": 80944957775,
+    "timestamp_us": 80944957
+  },
+  {
+    "frame_idx": 36,
+    "timestamp_ns": 81044958400,
+    "timestamp_us": 81044958
+  },
+  {
+    "frame_idx": 37,
+    "timestamp_ns": 81144955275,
+    "timestamp_us": 81144955
+  },
+  {
+    "frame_idx": 38,
+    "timestamp_ns": 81244955862,
+    "timestamp_us": 81244955
+  },
+  {
+    "frame_idx": 39,
+    "timestamp_ns": 81344953150,
+    "timestamp_us": 81344953
+  },
+  {
+    "frame_idx": 40,
+    "timestamp_ns": 81444957687,
+    "timestamp_us": 81444957
+  },
+  {
+    "frame_idx": 41,
+    "timestamp_ns": 81544959487,
+    "timestamp_us": 81544959
+  },
+  {
+    "frame_idx": 42,
+    "timestamp_ns": 81644960062,
+    "timestamp_us": 81644960
+  },
+  {
+    "frame_idx": 43,
+    "timestamp_ns": 81744956937,
+    "timestamp_us": 81744956
+  },
+  {
+    "frame_idx": 44,
+    "timestamp_ns": 81844958487,
+    "timestamp_us": 81844958
+  },
+  {
+    "frame_idx": 45,
+    "timestamp_ns": 81944959112,
+    "timestamp_us": 81944959
+  },
+  {
+    "frame_idx": 46,
+    "timestamp_ns": 82044956937,
+    "timestamp_us": 82044956
+  },
+  {
+    "frame_idx": 47,
+    "timestamp_ns": 82144949900,
+    "timestamp_us": 82144949
+  },
+  {
+    "frame_idx": 48,
+    "timestamp_ns": 82244952812,
+    "timestamp_us": 82244952
+  },
+  {
+    "frame_idx": 49,
+    "timestamp_ns": 82344948312,
+    "timestamp_us": 82344948
+  },
+  {
+    "frame_idx": 50,
+    "timestamp_ns": 82444957525,
+    "timestamp_us": 82444957
+  },
+  {
+    "frame_idx": 51,
+    "timestamp_ns": 82544949187,
+    "timestamp_us": 82544949
+  },
+  {
+    "frame_idx": 52,
+    "timestamp_ns": 82644954812,
+    "timestamp_us": 82644954
+  },
+  {
+    "frame_idx": 53,
+    "timestamp_ns": 82744960525,
+    "timestamp_us": 82744960
+  },
+  {
+    "frame_idx": 54,
+    "timestamp_ns": 82844951525,
+    "timestamp_us": 82844951
+  },
+  {
+    "frame_idx": 55,
+    "timestamp_ns": 82944964150,
+    "timestamp_us": 82944964
+  },
+  {
+    "frame_idx": 56,
+    "timestamp_ns": 83044994937,
+    "timestamp_us": 83044994
+  },
+  {
+    "frame_idx": 57,
+    "timestamp_ns": 83144954612,
+    "timestamp_us": 83144954
+  },
+  {
+    "frame_idx": 58,
+    "timestamp_ns": 83244955187,
+    "timestamp_us": 83244955
+  },
+  {
+    "frame_idx": 59,
+    "timestamp_ns": 83344955812,
+    "timestamp_us": 83344955
+  },
+  {
+    "frame_idx": 60,
+    "timestamp_ns": 83444951937,
+    "timestamp_us": 83444951
+  },
+  {
+    "frame_idx": 61,
+    "timestamp_ns": 83544950187,
+    "timestamp_us": 83544950
+  },
+  {
+    "frame_idx": 62,
+    "timestamp_ns": 83644950775,
+    "timestamp_us": 83644950
+  },
+  {
+    "frame_idx": 63,
+    "timestamp_ns": 83744952275,
+    "timestamp_us": 83744952
+  },
+  {
+    "frame_idx": 64,
+    "timestamp_ns": 83844956237,
+    "timestamp_us": 83844956,
+    "right_palm_3d": [
+      -0.0261146,
+      -0.375935,
+      -0.183143
+    ],
+    "right_palm_confidence": 0.720764
+  },
+  {
+    "frame_idx": 65,
+    "timestamp_ns": 83944957562,
+    "timestamp_us": 83944957,
+    "right_palm_3d": [
+      -0.0571311,
+      -0.379123,
+      -0.152692
+    ],
+    "right_palm_confidence": 0.949082
+  },
+  {
+    "frame_idx": 66,
+    "timestamp_ns": 84044955400,
+    "timestamp_us": 84044955,
+    "right_palm_3d": [
+      -0.0842892,
+      -0.386487,
+      -0.139186
+    ],
+    "right_palm_confidence": 0.911987
+  },
+  {
+    "frame_idx": 67,
+    "timestamp_ns": 84144953937,
+    "timestamp_us": 84144953,
+    "right_palm_3d": [
+      -0.0983032,
+      -0.397353,
+      -0.134327
+    ],
+    "right_palm_confidence": 0.872238
+  },
+  {
+    "frame_idx": 68,
+    "timestamp_ns": 84244950650,
+    "timestamp_us": 84244950
+  },
+  {
+    "frame_idx": 69,
+    "timestamp_ns": 84344948562,
+    "timestamp_us": 84344948
+  },
+  {
+    "frame_idx": 70,
+    "timestamp_ns": 84444950312,
+    "timestamp_us": 84444950
+  },
+  {
+    "frame_idx": 71,
+    "timestamp_ns": 84544952150,
+    "timestamp_us": 84544952,
+    "right_palm_3d": [
+      -0.125142,
+      -0.293763,
+      0.0118141
+    ],
+    "right_palm_confidence": 0.999444
+  },
+  {
+    "frame_idx": 72,
+    "timestamp_ns": 84644953062,
+    "timestamp_us": 84644953,
+    "right_palm_3d": [
+      -0.104485,
+      -0.298196,
+      0.0177614
+    ],
+    "right_palm_confidence": 0.999709
+  },
+  {
+    "frame_idx": 73,
+    "timestamp_ns": 84744958812,
+    "timestamp_us": 84744958,
+    "right_palm_3d": [
+      -0.0862543,
+      -0.27638,
+      0.0217812
+    ],
+    "right_palm_confidence": 0.999716
+  },
+  {
+    "frame_idx": 74,
+    "timestamp_ns": 84844951737,
+    "timestamp_us": 84844951,
+    "right_palm_3d": [
+      -0.0760999,
+      -0.248503,
+      0.038508
+    ],
+    "right_palm_confidence": 0.999763
+  },
+  {
+    "frame_idx": 75,
+    "timestamp_ns": 84944949687,
+    "timestamp_us": 84944949,
+    "right_palm_3d": [
+      -0.0967259,
+      -0.216484,
+      0.0714105
+    ],
+    "right_palm_confidence": 0.999686
+  },
+  {
+    "frame_idx": 76,
+    "timestamp_ns": 85044952362,
+    "timestamp_us": 85044952,
+    "right_palm_3d": [
+      -0.0992534,
+      -0.204044,
+      0.0975494
+    ],
+    "right_palm_confidence": 0.999507
+  },
+  {
+    "frame_idx": 77,
+    "timestamp_ns": 85144953812,
+    "timestamp_us": 85144953,
+    "right_palm_3d": [
+      -0.0709304,
+      -0.217873,
+      0.11708
+    ],
+    "right_palm_confidence": 0.99807
+  },
+  {
+    "frame_idx": 78,
+    "timestamp_ns": 85244959312,
+    "timestamp_us": 85244959,
+    "right_palm_3d": [
+      -0.0285446,
+      -0.248259,
+      0.132825
+    ],
+    "right_palm_confidence": 0.99979
+  },
+  {
+    "frame_idx": 79,
+    "timestamp_ns": 85344954687,
+    "timestamp_us": 85344954,
+    "right_palm_3d": [
+      -0.0356945,
+      -0.248852,
+      0.162624
+    ],
+    "right_palm_confidence": 0.999666
+  },
+  {
+    "frame_idx": 80,
+    "timestamp_ns": 85444956687,
+    "timestamp_us": 85444956,
+    "right_palm_3d": [
+      -0.100386,
+      -0.243329,
+      0.210531
+    ],
+    "right_palm_confidence": 0.999509
+  },
+  {
+    "frame_idx": 81,
+    "timestamp_ns": 85544953987,
+    "timestamp_us": 85544953,
+    "right_palm_3d": [
+      -0.171138,
+      -0.23445,
+      0.268972
+    ],
+    "right_palm_confidence": 0.999654
+  },
+  {
+    "frame_idx": 82,
+    "timestamp_ns": 85644951687,
+    "timestamp_us": 85644951
+  },
+  {
+    "frame_idx": 83,
+    "timestamp_ns": 85744959150,
+    "timestamp_us": 85744959
+  },
+  {
+    "frame_idx": 84,
+    "timestamp_ns": 85844957275,
+    "timestamp_us": 85844957
+  },
+  {
+    "frame_idx": 85,
+    "timestamp_ns": 85944956187,
+    "timestamp_us": 85944956
+  },
+  {
+    "frame_idx": 86,
+    "timestamp_ns": 86044950062,
+    "timestamp_us": 86044950
+  },
+  {
+    "frame_idx": 87,
+    "timestamp_ns": 86144956812,
+    "timestamp_us": 86144956
+  },
+  {
+    "frame_idx": 88,
+    "timestamp_ns": 86244959562,
+    "timestamp_us": 86244959
+  },
+  {
+    "frame_idx": 89,
+    "timestamp_ns": 86344960187,
+    "timestamp_us": 86344960
+  },
+  {
+    "frame_idx": 90,
+    "timestamp_ns": 86444958525,
+    "timestamp_us": 86444958
+  },
+  {
+    "frame_idx": 91,
+    "timestamp_ns": 86544958400,
+    "timestamp_us": 86544958
+  },
+  {
+    "frame_idx": 92,
+    "timestamp_ns": 86644955275,
+    "timestamp_us": 86644955
+  },
+  {
+    "frame_idx": 93,
+    "timestamp_ns": 86744951612,
+    "timestamp_us": 86744951
+  },
+  {
+    "frame_idx": 94,
+    "timestamp_ns": 86844952187,
+    "timestamp_us": 86844952
+  },
+  {
+    "frame_idx": 95,
+    "timestamp_ns": 86944958775,
+    "timestamp_us": 86944958
+  },
+  {
+    "frame_idx": 96,
+    "timestamp_ns": 87044953437,
+    "timestamp_us": 87044953,
+    "right_palm_3d": [
+      0.0377173,
+      -0.227073,
+      -0.0187162
+    ],
+    "right_palm_confidence": 0.99962
+  },
+  {
+    "frame_idx": 97,
+    "timestamp_ns": 87144950937,
+    "timestamp_us": 87144950,
+    "right_palm_3d": [
+      0.0498975,
+      -0.229541,
+      0.0314707
+    ],
+    "right_palm_confidence": 0.999134,
+    "left_palm_3d": [
+      0.0546389,
+      -0.0538094,
+      0.166009
+    ],
+    "left_palm_confidence": 0.999664
+  },
+  {
+    "frame_idx": 98,
+    "timestamp_ns": 87244953487,
+    "timestamp_us": 87244953,
+    "right_palm_3d": [
+      0.101252,
+      -0.272652,
+      0.144415
+    ],
+    "right_palm_confidence": 0.995464,
+    "left_palm_3d": [
+      0.0789634,
+      -0.126397,
+      0.228766
+    ],
+    "left_palm_confidence": 0.999368
+  },
+  {
+    "frame_idx": 99,
+    "timestamp_ns": 87344955812,
+    "timestamp_us": 87344955,
+    "left_palm_3d": [
+      0.119625,
+      -0.200553,
+      0.343336
+    ],
+    "left_palm_confidence": 0.999215
+  },
+  {
+    "frame_idx": 100,
+    "timestamp_ns": 87444948862,
+    "timestamp_us": 87444948,
+    "right_palm_3d": [
+      0.185319,
+      -0.403353,
+      0.379229
+    ],
+    "right_palm_confidence": 0.999127,
+    "left_palm_3d": [
+      0.138723,
+      -0.242648,
+      0.418649
+    ],
+    "left_palm_confidence": 0.999318
+  },
+  {
+    "frame_idx": 101,
+    "timestamp_ns": 87544950775,
+    "timestamp_us": 87544950,
+    "right_palm_3d": [
+      0.201689,
+      -0.415539,
+      0.403059
+    ],
+    "right_palm_confidence": 0.999893,
+    "left_palm_3d": [
+      0.162701,
+      -0.260673,
+      0.455265
+    ],
+    "left_palm_confidence": 0.999824
+  },
+  {
+    "frame_idx": 102,
+    "timestamp_ns": 87644957112,
+    "timestamp_us": 87644957,
+    "right_palm_3d": [
+      0.202197,
+      -0.401615,
+      0.411972
+    ],
+    "right_palm_confidence": 0.999922,
+    "left_palm_3d": [
+      0.173058,
+      -0.252762,
+      0.476763
+    ],
+    "left_palm_confidence": 0.999829
+  },
+  {
+    "frame_idx": 103,
+    "timestamp_ns": 87744955562,
+    "timestamp_us": 87744955,
+    "right_palm_3d": [
+      0.190162,
+      -0.40181,
+      0.413538
+    ],
+    "right_palm_confidence": 0.999932,
+    "left_palm_3d": [
+      0.167463,
+      -0.252298,
+      0.47519
+    ],
+    "left_palm_confidence": 0.999851
+  },
+  {
+    "frame_idx": 104,
+    "timestamp_ns": 87844953812,
+    "timestamp_us": 87844953,
+    "right_palm_3d": [
+      0.183178,
+      -0.401978,
+      0.410951
+    ],
+    "right_palm_confidence": 0.999942,
+    "left_palm_3d": [
+      0.161638,
+      -0.253724,
+      0.466107
+    ],
+    "left_palm_confidence": 0.999906
+  },
+  {
+    "frame_idx": 105,
+    "timestamp_ns": 87944951562,
+    "timestamp_us": 87944951,
+    "right_palm_3d": [
+      0.183816,
+      -0.403165,
+      0.409384
+    ],
+    "right_palm_confidence": 0.999945,
+    "left_palm_3d": [
+      0.161322,
+      -0.256331,
+      0.46076
+    ],
+    "left_palm_confidence": 0.999918
+  },
+  {
+    "frame_idx": 106,
+    "timestamp_ns": 88044952150,
+    "timestamp_us": 88044952,
+    "right_palm_3d": [
+      0.183994,
+      -0.406771,
+      0.406208
+    ],
+    "right_palm_confidence": 0.999946,
+    "left_palm_3d": [
+      0.162091,
+      -0.260541,
+      0.455716
+    ],
+    "left_palm_confidence": 0.999921
+  },
+  {
+    "frame_idx": 107,
+    "timestamp_ns": 88144955400,
+    "timestamp_us": 88144955,
+    "right_palm_3d": [
+      0.182753,
+      -0.410037,
+      0.403601
+    ],
+    "right_palm_confidence": 0.999948,
+    "left_palm_3d": [
+      0.160707,
+      -0.265056,
+      0.453001
+    ],
+    "left_palm_confidence": 0.999922
+  },
+  {
+    "frame_idx": 108,
+    "timestamp_ns": 88244955612,
+    "timestamp_us": 88244955,
+    "right_palm_3d": [
+      0.18291,
+      -0.419105,
+      0.397414
+    ],
+    "right_palm_confidence": 0.999946,
+    "left_palm_3d": [
+      0.160498,
+      -0.272832,
+      0.450834
+    ],
+    "left_palm_confidence": 0.999933
+  },
+  {
+    "frame_idx": 109,
+    "timestamp_ns": 88344965775,
+    "timestamp_us": 88344965,
+    "right_palm_3d": [
+      0.185121,
+      -0.424731,
+      0.392137
+    ],
+    "right_palm_confidence": 0.999947,
+    "left_palm_3d": [
+      0.164748,
+      -0.278531,
+      0.450391
+    ],
+    "left_palm_confidence": 0.999938
+  },
+  {
+    "frame_idx": 110,
+    "timestamp_ns": 88444952650,
+    "timestamp_us": 88444952,
+    "right_palm_3d": [
+      0.185918,
+      -0.423586,
+      0.391175
+    ],
+    "right_palm_confidence": 0.999946,
+    "left_palm_3d": [
+      0.168476,
+      -0.280087,
+      0.457504
+    ],
+    "left_palm_confidence": 0.99995
+  },
+  {
+    "frame_idx": 111,
+    "timestamp_ns": 88544956362,
+    "timestamp_us": 88544956,
+    "right_palm_3d": [
+      0.188029,
+      -0.420723,
+      0.390579
+    ],
+    "right_palm_confidence": 0.999945,
+    "left_palm_3d": [
+      0.171053,
+      -0.273492,
+      0.458532
+    ],
+    "left_palm_confidence": 0.999955
+  },
+  {
+    "frame_idx": 112,
+    "timestamp_ns": 88644957687,
+    "timestamp_us": 88644957,
+    "right_palm_3d": [
+      0.191486,
+      -0.417888,
+      0.389256
+    ],
+    "right_palm_confidence": 0.999945,
+    "left_palm_3d": [
+      0.176894,
+      -0.271075,
+      0.45921
+    ],
+    "left_palm_confidence": 0.999955
+  },
+  {
+    "frame_idx": 113,
+    "timestamp_ns": 88744959687,
+    "timestamp_us": 88744959,
+    "right_palm_3d": [
+      0.189875,
+      -0.415048,
+      0.387532
+    ],
+    "right_palm_confidence": 0.999947,
+    "left_palm_3d": [
+      0.177156,
+      -0.269319,
+      0.459758
+    ],
+    "left_palm_confidence": 0.999955
+  },
+  {
+    "frame_idx": 114,
+    "timestamp_ns": 88844960812,
+    "timestamp_us": 88844960,
+    "right_palm_3d": [
+      0.175772,
+      -0.412637,
+      0.382518
+    ],
+    "right_palm_confidence": 0.999936,
+    "left_palm_3d": [
+      0.167346,
+      -0.271735,
+      0.452336
+    ],
+    "left_palm_confidence": 0.999946
+  },
+  {
+    "frame_idx": 115,
+    "timestamp_ns": 88944957062,
+    "timestamp_us": 88944957,
+    "right_palm_3d": [
+      0.159106,
+      -0.413704,
+      0.370718
+    ],
+    "right_palm_confidence": 0.999934,
+    "left_palm_3d": [
+      0.151219,
+      -0.26063,
+      0.439949
+    ],
+    "left_palm_confidence": 0.999879
+  },
+  {
+    "frame_idx": 116,
+    "timestamp_ns": 89044956275,
+    "timestamp_us": 89044956,
+    "right_palm_3d": [
+      0.156291,
+      -0.42513,
+      0.36011
+    ],
+    "right_palm_confidence": 0.999815,
+    "left_palm_3d": [
+      0.145136,
+      -0.245882,
+      0.441724
+    ],
+    "left_palm_confidence": 0.99971
+  },
+  {
+    "frame_idx": 117,
+    "timestamp_ns": 89144957650,
+    "timestamp_us": 89144957,
+    "right_palm_3d": [
+      0.152,
+      -0.435702,
+      0.357775
+    ],
+    "right_palm_confidence": 0.999892,
+    "left_palm_3d": [
+      0.141276,
+      -0.245044,
+      0.436595
+    ],
+    "left_palm_confidence": 0.999817
+  },
+  {
+    "frame_idx": 118,
+    "timestamp_ns": 89244947362,
+    "timestamp_us": 89244947,
+    "right_palm_3d": [
+      0.14992,
+      -0.437674,
+      0.361553
+    ],
+    "right_palm_confidence": 0.999909,
+    "left_palm_3d": [
+      0.13441,
+      -0.247158,
+      0.432235
+    ],
+    "left_palm_confidence": 0.999859
+  },
+  {
+    "frame_idx": 119,
+    "timestamp_ns": 89344952862,
+    "timestamp_us": 89344952,
+    "right_palm_3d": [
+      0.142284,
+      -0.42247,
+      0.36532
+    ],
+    "right_palm_confidence": 0.999901,
+    "left_palm_3d": [
+      0.123191,
+      -0.250185,
+      0.420432
+    ],
+    "left_palm_confidence": 0.999818
+  },
+  {
+    "frame_idx": 120,
+    "timestamp_ns": 89444960687,
+    "timestamp_us": 89444960,
+    "right_palm_3d": [
+      0.144051,
+      -0.413757,
+      0.377222
+    ],
+    "right_palm_confidence": 0.999928,
+    "left_palm_3d": [
+      0.126875,
+      -0.251656,
+      0.42526
+    ],
+    "left_palm_confidence": 0.999834
+  },
+  {
+    "frame_idx": 121,
+    "timestamp_ns": 89544960312,
+    "timestamp_us": 89544960,
+    "right_palm_3d": [
+      0.146963,
+      -0.415605,
+      0.381651
+    ],
+    "right_palm_confidence": 0.999942,
+    "left_palm_3d": [
+      0.128611,
+      -0.253275,
+      0.426033
+    ],
+    "left_palm_confidence": 0.999875
+  },
+  {
+    "frame_idx": 122,
+    "timestamp_ns": 89644954650,
+    "timestamp_us": 89644954,
+    "right_palm_3d": [
+      0.145853,
+      -0.416329,
+      0.377692
+    ],
+    "right_palm_confidence": 0.999945,
+    "left_palm_3d": [
+      0.127948,
+      -0.252674,
+      0.421597
+    ],
+    "left_palm_confidence": 0.999892
+  },
+  {
+    "frame_idx": 123,
+    "timestamp_ns": 89744951312,
+    "timestamp_us": 89744951,
+    "right_palm_3d": [
+      0.147892,
+      -0.417696,
+      0.373608
+    ],
+    "right_palm_confidence": 0.99994,
+    "left_palm_3d": [
+      0.129512,
+      -0.250476,
+      0.42041
+    ],
+    "left_palm_confidence": 0.999834
+  },
+  {
+    "frame_idx": 124,
+    "timestamp_ns": 89844957025,
+    "timestamp_us": 89844957,
+    "right_palm_3d": [
+      0.151722,
+      -0.423387,
+      0.369233
+    ],
+    "right_palm_confidence": 0.999887,
+    "left_palm_3d": [
+      0.130522,
+      -0.238051,
+      0.435746
+    ],
+    "left_palm_confidence": 0.999712
+  },
+  {
+    "frame_idx": 125,
+    "timestamp_ns": 89944956237,
+    "timestamp_us": 89944956,
+    "right_palm_3d": [
+      0.150913,
+      -0.429664,
+      0.369122
+    ],
+    "right_palm_confidence": 0.999853,
+    "left_palm_3d": [
+      0.133869,
+      -0.230462,
+      0.447876
+    ],
+    "left_palm_confidence": 0.999756
+  },
+  {
+    "frame_idx": 126,
+    "timestamp_ns": 90044955487,
+    "timestamp_us": 90044955,
+    "right_palm_3d": [
+      0.154671,
+      -0.435414,
+      0.371819
+    ],
+    "right_palm_confidence": 0.999898,
+    "left_palm_3d": [
+      0.134278,
+      -0.231125,
+      0.452888
+    ],
+    "left_palm_confidence": 0.999781
+  },
+  {
+    "frame_idx": 127,
+    "timestamp_ns": 90144956275,
+    "timestamp_us": 90144956,
+    "right_palm_3d": [
+      0.156695,
+      -0.439919,
+      0.369095
+    ],
+    "right_palm_confidence": 0.999912,
+    "left_palm_3d": [
+      0.134973,
+      -0.234146,
+      0.452043
+    ],
+    "left_palm_confidence": 0.999804
+  },
+  {
+    "frame_idx": 128,
+    "timestamp_ns": 90244956900,
+    "timestamp_us": 90244956,
+    "right_palm_3d": [
+      0.151685,
+      -0.429916,
+      0.371697
+    ],
+    "right_palm_confidence": 0.999816,
+    "left_palm_3d": [
+      0.131501,
+      -0.242811,
+      0.440871
+    ],
+    "left_palm_confidence": 0.999692
+  },
+  {
+    "frame_idx": 129,
+    "timestamp_ns": 90344957487,
+    "timestamp_us": 90344957,
+    "right_palm_3d": [
+      0.147851,
+      -0.421853,
+      0.372305
+    ],
+    "right_palm_confidence": 0.99989,
+    "left_palm_3d": [
+      0.130582,
+      -0.245135,
+      0.439595
+    ],
+    "left_palm_confidence": 0.999832
+  },
+  {
+    "frame_idx": 130,
+    "timestamp_ns": 90444953187,
+    "timestamp_us": 90444953,
+    "right_palm_3d": [
+      0.144799,
+      -0.420299,
+      0.37342
+    ],
+    "right_palm_confidence": 0.999933,
+    "left_palm_3d": [
+      0.126516,
+      -0.245458,
+      0.435727
+    ],
+    "left_palm_confidence": 0.999871
+  },
+  {
+    "frame_idx": 131,
+    "timestamp_ns": 90544951237,
+    "timestamp_us": 90544951,
+    "right_palm_3d": [
+      0.144044,
+      -0.418809,
+      0.373845
+    ],
+    "right_palm_confidence": 0.999939,
+    "left_palm_3d": [
+      0.125281,
+      -0.243859,
+      0.429798
+    ],
+    "left_palm_confidence": 0.999808
+  },
+  {
+    "frame_idx": 132,
+    "timestamp_ns": 90644951812,
+    "timestamp_us": 90644951,
+    "right_palm_3d": [
+      0.144866,
+      -0.421703,
+      0.373819
+    ],
+    "right_palm_confidence": 0.999918,
+    "left_palm_3d": [
+      0.123865,
+      -0.242188,
+      0.431444
+    ],
+    "left_palm_confidence": 0.999823
+  },
+  {
+    "frame_idx": 133,
+    "timestamp_ns": 90744952437,
+    "timestamp_us": 90744952,
+    "right_palm_3d": [
+      0.145535,
+      -0.422912,
+      0.374204
+    ],
+    "right_palm_confidence": 0.999852,
+    "left_palm_3d": [
+      0.128061,
+      -0.24621,
+      0.432213
+    ],
+    "left_palm_confidence": 0.999892
+  },
+  {
+    "frame_idx": 134,
+    "timestamp_ns": 90844953025,
+    "timestamp_us": 90844953,
+    "right_palm_3d": [
+      0.146009,
+      -0.421677,
+      0.371415
+    ],
+    "right_palm_confidence": 0.99986,
+    "left_palm_3d": [
+      0.130786,
+      -0.250448,
+      0.427625
+    ],
+    "left_palm_confidence": 0.99992
+  },
+  {
+    "frame_idx": 135,
+    "timestamp_ns": 90944953650,
+    "timestamp_us": 90944953,
+    "right_palm_3d": [
+      0.146114,
+      -0.420067,
+      0.370684
+    ],
+    "right_palm_confidence": 0.999886,
+    "left_palm_3d": [
+      0.132432,
+      -0.250175,
+      0.426314
+    ],
+    "left_palm_confidence": 0.999787
+  },
+  {
+    "frame_idx": 136,
+    "timestamp_ns": 91044954237,
+    "timestamp_us": 91044954,
+    "right_palm_3d": [
+      0.142148,
+      -0.421332,
+      0.36253
+    ],
+    "right_palm_confidence": 0.999823,
+    "left_palm_3d": [
+      0.127747,
+      -0.238613,
+      0.426838
+    ],
+    "left_palm_confidence": 0.999412
+  },
+  {
+    "frame_idx": 137,
+    "timestamp_ns": 91144951112,
+    "timestamp_us": 91144951,
+    "right_palm_3d": [
+      0.143075,
+      -0.425856,
+      0.35694
+    ],
+    "right_palm_confidence": 0.999778,
+    "left_palm_3d": [
+      0.129266,
+      -0.235037,
+      0.434331
+    ],
+    "left_palm_confidence": 0.999731
+  },
+  {
+    "frame_idx": 138,
+    "timestamp_ns": 91244951737,
+    "timestamp_us": 91244951,
+    "right_palm_3d": [
+      0.14596,
+      -0.430664,
+      0.35889
+    ],
+    "right_palm_confidence": 0.99986,
+    "left_palm_3d": [
+      0.127286,
+      -0.235548,
+      0.435926
+    ],
+    "left_palm_confidence": 0.999777
+  },
+  {
+    "frame_idx": 139,
+    "timestamp_ns": 91344952312,
+    "timestamp_us": 91344952,
+    "right_palm_3d": [
+      0.145351,
+      -0.426812,
+      0.363903
+    ],
+    "right_palm_confidence": 0.999922,
+    "left_palm_3d": [
+      0.127092,
+      -0.239125,
+      0.436664
+    ],
+    "left_palm_confidence": 0.999813
+  },
+  {
+    "frame_idx": 140,
+    "timestamp_ns": 91444952900,
+    "timestamp_us": 91444952,
+    "right_palm_3d": [
+      0.145124,
+      -0.428061,
+      0.36997
+    ],
+    "right_palm_confidence": 0.999925,
+    "left_palm_3d": [
+      0.127719,
+      -0.241416,
+      0.435125
+    ],
+    "left_palm_confidence": 0.999787
+  },
+  {
+    "frame_idx": 141,
+    "timestamp_ns": 91544953525,
+    "timestamp_us": 91544953,
+    "right_palm_3d": [
+      0.147156,
+      -0.42817,
+      0.373464
+    ],
+    "right_palm_confidence": 0.999936,
+    "left_palm_3d": [
+      0.126677,
+      -0.240929,
+      0.435067
+    ],
+    "left_palm_confidence": 0.999732
+  },
+  {
+    "frame_idx": 142,
+    "timestamp_ns": 91644950400,
+    "timestamp_us": 91644950,
+    "right_palm_3d": [
+      0.148757,
+      -0.428682,
+      0.374756
+    ],
+    "right_palm_confidence": 0.999942,
+    "left_palm_3d": [
+      0.126494,
+      -0.240747,
+      0.431984
+    ],
+    "left_palm_confidence": 0.999688
+  },
+  {
+    "frame_idx": 143,
+    "timestamp_ns": 91744950987,
+    "timestamp_us": 91744950,
+    "right_palm_3d": [
+      0.146865,
+      -0.427994,
+      0.374126
+    ],
+    "right_palm_confidence": 0.999947,
+    "left_palm_3d": [
+      0.12797,
+      -0.241458,
+      0.427916
+    ],
+    "left_palm_confidence": 0.999691
+  },
+  {
+    "frame_idx": 144,
+    "timestamp_ns": 91844951612,
+    "timestamp_us": 91844951,
+    "right_palm_3d": [
+      0.144971,
+      -0.427489,
+      0.373752
+    ],
+    "right_palm_confidence": 0.999947,
+    "left_palm_3d": [
+      0.125294,
+      -0.241082,
+      0.427595
+    ],
+    "left_palm_confidence": 0.999772
+  },
+  {
+    "frame_idx": 145,
+    "timestamp_ns": 91944952187,
+    "timestamp_us": 91944952,
+    "right_palm_3d": [
+      0.149591,
+      -0.432421,
+      0.370334
+    ],
+    "right_palm_confidence": 0.999934,
+    "left_palm_3d": [
+      0.127857,
+      -0.247685,
+      0.421613
+    ],
+    "left_palm_confidence": 0.999635
+  },
+  {
+    "frame_idx": 146,
+    "timestamp_ns": 92044958437,
+    "timestamp_us": 92044958,
+    "right_palm_3d": [
+      0.172286,
+      -0.466301,
+      0.342251
+    ],
+    "right_palm_confidence": 0.999666,
+    "left_palm_3d": [
+      0.143279,
+      -0.271225,
+      0.392885
+    ],
+    "left_palm_confidence": 0.997647
+  },
+  {
+    "frame_idx": 147,
+    "timestamp_ns": 92144955525,
+    "timestamp_us": 92144955
+  },
+  {
+    "frame_idx": 148,
+    "timestamp_ns": 92244956900,
+    "timestamp_us": 92244956,
+    "right_palm_3d": [
+      0.322337,
+      -0.519029,
+      0.185448
+    ],
+    "right_palm_confidence": 0.999342,
+    "left_palm_3d": [
+      0.308718,
+      -0.409146,
+      0.33942
+    ],
+    "left_palm_confidence": 0.999279
+  },
+  {
+    "frame_idx": 149,
+    "timestamp_ns": 92344957487,
+    "timestamp_us": 92344957,
+    "right_palm_3d": [
+      0.357395,
+      -0.507418,
+      0.151711
+    ],
+    "right_palm_confidence": 0.999145,
+    "left_palm_3d": [
+      0.351375,
+      -0.404318,
+      0.337371
+    ],
+    "left_palm_confidence": 0.99977
+  },
+  {
+    "frame_idx": 150,
+    "timestamp_ns": 92444949062,
+    "timestamp_us": 92444949,
+    "right_palm_3d": [
+      0.424583,
+      -0.513273,
+      0.124131
+    ],
+    "right_palm_confidence": 0.999474,
+    "left_palm_3d": [
+      0.390893,
+      -0.398366,
+      0.341745
+    ],
+    "left_palm_confidence": 0.999879
+  },
+  {
+    "frame_idx": 151,
+    "timestamp_ns": 92544949487,
+    "timestamp_us": 92544949,
+    "right_palm_3d": [
+      0.481128,
+      -0.4909,
+      0.114821
+    ],
+    "right_palm_confidence": 0.999531,
+    "left_palm_3d": [
+      0.407223,
+      -0.38999,
+      0.36736
+    ],
+    "left_palm_confidence": 0.999851
+  },
+  {
+    "frame_idx": 152,
+    "timestamp_ns": 92644956362,
+    "timestamp_us": 92644956,
+    "right_palm_3d": [
+      0.513529,
+      -0.46577,
+      0.126863
+    ],
+    "right_palm_confidence": 0.999738,
+    "left_palm_3d": [
+      0.400568,
+      -0.365043,
+      0.405684
+    ],
+    "left_palm_confidence": 0.999843
+  },
+  {
+    "frame_idx": 153,
+    "timestamp_ns": 92744955900,
+    "timestamp_us": 92744955,
+    "right_palm_3d": [
+      0.524087,
+      -0.453169,
+      0.14223
+    ],
+    "right_palm_confidence": 0.999866,
+    "left_palm_3d": [
+      0.388665,
+      -0.332729,
+      0.438066
+    ],
+    "left_palm_confidence": 0.999804
+  },
+  {
+    "frame_idx": 154,
+    "timestamp_ns": 92844948987,
+    "timestamp_us": 92844948,
+    "right_palm_3d": [
+      0.517698,
+      -0.445231,
+      0.161478
+    ],
+    "right_palm_confidence": 0.99988,
+    "left_palm_3d": [
+      0.373132,
+      -0.297396,
+      0.47019
+    ],
+    "left_palm_confidence": 0.999812
+  },
+  {
+    "frame_idx": 155,
+    "timestamp_ns": 92944949025,
+    "timestamp_us": 92944949,
+    "right_palm_3d": [
+      0.507377,
+      -0.429279,
+      0.17981
+    ],
+    "right_palm_confidence": 0.999885,
+    "left_palm_3d": [
+      0.364552,
+      -0.266135,
+      0.499427
+    ],
+    "left_palm_confidence": 0.999841
+  },
+  {
+    "frame_idx": 156,
+    "timestamp_ns": 93044951687,
+    "timestamp_us": 93044951,
+    "right_palm_3d": [
+      0.494375,
+      -0.414459,
+      0.189586
+    ],
+    "right_palm_confidence": 0.999895,
+    "left_palm_3d": [
+      0.337911,
+      -0.247937,
+      0.516555
+    ],
+    "left_palm_confidence": 0.999831
+  },
+  {
+    "frame_idx": 157,
+    "timestamp_ns": 93144951650,
+    "timestamp_us": 93144951,
+    "right_palm_3d": [
+      0.482566,
+      -0.397825,
+      0.194431
+    ],
+    "right_palm_confidence": 0.999898,
+    "left_palm_3d": [
+      0.291701,
+      -0.23244,
+      0.523018
+    ],
+    "left_palm_confidence": 0.999786
+  },
+  {
+    "frame_idx": 158,
+    "timestamp_ns": 93244956812,
+    "timestamp_us": 93244956,
+    "right_palm_3d": [
+      0.479278,
+      -0.393025,
+      0.196796
+    ],
+    "right_palm_confidence": 0.999908,
+    "left_palm_3d": [
+      0.260934,
+      -0.225476,
+      0.542446
+    ],
+    "left_palm_confidence": 0.999849
+  },
+  {
+    "frame_idx": 159,
+    "timestamp_ns": 93344952650,
+    "timestamp_us": 93344952,
+    "right_palm_3d": [
+      0.482613,
+      -0.385708,
+      0.191029
+    ],
+    "right_palm_confidence": 0.999898,
+    "left_palm_3d": [
+      0.243531,
+      -0.226416,
+      0.565259
+    ],
+    "left_palm_confidence": 0.999874
+  },
+  {
+    "frame_idx": 160,
+    "timestamp_ns": 93444958900,
+    "timestamp_us": 93444958,
+    "right_palm_3d": [
+      0.49099,
+      -0.382036,
+      0.178726
+    ],
+    "right_palm_confidence": 0.999892,
+    "left_palm_3d": [
+      0.23225,
+      -0.224714,
+      0.573502
+    ],
+    "left_palm_confidence": 0.999856
+  },
+  {
+    "frame_idx": 161,
+    "timestamp_ns": 93544948187,
+    "timestamp_us": 93544948,
+    "right_palm_3d": [
+      0.49656,
+      -0.380249,
+      0.162343
+    ],
+    "right_palm_confidence": 0.999887,
+    "left_palm_3d": [
+      0.231436,
+      -0.231617,
+      0.572717
+    ],
+    "left_palm_confidence": 0.99987
+  },
+  {
+    "frame_idx": 162,
+    "timestamp_ns": 93644960112,
+    "timestamp_us": 93644960,
+    "right_palm_3d": [
+      0.503362,
+      -0.379589,
+      0.155015
+    ],
+    "right_palm_confidence": 0.999886,
+    "left_palm_3d": [
+      0.236176,
+      -0.232378,
+      0.571077
+    ],
+    "left_palm_confidence": 0.99988
+  },
+  {
+    "frame_idx": 163,
+    "timestamp_ns": 93744953775,
+    "timestamp_us": 93744953,
+    "right_palm_3d": [
+      0.502398,
+      -0.383101,
+      0.152518
+    ],
+    "right_palm_confidence": 0.9999,
+    "left_palm_3d": [
+      0.239623,
+      -0.22962,
+      0.571865
+    ],
+    "left_palm_confidence": 0.999875
+  },
+  {
+    "frame_idx": 164,
+    "timestamp_ns": 93844958650,
+    "timestamp_us": 93844958,
+    "right_palm_3d": [
+      0.49432,
+      -0.3861,
+      0.152824
+    ],
+    "right_palm_confidence": 0.999896,
+    "left_palm_3d": [
+      0.241141,
+      -0.226488,
+      0.5705
+    ],
+    "left_palm_confidence": 0.999872
+  },
+  {
+    "frame_idx": 165,
+    "timestamp_ns": 93944955400,
+    "timestamp_us": 93944955,
+    "right_palm_3d": [
+      0.486341,
+      -0.389244,
+      0.153239
+    ],
+    "right_palm_confidence": 0.999894,
+    "left_palm_3d": [
+      0.238618,
+      -0.227618,
+      0.56471
+    ],
+    "left_palm_confidence": 0.999867
+  },
+  {
+    "frame_idx": 166,
+    "timestamp_ns": 94044961650,
+    "timestamp_us": 94044961,
+    "right_palm_3d": [
+      0.479834,
+      -0.393115,
+      0.158894
+    ],
+    "right_palm_confidence": 0.999893,
+    "left_palm_3d": [
+      0.231217,
+      -0.226648,
+      0.547961
+    ],
+    "left_palm_confidence": 0.999856
+  },
+  {
+    "frame_idx": 167,
+    "timestamp_ns": 94144948112,
+    "timestamp_us": 94144948,
+    "right_palm_3d": [
+      0.468914,
+      -0.393318,
+      0.173255
+    ],
+    "right_palm_confidence": 0.999888,
+    "left_palm_3d": [
+      0.214162,
+      -0.215056,
+      0.514709
+    ],
+    "left_palm_confidence": 0.999822
+  },
+  {
+    "frame_idx": 168,
+    "timestamp_ns": 94244959487,
+    "timestamp_us": 94244959,
+    "right_palm_3d": [
+      0.454258,
+      -0.386915,
+      0.198329
+    ],
+    "right_palm_confidence": 0.999874,
+    "left_palm_3d": [
+      0.196697,
+      -0.19584,
+      0.465642
+    ],
+    "left_palm_confidence": 0.999806
+  },
+  {
+    "frame_idx": 169,
+    "timestamp_ns": 94344949862,
+    "timestamp_us": 94344949,
+    "right_palm_3d": [
+      0.443022,
+      -0.383448,
+      0.22157
+    ],
+    "right_palm_confidence": 0.999885,
+    "left_palm_3d": [
+      0.175877,
+      -0.184333,
+      0.41178
+    ],
+    "left_palm_confidence": 0.999799
+  },
+  {
+    "frame_idx": 170,
+    "timestamp_ns": 94444950437,
+    "timestamp_us": 94444950,
+    "right_palm_3d": [
+      0.435515,
+      -0.388905,
+      0.226676
+    ],
+    "right_palm_confidence": 0.999877,
+    "left_palm_3d": [
+      0.150296,
+      -0.183923,
+      0.3613
+    ],
+    "left_palm_confidence": 0.999748
+  },
+  {
+    "frame_idx": 171,
+    "timestamp_ns": 94544951062,
+    "timestamp_us": 94544951,
+    "right_palm_3d": [
+      0.439262,
+      -0.393284,
+      0.226401
+    ],
+    "right_palm_confidence": 0.999887,
+    "left_palm_3d": [
+      0.136006,
+      -0.184822,
+      0.325178
+    ],
+    "left_palm_confidence": 0.999668
+  },
+  {
+    "frame_idx": 172,
+    "timestamp_ns": 94644951650,
+    "timestamp_us": 94644951,
+    "right_palm_3d": [
+      0.446003,
+      -0.393488,
+      0.226029
+    ],
+    "right_palm_confidence": 0.999887,
+    "left_palm_3d": [
+      0.141082,
+      -0.188806,
+      0.322747
+    ],
+    "left_palm_confidence": 0.999695
+  },
+  {
+    "frame_idx": 173,
+    "timestamp_ns": 94744948525,
+    "timestamp_us": 94744948,
+    "right_palm_3d": [
+      0.446534,
+      -0.395783,
+      0.22603
+    ],
+    "right_palm_confidence": 0.999887,
+    "left_palm_3d": [
+      0.147055,
+      -0.189472,
+      0.331317
+    ],
+    "left_palm_confidence": 0.999781
+  },
+  {
+    "frame_idx": 174,
+    "timestamp_ns": 94844949150,
+    "timestamp_us": 94844949,
+    "right_palm_3d": [
+      0.443387,
+      -0.397976,
+      0.226248
+    ],
+    "right_palm_confidence": 0.999883,
+    "left_palm_3d": [
+      0.138895,
+      -0.188098,
+      0.329982
+    ],
+    "left_palm_confidence": 0.999857
+  },
+  {
+    "frame_idx": 175,
+    "timestamp_ns": 94944949737,
+    "timestamp_us": 94944949,
+    "right_palm_3d": [
+      0.433378,
+      -0.399436,
+      0.231473
+    ],
+    "right_palm_confidence": 0.999885,
+    "left_palm_3d": [
+      0.127875,
+      -0.184815,
+      0.337458
+    ],
+    "left_palm_confidence": 0.999863
+  },
+  {
+    "frame_idx": 176,
+    "timestamp_ns": 95044950312,
+    "timestamp_us": 95044950,
+    "right_palm_3d": [
+      0.425039,
+      -0.400688,
+      0.234845
+    ],
+    "right_palm_confidence": 0.999891,
+    "left_palm_3d": [
+      0.124205,
+      -0.189518,
+      0.346576
+    ],
+    "left_palm_confidence": 0.999857
+  },
+  {
+    "frame_idx": 177,
+    "timestamp_ns": 95144950937,
+    "timestamp_us": 95144950,
+    "right_palm_3d": [
+      0.424146,
+      -0.399978,
+      0.233211
+    ],
+    "right_palm_confidence": 0.999901,
+    "left_palm_3d": [
+      0.124613,
+      -0.196026,
+      0.356333
+    ],
+    "left_palm_confidence": 0.999862
+  },
+  {
+    "frame_idx": 178,
+    "timestamp_ns": 95244957062,
+    "timestamp_us": 95244957,
+    "right_palm_3d": [
+      0.425439,
+      -0.397953,
+      0.233221
+    ],
+    "right_palm_confidence": 0.999907,
+    "left_palm_3d": [
+      0.12358,
+      -0.197017,
+      0.363016
+    ],
+    "left_palm_confidence": 0.999879
+  },
+  {
+    "frame_idx": 179,
+    "timestamp_ns": 95344952987,
+    "timestamp_us": 95344952,
+    "right_palm_3d": [
+      0.427396,
+      -0.4001,
+      0.231274
+    ],
+    "right_palm_confidence": 0.99991,
+    "left_palm_3d": [
+      0.12319,
+      -0.198804,
+      0.364183
+    ],
+    "left_palm_confidence": 0.999895
+  },
+  {
+    "frame_idx": 180,
+    "timestamp_ns": 95444952400,
+    "timestamp_us": 95444952,
+    "right_palm_3d": [
+      0.430454,
+      -0.404947,
+      0.224811
+    ],
+    "right_palm_confidence": 0.999909,
+    "left_palm_3d": [
+      0.120408,
+      -0.201849,
+      0.365827
+    ],
+    "left_palm_confidence": 0.999902
+  },
+  {
+    "frame_idx": 181,
+    "timestamp_ns": 95544952062,
+    "timestamp_us": 95544952,
+    "right_palm_3d": [
+      0.435622,
+      -0.411721,
+      0.216898
+    ],
+    "right_palm_confidence": 0.999901,
+    "left_palm_3d": [
+      0.116364,
+      -0.206974,
+      0.364637
+    ],
+    "left_palm_confidence": 0.999887
+  },
+  {
+    "frame_idx": 182,
+    "timestamp_ns": 95644952650,
+    "timestamp_us": 95644952,
+    "right_palm_3d": [
+      0.440003,
+      -0.416279,
+      0.208441
+    ],
+    "right_palm_confidence": 0.999897,
+    "left_palm_3d": [
+      0.1211,
+      -0.211597,
+      0.368139
+    ],
+    "left_palm_confidence": 0.99989
+  },
+  {
+    "frame_idx": 183,
+    "timestamp_ns": 95744953237,
+    "timestamp_us": 95744953,
+    "right_palm_3d": [
+      0.441842,
+      -0.418696,
+      0.202636
+    ],
+    "right_palm_confidence": 0.999894,
+    "left_palm_3d": [
+      0.126334,
+      -0.210459,
+      0.370594
+    ],
+    "left_palm_confidence": 0.999889
+  },
+  {
+    "frame_idx": 184,
+    "timestamp_ns": 95844953862,
+    "timestamp_us": 95844953,
+    "right_palm_3d": [
+      0.440335,
+      -0.420023,
+      0.200649
+    ],
+    "right_palm_confidence": 0.999895,
+    "left_palm_3d": [
+      0.12853,
+      -0.208407,
+      0.37551
+    ],
+    "left_palm_confidence": 0.999872
+  },
+  {
+    "frame_idx": 185,
+    "timestamp_ns": 95944950737,
+    "timestamp_us": 95944950,
+    "right_palm_3d": [
+      0.438546,
+      -0.41995,
+      0.198899
+    ],
+    "right_palm_confidence": 0.999897,
+    "left_palm_3d": [
+      0.142597,
+      -0.207062,
+      0.399209
+    ],
+    "left_palm_confidence": 0.999791
+  },
+  {
+    "frame_idx": 186,
+    "timestamp_ns": 96044951312,
+    "timestamp_us": 96044951,
+    "right_palm_3d": [
+      0.439387,
+      -0.420736,
+      0.197621
+    ],
+    "right_palm_confidence": 0.999904,
+    "left_palm_3d": [
+      0.163995,
+      -0.211395,
+      0.439327
+    ],
+    "left_palm_confidence": 0.99965
+  },
+  {
+    "frame_idx": 187,
+    "timestamp_ns": 96144951937,
+    "timestamp_us": 96144951,
+    "right_palm_3d": [
+      0.437965,
+      -0.419624,
+      0.194736
+    ],
+    "right_palm_confidence": 0.999898,
+    "left_palm_3d": [
+      0.184051,
+      -0.217447,
+      0.487052
+    ],
+    "left_palm_confidence": 0.999461
+  },
+  {
+    "frame_idx": 188,
+    "timestamp_ns": 96244952525,
+    "timestamp_us": 96244952,
+    "right_palm_3d": [
+      0.44171,
+      -0.410593,
+      0.20036
+    ],
+    "right_palm_confidence": 0.999886,
+    "left_palm_3d": [
+      0.194415,
+      -0.201021,
+      0.527168
+    ],
+    "left_palm_confidence": 0.999449
+  },
+  {
+    "frame_idx": 189,
+    "timestamp_ns": 96344953112,
+    "timestamp_us": 96344953,
+    "right_palm_3d": [
+      0.45975,
+      -0.40362,
+      0.194364
+    ],
+    "right_palm_confidence": 0.999877,
+    "left_palm_3d": [
+      0.210329,
+      -0.204323,
+      0.55136
+    ],
+    "left_palm_confidence": 0.999757
+  },
+  {
+    "frame_idx": 190,
+    "timestamp_ns": 96444959237,
+    "timestamp_us": 96444959,
+    "right_palm_3d": [
+      0.472052,
+      -0.405314,
+      0.172879
+    ],
+    "right_palm_confidence": 0.999866,
+    "left_palm_3d": [
+      0.20457,
+      -0.219122,
+      0.551079
+    ],
+    "left_palm_confidence": 0.999794
+  },
+  {
+    "frame_idx": 191,
+    "timestamp_ns": 96544956362,
+    "timestamp_us": 96544956,
+    "right_palm_3d": [
+      0.467813,
+      -0.419679,
+      0.154191
+    ],
+    "right_palm_confidence": 0.999842,
+    "left_palm_3d": [
+      0.182503,
+      -0.24832,
+      0.549104
+    ],
+    "left_palm_confidence": 0.999799
+  },
+  {
+    "frame_idx": 192,
+    "timestamp_ns": 96645000237,
+    "timestamp_us": 96645000,
+    "right_palm_3d": [
+      0.460075,
+      -0.42157,
+      0.13365
+    ],
+    "right_palm_confidence": 0.999849,
+    "left_palm_3d": [
+      0.182467,
+      -0.272289,
+      0.553205
+    ],
+    "left_palm_confidence": 0.999795
+  },
+  {
+    "frame_idx": 193,
+    "timestamp_ns": 96744956150,
+    "timestamp_us": 96744956,
+    "right_palm_3d": [
+      0.46036,
+      -0.423711,
+      0.12106
+    ],
+    "right_palm_confidence": 0.999838,
+    "left_palm_3d": [
+      0.184417,
+      -0.2772,
+      0.551446
+    ],
+    "left_palm_confidence": 0.999813
+  },
+  {
+    "frame_idx": 194,
+    "timestamp_ns": 96844954112,
+    "timestamp_us": 96844954,
+    "right_palm_3d": [
+      0.460521,
+      -0.422411,
+      0.111877
+    ],
+    "right_palm_confidence": 0.999829,
+    "left_palm_3d": [
+      0.18648,
+      -0.27688,
+      0.558359
+    ],
+    "left_palm_confidence": 0.999809
+  },
+  {
+    "frame_idx": 195,
+    "timestamp_ns": 96944954737,
+    "timestamp_us": 96944954,
+    "right_palm_3d": [
+      0.460274,
+      -0.424376,
+      0.107089
+    ],
+    "right_palm_confidence": 0.999834,
+    "left_palm_3d": [
+      0.179209,
+      -0.279691,
+      0.559348
+    ],
+    "left_palm_confidence": 0.999783
+  },
+  {
+    "frame_idx": 196,
+    "timestamp_ns": 97044959025,
+    "timestamp_us": 97044959,
+    "right_palm_3d": [
+      0.465829,
+      -0.420536,
+      0.104262
+    ],
+    "right_palm_confidence": 0.99986,
+    "left_palm_3d": [
+      0.176471,
+      -0.27127,
+      0.567486
+    ],
+    "left_palm_confidence": 0.999753
+  },
+  {
+    "frame_idx": 197,
+    "timestamp_ns": 97144959650,
+    "timestamp_us": 97144959,
+    "right_palm_3d": [
+      0.475519,
+      -0.417002,
+      0.0985351
+    ],
+    "right_palm_confidence": 0.999862,
+    "left_palm_3d": [
+      0.181087,
+      -0.266826,
+      0.573482
+    ],
+    "left_palm_confidence": 0.999753
+  },
+  {
+    "frame_idx": 198,
+    "timestamp_ns": 97244950862,
+    "timestamp_us": 97244950,
+    "right_palm_3d": [
+      0.474067,
+      -0.415255,
+      0.101849
+    ],
+    "right_palm_confidence": 0.999881,
+    "left_palm_3d": [
+      0.179758,
+      -0.26282,
+      0.582485
+    ],
+    "left_palm_confidence": 0.999749
+  },
+  {
+    "frame_idx": 199,
+    "timestamp_ns": 97344948937,
+    "timestamp_us": 97344948,
+    "right_palm_3d": [
+      0.467511,
+      -0.418116,
+      0.105803
+    ],
+    "right_palm_confidence": 0.999876,
+    "left_palm_3d": [
+      0.164441,
+      -0.285368,
+      0.550408
+    ],
+    "left_palm_confidence": 0.999773
+  },
+  {
+    "frame_idx": 200,
+    "timestamp_ns": 97444953237,
+    "timestamp_us": 97444953,
+    "right_palm_3d": [
+      0.441623,
+      -0.431518,
+      0.115757
+    ],
+    "right_palm_confidence": 0.99986,
+    "left_palm_3d": [
+      0.170692,
+      -0.3016,
+      0.494866
+    ],
+    "left_palm_confidence": 0.999709
+  },
+  {
+    "frame_idx": 201,
+    "timestamp_ns": 97544953862,
+    "timestamp_us": 97544953,
+    "right_palm_3d": [
+      0.373657,
+      -0.431553,
+      0.126584
+    ],
+    "right_palm_confidence": 0.999855,
+    "left_palm_3d": [
+      0.167081,
+      -0.266029,
+      0.451854
+    ],
+    "left_palm_confidence": 0.999407
+  },
+  {
+    "frame_idx": 202,
+    "timestamp_ns": 97644952737,
+    "timestamp_us": 97644952,
+    "right_palm_3d": [
+      0.306912,
+      -0.422493,
+      0.166875
+    ],
+    "right_palm_confidence": 0.999712,
+    "left_palm_3d": [
+      0.176476,
+      -0.180033,
+      0.453577
+    ],
+    "left_palm_confidence": 0.999102
+  },
+  {
+    "frame_idx": 203,
+    "timestamp_ns": 97744951937,
+    "timestamp_us": 97744951,
+    "right_palm_3d": [
+      0.270455,
+      -0.378317,
+      0.228386
+    ],
+    "right_palm_confidence": 0.997754,
+    "left_palm_3d": [
+      0.217385,
+      -0.0767858,
+      0.463941
+    ],
+    "left_palm_confidence": 0.997868
+  },
+  {
+    "frame_idx": 204,
+    "timestamp_ns": 97844957650,
+    "timestamp_us": 97844957,
+    "right_palm_3d": [
+      0.262485,
+      -0.320002,
+      0.265165
+    ],
+    "right_palm_confidence": 0.999685,
+    "left_palm_3d": [
+      0.262575,
+      0.00682322,
+      0.446367
+    ],
+    "left_palm_confidence": 0.999393
+  },
+  {
+    "frame_idx": 205,
+    "timestamp_ns": 97944956150,
+    "timestamp_us": 97944956,
+    "right_palm_3d": [
+      0.256385,
+      -0.29114,
+      0.267741
+    ],
+    "right_palm_confidence": 0.999844,
+    "left_palm_3d": [
+      0.270775,
+      0.0465703,
+      0.407262
+    ],
+    "left_palm_confidence": 0.999375
+  },
+  {
+    "frame_idx": 206,
+    "timestamp_ns": 98044954150,
+    "timestamp_us": 98044954,
+    "right_palm_3d": [
+      0.250301,
+      -0.285345,
+      0.267856
+    ],
+    "right_palm_confidence": 0.999896,
+    "left_palm_3d": [
+      0.261798,
+      0.0479364,
+      0.382899
+    ],
+    "left_palm_confidence": 0.999739
+  },
+  {
+    "frame_idx": 207,
+    "timestamp_ns": 98144951650,
+    "timestamp_us": 98144951,
+    "right_palm_3d": [
+      0.261997,
+      -0.280442,
+      0.269745
+    ],
+    "right_palm_confidence": 0.999838,
+    "left_palm_3d": [
+      0.267236,
+      0.0289805,
+      0.367827
+    ],
+    "left_palm_confidence": 0.99979
+  },
+  {
+    "frame_idx": 208,
+    "timestamp_ns": 98244950525,
+    "timestamp_us": 98244950,
+    "right_palm_3d": [
+      0.302571,
+      -0.272395,
+      0.265099
+    ],
+    "right_palm_confidence": 0.999697,
+    "left_palm_3d": [
+      0.298188,
+      0.00416716,
+      0.334089
+    ],
+    "left_palm_confidence": 0.999476
+  },
+  {
+    "frame_idx": 209,
+    "timestamp_ns": 98344959187,
+    "timestamp_us": 98344959,
+    "right_palm_3d": [
+      0.354179,
+      -0.25967,
+      0.251903
+    ],
+    "right_palm_confidence": 0.999792,
+    "left_palm_3d": [
+      0.333957,
+      -0.0111369,
+      0.298579
+    ],
+    "left_palm_confidence": 0.999664
+  },
+  {
+    "frame_idx": 210,
+    "timestamp_ns": 98444958187,
+    "timestamp_us": 98444958,
+    "right_palm_3d": [
+      0.337861,
+      -0.266836,
+      0.220627
+    ],
+    "right_palm_confidence": 0.999751,
+    "left_palm_3d": [
+      0.324303,
+      -0.0121753,
+      0.288093
+    ],
+    "left_palm_confidence": 0.999694
+  },
+  {
+    "frame_idx": 211,
+    "timestamp_ns": 98544956025,
+    "timestamp_us": 98544956,
+    "right_palm_3d": [
+      0.257297,
+      -0.277014,
+      0.16467
+    ],
+    "right_palm_confidence": 0.999048,
+    "left_palm_3d": [
+      0.262921,
+      0.0074971,
+      0.273654
+    ],
+    "left_palm_confidence": 0.999572
+  },
+  {
+    "frame_idx": 212,
+    "timestamp_ns": 98644951312,
+    "timestamp_us": 98644951,
+    "right_palm_3d": [
+      0.136157,
+      -0.272951,
+      0.0545571
+    ],
+    "right_palm_confidence": 0.996641,
+    "left_palm_3d": [
+      0.149638,
+      0.0448182,
+      0.21109
+    ],
+    "left_palm_confidence": 0.998706
+  },
+  {
+    "frame_idx": 213,
+    "timestamp_ns": 98744954487,
+    "timestamp_us": 98744954,
+    "right_palm_3d": [
+      0.0576136,
+      -0.211474,
+      -0.0739713
+    ],
+    "right_palm_confidence": 0.959354,
+    "left_palm_3d": [
+      0.0568713,
+      0.0753801,
+      0.114023
+    ],
+    "left_palm_confidence": 0.988791
+  },
+  {
+    "frame_idx": 214,
+    "timestamp_ns": 98844989862,
+    "timestamp_us": 98844989
+  },
+  {
+    "frame_idx": 215,
+    "timestamp_ns": 98944958650,
+    "timestamp_us": 98944958
+  },
+  {
+    "frame_idx": 216,
+    "timestamp_ns": 99044955525,
+    "timestamp_us": 99044955
+  },
+  {
+    "frame_idx": 217,
+    "timestamp_ns": 99144954525,
+    "timestamp_us": 99144954
+  },
+  {
+    "frame_idx": 218,
+    "timestamp_ns": 99244951612,
+    "timestamp_us": 99244951
+  },
+  {
+    "frame_idx": 219,
+    "timestamp_ns": 99344956775,
+    "timestamp_us": 99344956
+  },
+  {
+    "frame_idx": 220,
+    "timestamp_ns": 99444950650,
+    "timestamp_us": 99444950
+  },
+  {
+    "frame_idx": 221,
+    "timestamp_ns": 99544959562,
+    "timestamp_us": 99544959
+  },
+  {
+    "frame_idx": 222,
+    "timestamp_ns": 99644949437,
+    "timestamp_us": 99644949
+  },
+  {
+    "frame_idx": 223,
+    "timestamp_ns": 99744951400,
+    "timestamp_us": 99744951
+  },
+  {
+    "frame_idx": 224,
+    "timestamp_ns": 99844955187,
+    "timestamp_us": 99844955
+  },
+  {
+    "frame_idx": 225,
+    "timestamp_ns": 99944955812,
+    "timestamp_us": 99944955
+  },
+  {
+    "frame_idx": 226,
+    "timestamp_ns": 100044953775,
+    "timestamp_us": 100044953
+  },
+  {
+    "frame_idx": 227,
+    "timestamp_ns": 100144954362,
+    "timestamp_us": 100144954,
+    "left_palm_3d": [
+      0.0783011,
+      -0.0869616,
+      0.225345
+    ],
+    "left_palm_confidence": 0.999709
+  },
+  {
+    "frame_idx": 228,
+    "timestamp_ns": 100244953687,
+    "timestamp_us": 100244953,
+    "right_palm_3d": [
+      0.272097,
+      -0.335062,
+      -0.0649076
+    ],
+    "right_palm_confidence": 0.999148,
+    "left_palm_3d": [
+      0.118266,
+      -0.128352,
+      0.254221
+    ],
+    "left_palm_confidence": 0.998779
+  },
+  {
+    "frame_idx": 229,
+    "timestamp_ns": 100344954937,
+    "timestamp_us": 100344954,
+    "right_palm_3d": [
+      0.320213,
+      -0.331552,
+      -0.020123
+    ],
+    "right_palm_confidence": 0.996262,
+    "left_palm_3d": [
+      0.210194,
+      -0.162512,
+      0.352317
+    ],
+    "left_palm_confidence": 0.989806
+  },
+  {
+    "frame_idx": 230,
+    "timestamp_ns": 100444957187,
+    "timestamp_us": 100444957,
+    "right_palm_3d": [
+      0.430139,
+      -0.322028,
+      0.0394032
+    ],
+    "right_palm_confidence": 0.993108,
+    "left_palm_3d": [
+      0.264643,
+      -0.178889,
+      0.462586
+    ],
+    "left_palm_confidence": 0.980651
+  },
+  {
+    "frame_idx": 231,
+    "timestamp_ns": 100544951062,
+    "timestamp_us": 100544951,
+    "right_palm_3d": [
+      0.454254,
+      -0.302374,
+      0.0762963
+    ],
+    "right_palm_confidence": 0.995354,
+    "left_palm_3d": [
+      0.273945,
+      -0.197826,
+      0.568569
+    ],
+    "left_palm_confidence": 0.992994
+  },
+  {
+    "frame_idx": 232,
+    "timestamp_ns": 100644957112,
+    "timestamp_us": 100644957,
+    "right_palm_3d": [
+      0.456705,
+      -0.294386,
+      0.0827799
+    ],
+    "right_palm_confidence": 0.999776,
+    "left_palm_3d": [
+      0.252457,
+      -0.212705,
+      0.622238
+    ],
+    "left_palm_confidence": 0.988904
+  },
+  {
+    "frame_idx": 233,
+    "timestamp_ns": 100744960062,
+    "timestamp_us": 100744960,
+    "right_palm_3d": [
+      0.461779,
+      -0.292051,
+      0.0724717
+    ],
+    "right_palm_confidence": 0.999854,
+    "left_palm_3d": [
+      0.253523,
+      -0.221925,
+      0.628984
+    ],
+    "left_palm_confidence": 0.999019
+  },
+  {
+    "frame_idx": 234,
+    "timestamp_ns": 100844954187,
+    "timestamp_us": 100844954,
+    "right_palm_3d": [
+      0.465922,
+      -0.28768,
+      0.057058
+    ],
+    "right_palm_confidence": 0.999859,
+    "left_palm_3d": [
+      0.265303,
+      -0.218013,
+      0.627701
+    ],
+    "left_palm_confidence": 0.999468
+  },
+  {
+    "frame_idx": 235,
+    "timestamp_ns": 100944951062,
+    "timestamp_us": 100944951,
+    "right_palm_3d": [
+      0.479329,
+      -0.283103,
+      0.038136
+    ],
+    "right_palm_confidence": 0.999884,
+    "left_palm_3d": [
+      0.288013,
+      -0.212912,
+      0.628982
+    ],
+    "left_palm_confidence": 0.999668
+  },
+  {
+    "frame_idx": 236,
+    "timestamp_ns": 101044959025,
+    "timestamp_us": 101044959,
+    "right_palm_3d": [
+      0.481442,
+      -0.287785,
+      0.0291292
+    ],
+    "right_palm_confidence": 0.999888,
+    "left_palm_3d": [
+      0.296828,
+      -0.20241,
+      0.630661
+    ],
+    "left_palm_confidence": 0.999761
+  },
+  {
+    "frame_idx": 237,
+    "timestamp_ns": 101144959400,
+    "timestamp_us": 101144959,
+    "right_palm_3d": [
+      0.466711,
+      -0.292281,
+      0.0322164
+    ],
+    "right_palm_confidence": 0.999888,
+    "left_palm_3d": [
+      0.294668,
+      -0.192998,
+      0.631578
+    ],
+    "left_palm_confidence": 0.999765
+  },
+  {
+    "frame_idx": 238,
+    "timestamp_ns": 101244957025,
+    "timestamp_us": 101244957,
+    "right_palm_3d": [
+      0.459776,
+      -0.298189,
+      0.0366585
+    ],
+    "right_palm_confidence": 0.999896,
+    "left_palm_3d": [
+      0.296998,
+      -0.197483,
+      0.624853
+    ],
+    "left_palm_confidence": 0.999803
+  },
+  {
+    "frame_idx": 239,
+    "timestamp_ns": 101344955400,
+    "timestamp_us": 101344955,
+    "right_palm_3d": [
+      0.452318,
+      -0.30335,
+      0.0435163
+    ],
+    "right_palm_confidence": 0.999906,
+    "left_palm_3d": [
+      0.294905,
+      -0.211288,
+      0.612648
+    ],
+    "left_palm_confidence": 0.99967
+  },
+  {
+    "frame_idx": 240,
+    "timestamp_ns": 101444958737,
+    "timestamp_us": 101444958,
+    "right_palm_3d": [
+      0.444574,
+      -0.30946,
+      0.0615339
+    ],
+    "right_palm_confidence": 0.999894,
+    "left_palm_3d": [
+      0.297863,
+      -0.213866,
+      0.595854
+    ],
+    "left_palm_confidence": 0.99939
+  },
+  {
+    "frame_idx": 241,
+    "timestamp_ns": 101544947937,
+    "timestamp_us": 101544947,
+    "right_palm_3d": [
+      0.43819,
+      -0.303811,
+      0.086511
+    ],
+    "right_palm_confidence": 0.999903,
+    "left_palm_3d": [
+      0.299189,
+      -0.204743,
+      0.587374
+    ],
+    "left_palm_confidence": 0.997921
+  },
+  {
+    "frame_idx": 242,
+    "timestamp_ns": 101644948562,
+    "timestamp_us": 101644948,
+    "right_palm_3d": [
+      0.443189,
+      -0.276916,
+      0.132447
+    ],
+    "right_palm_confidence": 0.999855
+  },
+  {
+    "frame_idx": 243,
+    "timestamp_ns": 101744952562,
+    "timestamp_us": 101744952,
+    "right_palm_3d": [
+      0.457349,
+      -0.228756,
+      0.167259
+    ],
+    "right_palm_confidence": 0.999771,
+    "left_palm_3d": [
+      0.334052,
+      0.0596149,
+      0.390103
+    ],
+    "left_palm_confidence": 0.998778
+  },
+  {
+    "frame_idx": 244,
+    "timestamp_ns": 101844950400,
+    "timestamp_us": 101844950,
+    "right_palm_3d": [
+      0.467999,
+      -0.202342,
+      0.174731
+    ],
+    "right_palm_confidence": 0.999784,
+    "left_palm_3d": [
+      0.349793,
+      0.0828884,
+      0.353541
+    ],
+    "left_palm_confidence": 0.998512
+  },
+  {
+    "frame_idx": 245,
+    "timestamp_ns": 101944955437,
+    "timestamp_us": 101944955,
+    "right_palm_3d": [
+      0.469731,
+      -0.202457,
+      0.172695
+    ],
+    "right_palm_confidence": 0.999782,
+    "left_palm_3d": [
+      0.367144,
+      0.0751209,
+      0.344206
+    ],
+    "left_palm_confidence": 0.99922
+  },
+  {
+    "frame_idx": 246,
+    "timestamp_ns": 102044956362,
+    "timestamp_us": 102044956,
+    "right_palm_3d": [
+      0.470844,
+      -0.210771,
+      0.167867
+    ],
+    "right_palm_confidence": 0.99982,
+    "left_palm_3d": [
+      0.37698,
+      0.0457742,
+      0.352988
+    ],
+    "left_palm_confidence": 0.999643
+  },
+  {
+    "frame_idx": 247,
+    "timestamp_ns": 102144952362,
+    "timestamp_us": 102144952,
+    "right_palm_3d": [
+      0.473297,
+      -0.220335,
+      0.162162
+    ],
+    "right_palm_confidence": 0.99983,
+    "left_palm_3d": [
+      0.375026,
+      -0.00070411,
+      0.364761
+    ],
+    "left_palm_confidence": 0.999788
+  },
+  {
+    "frame_idx": 248,
+    "timestamp_ns": 102244953275,
+    "timestamp_us": 102244953,
+    "right_palm_3d": [
+      0.479331,
+      -0.22446,
+      0.15652
+    ],
+    "right_palm_confidence": 0.999851,
+    "left_palm_3d": [
+      0.367096,
+      -0.0428171,
+      0.36346
+    ],
+    "left_palm_confidence": 0.999839
+  },
+  {
+    "frame_idx": 249,
+    "timestamp_ns": 102344954612,
+    "timestamp_us": 102344954,
+    "right_palm_3d": [
+      0.480832,
+      -0.222657,
+      0.15697
+    ],
+    "right_palm_confidence": 0.999858,
+    "left_palm_3d": [
+      0.350021,
+      -0.0726622,
+      0.367306
+    ],
+    "left_palm_confidence": 0.999865
+  },
+  {
+    "frame_idx": 250,
+    "timestamp_ns": 102444950437,
+    "timestamp_us": 102444950,
+    "right_palm_3d": [
+      0.474809,
+      -0.217144,
+      0.15693
+    ],
+    "right_palm_confidence": 0.999865,
+    "left_palm_3d": [
+      0.328926,
+      -0.0980519,
+      0.367661
+    ],
+    "left_palm_confidence": 0.999881
+  },
+  {
+    "frame_idx": 251,
+    "timestamp_ns": 102544958687,
+    "timestamp_us": 102544958,
+    "right_palm_3d": [
+      0.465247,
+      -0.206053,
+      0.156277
+    ],
+    "right_palm_confidence": 0.999859,
+    "left_palm_3d": [
+      0.308467,
+      -0.112185,
+      0.368491
+    ],
+    "left_palm_confidence": 0.999902
+  },
+  {
+    "frame_idx": 252,
+    "timestamp_ns": 102644952687,
+    "timestamp_us": 102644952,
+    "right_palm_3d": [
+      0.453831,
+      -0.213576,
+      0.164302
+    ],
+    "right_palm_confidence": 0.999848,
+    "left_palm_3d": [
+      0.290148,
+      -0.130173,
+      0.375395
+    ],
+    "left_palm_confidence": 0.999897
+  },
+  {
+    "frame_idx": 253,
+    "timestamp_ns": 102744958487,
+    "timestamp_us": 102744958,
+    "right_palm_3d": [
+      0.439556,
+      -0.226698,
+      0.165522
+    ],
+    "right_palm_confidence": 0.999864,
+    "left_palm_3d": [
+      0.27653,
+      -0.161158,
+      0.384369
+    ],
+    "left_palm_confidence": 0.999902
+  },
+  {
+    "frame_idx": 254,
+    "timestamp_ns": 102844947362,
+    "timestamp_us": 102844947,
+    "right_palm_3d": [
+      0.431466,
+      -0.255731,
+      0.157166
+    ],
+    "right_palm_confidence": 0.999812,
+    "left_palm_3d": [
+      0.260752,
+      -0.214523,
+      0.378891
+    ],
+    "left_palm_confidence": 0.999887
+  },
+  {
+    "frame_idx": 255,
+    "timestamp_ns": 102944956900,
+    "timestamp_us": 102944956,
+    "right_palm_3d": [
+      0.420636,
+      -0.26686,
+      0.158736
+    ],
+    "right_palm_confidence": 0.999817,
+    "left_palm_3d": [
+      0.249625,
+      -0.239954,
+      0.384929
+    ],
+    "left_palm_confidence": 0.99993
+  },
+  {
+    "frame_idx": 256,
+    "timestamp_ns": 103044953112,
+    "timestamp_us": 103044953,
+    "right_palm_3d": [
+      0.412769,
+      -0.269446,
+      0.166244
+    ],
+    "right_palm_confidence": 0.99986,
+    "left_palm_3d": [
+      0.238621,
+      -0.243647,
+      0.386907
+    ],
+    "left_palm_confidence": 0.999947
+  },
+  {
+    "frame_idx": 257,
+    "timestamp_ns": 103144961150,
+    "timestamp_us": 103144961,
+    "right_palm_3d": [
+      0.406531,
+      -0.276095,
+      0.172321
+    ],
+    "right_palm_confidence": 0.999879,
+    "left_palm_3d": [
+      0.235224,
+      -0.251072,
+      0.385855
+    ],
+    "left_palm_confidence": 0.999953
+  },
+  {
+    "frame_idx": 258,
+    "timestamp_ns": 103244952812,
+    "timestamp_us": 103244952,
+    "right_palm_3d": [
+      0.402927,
+      -0.279694,
+      0.17367
+    ],
+    "right_palm_confidence": 0.999894,
+    "left_palm_3d": [
+      0.23547,
+      -0.258753,
+      0.383514
+    ],
+    "left_palm_confidence": 0.999954
+  },
+  {
+    "frame_idx": 259,
+    "timestamp_ns": 103344955862,
+    "timestamp_us": 103344955,
+    "right_palm_3d": [
+      0.401192,
+      -0.278174,
+      0.177557
+    ],
+    "right_palm_confidence": 0.999901,
+    "left_palm_3d": [
+      0.230149,
+      -0.261634,
+      0.386707
+    ],
+    "left_palm_confidence": 0.999957
+  },
+  {
+    "frame_idx": 260,
+    "timestamp_ns": 103444957312,
+    "timestamp_us": 103444957,
+    "right_palm_3d": [
+      0.404515,
+      -0.276462,
+      0.178001
+    ],
+    "right_palm_confidence": 0.999905,
+    "left_palm_3d": [
+      0.223284,
+      -0.259371,
+      0.396973
+    ],
+    "left_palm_confidence": 0.999954
+  },
+  {
+    "frame_idx": 261,
+    "timestamp_ns": 103544954187,
+    "timestamp_us": 103544954,
+    "right_palm_3d": [
+      0.414742,
+      -0.270461,
+      0.171272
+    ],
+    "right_palm_confidence": 0.99989,
+    "left_palm_3d": [
+      0.220879,
+      -0.261171,
+      0.413572
+    ],
+    "left_palm_confidence": 0.999947
+  },
+  {
+    "frame_idx": 262,
+    "timestamp_ns": 103644954775,
+    "timestamp_us": 103644954,
+    "right_palm_3d": [
+      0.424992,
+      -0.2643,
+      0.157247
+    ],
+    "right_palm_confidence": 0.999876,
+    "left_palm_3d": [
+      0.21618,
+      -0.264254,
+      0.429836
+    ],
+    "left_palm_confidence": 0.999929
+  },
+  {
+    "frame_idx": 263,
+    "timestamp_ns": 103744951987,
+    "timestamp_us": 103744951,
+    "right_palm_3d": [
+      0.43797,
+      -0.264236,
+      0.144205
+    ],
+    "right_palm_confidence": 0.999874,
+    "left_palm_3d": [
+      0.215508,
+      -0.262084,
+      0.447979
+    ],
+    "left_palm_confidence": 0.999907
+  },
+  {
+    "frame_idx": 264,
+    "timestamp_ns": 103844957362,
+    "timestamp_us": 103844957,
+    "right_palm_3d": [
+      0.449172,
+      -0.268872,
+      0.12913
+    ],
+    "right_palm_confidence": 0.99986,
+    "left_palm_3d": [
+      0.216286,
+      -0.259081,
+      0.463005
+    ],
+    "left_palm_confidence": 0.999889
+  },
+  {
+    "frame_idx": 265,
+    "timestamp_ns": 103944957312,
+    "timestamp_us": 103944957,
+    "right_palm_3d": [
+      0.453628,
+      -0.260429,
+      0.119251
+    ],
+    "right_palm_confidence": 0.999859,
+    "left_palm_3d": [
+      0.223811,
+      -0.254087,
+      0.481659
+    ],
+    "left_palm_confidence": 0.999848
+  },
+  {
+    "frame_idx": 266,
+    "timestamp_ns": 104044951437,
+    "timestamp_us": 104044951,
+    "right_palm_3d": [
+      0.460212,
+      -0.259483,
+      0.108173
+    ],
+    "right_palm_confidence": 0.999864,
+    "left_palm_3d": [
+      0.228468,
+      -0.258274,
+      0.497329
+    ],
+    "left_palm_confidence": 0.999852
+  },
+  {
+    "frame_idx": 267,
+    "timestamp_ns": 104144949687,
+    "timestamp_us": 104144949,
+    "right_palm_3d": [
+      0.462226,
+      -0.259159,
+      0.0986085
+    ],
+    "right_palm_confidence": 0.999866,
+    "left_palm_3d": [
+      0.228061,
+      -0.264114,
+      0.504477
+    ],
+    "left_palm_confidence": 0.999837
+  },
+  {
+    "frame_idx": 268,
+    "timestamp_ns": 104244951487,
+    "timestamp_us": 104244951,
+    "right_palm_3d": [
+      0.466563,
+      -0.257835,
+      0.0901595
+    ],
+    "right_palm_confidence": 0.999874,
+    "left_palm_3d": [
+      0.231447,
+      -0.262283,
+      0.513207
+    ],
+    "left_palm_confidence": 0.999846
+  },
+  {
+    "frame_idx": 269,
+    "timestamp_ns": 104344952062,
+    "timestamp_us": 104344952,
+    "right_palm_3d": [
+      0.473621,
+      -0.253891,
+      0.0802545
+    ],
+    "right_palm_confidence": 0.999867,
+    "left_palm_3d": [
+      0.23412,
+      -0.254859,
+      0.516855
+    ],
+    "left_palm_confidence": 0.999845
+  },
+  {
+    "frame_idx": 270,
+    "timestamp_ns": 104444956487,
+    "timestamp_us": 104444956,
+    "right_palm_3d": [
+      0.479544,
+      -0.24914,
+      0.0724687
+    ],
+    "right_palm_confidence": 0.999856,
+    "left_palm_3d": [
+      0.238872,
+      -0.247566,
+      0.533438
+    ],
+    "left_palm_confidence": 0.999828
+  },
+  {
+    "frame_idx": 271,
+    "timestamp_ns": 104544954525,
+    "timestamp_us": 104544954,
+    "right_palm_3d": [
+      0.483927,
+      -0.24714,
+      0.0612455
+    ],
+    "right_palm_confidence": 0.999811,
+    "left_palm_3d": [
+      0.245363,
+      -0.254744,
+      0.544154
+    ],
+    "left_palm_confidence": 0.999837
+  },
+  {
+    "frame_idx": 272,
+    "timestamp_ns": 104644962812,
+    "timestamp_us": 104644962,
+    "right_palm_3d": [
+      0.49077,
+      -0.2507,
+      0.053638
+    ],
+    "right_palm_confidence": 0.999637,
+    "left_palm_3d": [
+      0.250138,
+      -0.261786,
+      0.55187
+    ],
+    "left_palm_confidence": 0.999824
+  },
+  {
+    "frame_idx": 273,
+    "timestamp_ns": 104744959687,
+    "timestamp_us": 104744959,
+    "right_palm_3d": [
+      0.493032,
+      -0.248241,
+      0.0471726
+    ],
+    "right_palm_confidence": 0.99952,
+    "left_palm_3d": [
+      0.247093,
+      -0.26043,
+      0.558012
+    ],
+    "left_palm_confidence": 0.999838
+  },
+  {
+    "frame_idx": 274,
+    "timestamp_ns": 104844957525,
+    "timestamp_us": 104844957,
+    "right_palm_3d": [
+      0.491797,
+      -0.244306,
+      0.0439329
+    ],
+    "right_palm_confidence": 0.999307,
+    "left_palm_3d": [
+      0.241579,
+      -0.258708,
+      0.560347
+    ],
+    "left_palm_confidence": 0.999857
+  },
+  {
+    "frame_idx": 275,
+    "timestamp_ns": 104944957562,
+    "timestamp_us": 104944957,
+    "right_palm_3d": [
+      0.488653,
+      -0.245188,
+      0.040907
+    ],
+    "right_palm_confidence": 0.999346,
+    "left_palm_3d": [
+      0.231337,
+      -0.252296,
+      0.561262
+    ],
+    "left_palm_confidence": 0.999856
+  },
+  {
+    "frame_idx": 276,
+    "timestamp_ns": 105044949987,
+    "timestamp_us": 105044949,
+    "right_palm_3d": [
+      0.48536,
+      -0.245435,
+      0.0387675
+    ],
+    "right_palm_confidence": 0.999376,
+    "left_palm_3d": [
+      0.228364,
+      -0.249151,
+      0.563164
+    ],
+    "left_palm_confidence": 0.999855
+  },
+  {
+    "frame_idx": 277,
+    "timestamp_ns": 105144954400,
+    "timestamp_us": 105144954,
+    "right_palm_3d": [
+      0.481318,
+      -0.24585,
+      0.0363598
+    ],
+    "right_palm_confidence": 0.999359,
+    "left_palm_3d": [
+      0.228483,
+      -0.244056,
+      0.566237
+    ],
+    "left_palm_confidence": 0.999855
+  },
+  {
+    "frame_idx": 278,
+    "timestamp_ns": 105244952562,
+    "timestamp_us": 105244952,
+    "right_palm_3d": [
+      0.475583,
+      -0.245172,
+      0.0342008
+    ],
+    "right_palm_confidence": 0.999253,
+    "left_palm_3d": [
+      0.226023,
+      -0.242479,
+      0.567711
+    ],
+    "left_palm_confidence": 0.99986
+  },
+  {
+    "frame_idx": 279,
+    "timestamp_ns": 105344949862,
+    "timestamp_us": 105344949,
+    "right_palm_3d": [
+      0.475287,
+      -0.24412,
+      0.0292406
+    ],
+    "right_palm_confidence": 0.999609,
+    "left_palm_3d": [
+      0.227213,
+      -0.240662,
+      0.570202
+    ],
+    "left_palm_confidence": 0.999859
+  },
+  {
+    "frame_idx": 280,
+    "timestamp_ns": 105444952687,
+    "timestamp_us": 105444952,
+    "right_palm_3d": [
+      0.470695,
+      -0.24975,
+      0.0198244
+    ],
+    "right_palm_confidence": 0.999635,
+    "left_palm_3d": [
+      0.222881,
+      -0.236531,
+      0.571584
+    ],
+    "left_palm_confidence": 0.999852
+  },
+  {
+    "frame_idx": 281,
+    "timestamp_ns": 105544952737,
+    "timestamp_us": 105544952,
+    "right_palm_3d": [
+      0.461141,
+      -0.255876,
+      0.0123036
+    ],
+    "right_palm_confidence": 0.999753,
+    "left_palm_3d": [
+      0.213869,
+      -0.231382,
+      0.574339
+    ],
+    "left_palm_confidence": 0.99983
+  },
+  {
+    "frame_idx": 282,
+    "timestamp_ns": 105644954937,
+    "timestamp_us": 105644954,
+    "right_palm_3d": [
+      0.452533,
+      -0.260689,
+      0.00730527
+    ],
+    "right_palm_confidence": 0.999831,
+    "left_palm_3d": [
+      0.21101,
+      -0.227977,
+      0.57509
+    ],
+    "left_palm_confidence": 0.999828
+  },
+  {
+    "frame_idx": 283,
+    "timestamp_ns": 105744952650,
+    "timestamp_us": 105744952,
+    "right_palm_3d": [
+      0.446166,
+      -0.277874,
+      0.00453564
+    ],
+    "right_palm_confidence": 0.999815,
+    "left_palm_3d": [
+      0.230326,
+      -0.222822,
+      0.582237
+    ],
+    "left_palm_confidence": 0.999834
+  },
+  {
+    "frame_idx": 284,
+    "timestamp_ns": 105844955062,
+    "timestamp_us": 105844955,
+    "right_palm_3d": [
+      0.459695,
+      -0.298351,
+      0.00407032
+    ],
+    "right_palm_confidence": 0.9998,
+    "left_palm_3d": [
+      0.275508,
+      -0.214082,
+      0.581006
+    ],
+    "left_palm_confidence": 0.999501
+  },
+  {
+    "frame_idx": 285,
+    "timestamp_ns": 105944957025,
+    "timestamp_us": 105944957,
+    "right_palm_3d": [
+      0.455065,
+      -0.311468,
+      0.0134284
+    ],
+    "right_palm_confidence": 0.999804,
+    "left_palm_3d": [
+      0.360105,
+      -0.200336,
+      0.568992
+    ],
+    "left_palm_confidence": 0.997168
+  },
+  {
+    "frame_idx": 286,
+    "timestamp_ns": 106044957650,
+    "timestamp_us": 106044957,
+    "right_palm_3d": [
+      0.439343,
+      -0.319637,
+      0.0321723
+    ],
+    "right_palm_confidence": 0.999826,
+    "left_palm_3d": [
+      0.426483,
+      -0.142896,
+      0.530864
+    ],
+    "left_palm_confidence": 0.996108
+  },
+  {
+    "frame_idx": 287,
+    "timestamp_ns": 106144948775,
+    "timestamp_us": 106144948,
+    "right_palm_3d": [
+      0.4278,
+      -0.326544,
+      0.0563786
+    ],
+    "right_palm_confidence": 0.999872
+  },
+  {
+    "frame_idx": 288,
+    "timestamp_ns": 106244953237,
+    "timestamp_us": 106244953,
+    "right_palm_3d": [
+      0.41885,
+      -0.323542,
+      0.0907503
+    ],
+    "right_palm_confidence": 0.999893,
+    "left_palm_3d": [
+      0.391772,
+      -0.0857487,
+      0.523591
+    ],
+    "left_palm_confidence": 0.998992
+  },
+  {
+    "frame_idx": 289,
+    "timestamp_ns": 106344950650,
+    "timestamp_us": 106344950,
+    "right_palm_3d": [
+      0.419835,
+      -0.324298,
+      0.0984463
+    ],
+    "right_palm_confidence": 0.999911,
+    "left_palm_3d": [
+      0.377592,
+      -0.100663,
+      0.547801
+    ],
+    "left_palm_confidence": 0.999541
+  },
+  {
+    "frame_idx": 290,
+    "timestamp_ns": 106444952312,
+    "timestamp_us": 106444952,
+    "right_palm_3d": [
+      0.421328,
+      -0.331105,
+      0.0896238
+    ],
+    "right_palm_confidence": 0.999915,
+    "left_palm_3d": [
+      0.378662,
+      -0.138874,
+      0.552285
+    ],
+    "left_palm_confidence": 0.999576
+  },
+  {
+    "frame_idx": 291,
+    "timestamp_ns": 106544956112,
+    "timestamp_us": 106544956,
+    "right_palm_3d": [
+      0.435631,
+      -0.334478,
+      0.0784819
+    ],
+    "right_palm_confidence": 0.999907,
+    "left_palm_3d": [
+      0.395839,
+      -0.16915,
+      0.532839
+    ],
+    "left_palm_confidence": 0.999699
+  },
+  {
+    "frame_idx": 292,
+    "timestamp_ns": 106644955650,
+    "timestamp_us": 106644955,
+    "right_palm_3d": [
+      0.443237,
+      -0.338303,
+      0.0624926
+    ],
+    "right_palm_confidence": 0.999895,
+    "left_palm_3d": [
+      0.413841,
+      -0.180423,
+      0.503639
+    ],
+    "left_palm_confidence": 0.999746
+  },
+  {
+    "frame_idx": 293,
+    "timestamp_ns": 106744953812,
+    "timestamp_us": 106744953,
+    "right_palm_3d": [
+      0.446575,
+      -0.355118,
+      0.0475947
+    ],
+    "right_palm_confidence": 0.999872,
+    "left_palm_3d": [
+      0.415523,
+      -0.185246,
+      0.486609
+    ],
+    "left_palm_confidence": 0.999868
+  },
+  {
+    "frame_idx": 294,
+    "timestamp_ns": 106844949112,
+    "timestamp_us": 106844949,
+    "right_palm_3d": [
+      0.438767,
+      -0.372965,
+      0.0407784
+    ],
+    "right_palm_confidence": 0.999896,
+    "left_palm_3d": [
+      0.404531,
+      -0.184103,
+      0.486105
+    ],
+    "left_palm_confidence": 0.999903
+  },
+  {
+    "frame_idx": 295,
+    "timestamp_ns": 106944951937,
+    "timestamp_us": 106944951,
+    "right_palm_3d": [
+      0.441547,
+      -0.379841,
+      0.038236
+    ],
+    "right_palm_confidence": 0.999899,
+    "left_palm_3d": [
+      0.403742,
+      -0.17788,
+      0.490854
+    ],
+    "left_palm_confidence": 0.999906
+  },
+  {
+    "frame_idx": 296,
+    "timestamp_ns": 107044952150,
+    "timestamp_us": 107044952,
+    "right_palm_3d": [
+      0.438174,
+      -0.380883,
+      0.0345091
+    ],
+    "right_palm_confidence": 0.999893,
+    "left_palm_3d": [
+      0.398411,
+      -0.185722,
+      0.487271
+    ],
+    "left_palm_confidence": 0.999904
+  },
+  {
+    "frame_idx": 297,
+    "timestamp_ns": 107144957187,
+    "timestamp_us": 107144957,
+    "right_palm_3d": [
+      0.432854,
+      -0.381795,
+      0.0393259
+    ],
+    "right_palm_confidence": 0.999883,
+    "left_palm_3d": [
+      0.381827,
+      -0.201478,
+      0.47627
+    ],
+    "left_palm_confidence": 0.999891
+  },
+  {
+    "frame_idx": 298,
+    "timestamp_ns": 107244952900,
+    "timestamp_us": 107244952,
+    "right_palm_3d": [
+      0.420981,
+      -0.377535,
+      0.0503072
+    ],
+    "right_palm_confidence": 0.99987,
+    "left_palm_3d": [
+      0.363453,
+      -0.202883,
+      0.471462
+    ],
+    "left_palm_confidence": 0.999887
+  },
+  {
+    "frame_idx": 299,
+    "timestamp_ns": 107344957362,
+    "timestamp_us": 107344957,
+    "right_palm_3d": [
+      0.406069,
+      -0.371279,
+      0.0512857
+    ],
+    "right_palm_confidence": 0.999829,
+    "left_palm_3d": [
+      0.332239,
+      -0.191269,
+      0.451856
+    ],
+    "left_palm_confidence": 0.999853
+  },
+  {
+    "frame_idx": 300,
+    "timestamp_ns": 107444957737,
+    "timestamp_us": 107444957,
+    "right_palm_3d": [
+      0.408187,
+      -0.367292,
+      0.0562698
+    ],
+    "right_palm_confidence": 0.999814,
+    "left_palm_3d": [
+      0.334062,
+      -0.197204,
+      0.426861
+    ],
+    "left_palm_confidence": 0.999914
+  },
+  {
+    "frame_idx": 301,
+    "timestamp_ns": 107544959112,
+    "timestamp_us": 107544959,
+    "right_palm_3d": [
+      0.408187,
+      -0.367292,
+      0.0562698
+    ],
+    "right_palm_confidence": 0.999814,
+    "left_palm_3d": [
+      0.334062,
+      -0.197204,
+      0.426861
+    ],
+    "left_palm_confidence": 0.999914
+  }
+]

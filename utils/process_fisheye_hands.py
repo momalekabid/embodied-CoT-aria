@@ -1,9 +1,9 @@
 """
-process hand tracking on rgb camera with undistortion (VLA-ready).
+process hand tracking and project onto the recording from aria rgb camera after undistorting fisheye
 outputs undistorted rgb video with hand landmarks + velocity overlay, plus velocity json data.
 
 usage:
-    python process_rgb_hands.py --vrs path/to/recording.vrs --mps path/to/hand_tracking_results.csv --output output_dir
+    python process_fisheye_hands.py --vrs path/to/recording.vrs --mps path/to/hand_tracking_results.csv --output output_dir
 """
 
 import argparse
@@ -66,9 +66,7 @@ def main():
     print(f"focal length: {focal_lengths[0]}")
 
     # create pinhole (undistorted) calibration
-    pinhole_calib = calibration.get_linear_camera_calibration(
-        image_size[0], image_size[1], focal_lengths[0]
-    )
+    pinhole_calib = calibration.get_linear_camera_calibration(image_size[0], image_size[1], focal_lengths[0])
 
     # get device to rgb camera transform
     device_calib = vrs_data_provider.get_device_calibration()
@@ -86,9 +84,7 @@ def main():
     output_video_path = os.path.join(args.output, "undistorted_rgb_with_hands.mp4")
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
     fps = 30
-    video_writer = cv2.VideoWriter(
-        output_video_path, fourcc, fps, (image_size[0], image_size[1])
-    )
+    video_writer = cv2.VideoWriter(output_video_path, fourcc, fps, (image_size[0], image_size[1]))
     print(f"writing video to: {output_video_path}")
 
     # process frames
@@ -106,9 +102,7 @@ def main():
     print("\nprocessing frames...")
     for frame_idx in tqdm(range(0, num_frames, args.frame_skip)):
         # get rgb image data by index
-        image_data_and_record = vrs_data_provider.get_image_data_by_index(
-            rgb_stream_id, frame_idx
-        )
+        image_data_and_record = vrs_data_provider.get_image_data_by_index(rgb_stream_id, frame_idx)
 
         if image_data_and_record is None:
             continue
@@ -118,9 +112,7 @@ def main():
 
         # undistort the frame using projectaria calibration
         # this converts fisheye -> pinhole projection
-        undistorted_image = distort_by_calibration(
-            image, pinhole_calib, rgb_camera_calibration
-        )
+        undistorted_image = distort_by_calibration(image, pinhole_calib, rgb_camera_calibration)
 
         # find nearest hand tracking timestamp
         timestamp_us = timestamp_ns // 1000
@@ -150,8 +142,6 @@ def main():
                     landmarks_3d.append(point_3d)
 
                     # project to undistorted 2d coords using pinhole calibration
-                    # note: we project using pinhole_calib because the undistorted image
-                    # is in pinhole projection space
                     point_2d = project_3d_to_2d(point_3d, T_device_camera, pinhole_calib)
                     landmarks_2d.append(point_2d)
                 else:
@@ -183,7 +173,7 @@ def main():
                     point_3d = np.array([x, y, z])
                     landmarks_3d.append(point_3d)
 
-                    # project using pinhole calibration
+                    # project w/ pinhole calibration
                     point_2d = project_3d_to_2d(point_3d, T_device_camera, pinhole_calib)
                     landmarks_2d.append(point_2d)
                 else:
@@ -205,19 +195,11 @@ def main():
         left_vel = None
 
         if len(right_palm_positions) >= 4:
-            right_vels = compute_velocity(
-                np.array(right_palm_positions),
-                np.array(right_palm_timestamps),
-                window_size=3
-            )
+            right_vels = compute_velocity(np.array(right_palm_positions), np.array(right_palm_timestamps), window_size=3)
             right_vel = right_vels[-1]
 
         if len(left_palm_positions) >= 4:
-            left_vels = compute_velocity(
-                np.array(left_palm_positions),
-                np.array(left_palm_timestamps),
-                window_size=3
-            )
+            left_vels = compute_velocity(np.array(left_palm_positions), np.array(left_palm_timestamps), window_size=3)
             left_vel = left_vels[-1]
 
         # draw velocity overlay
