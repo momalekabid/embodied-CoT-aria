@@ -1,37 +1,126 @@
 import jsons
 import json
-from projectaria_tools.core import data_provider
+from projectaria_tools.core import data_provider, calibration
 from projectaria_tools.core.sensor_data import TimeDomain, TimeQueryOptions
 from projectaria_tools.core.stream_id import RecordableTypeId, StreamId
+from projectaria_tools.core.calibration import distort_by_calibration
 from tqdm import tqdm
 import numpy as np
+
+from sys import path as sys_path
+import os
+# Add the parent directory (or any path you need) to sys.path
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys_path.append(parent_dir)
+
+from utils.hand_tracking_utils import (
+    get_camera_calibration,
+    project_3d_to_2d,
+    draw_hand_skeleton,
+    draw_velocity_axes,
+    compute_velocity,
+)
 from os import path
+import cv2
+
+
+IMAGE_SIZE = (1408, 1408, 3)
 
 class Step:
     def __init__(self, is_first: bool, is_last: bool) -> None:
-        self._is_first = is_first
-        self._is_last = is_last
-        self._observations = {
-            "time_since_episode_start_ns": None,
+
+        self._information: dict = {
+            "is_first": is_first,
+            "is_last": is_last,
+            "observations": {
+                "time_since_episode_start_ns": None,
+                "language_instruction": None,
+            },
+            "image": None,
+            "actions": {
+                "hand_pos_left": None,
+                "hand_pos_right": None,
+                "hand_vel_left": None,
+                "hand_vel_right": None
+            }
+
         }
-        self._actions = {
-            "hand_pos_left": None,
-            "hand_pos_right": None,
-            "hand_vel_left": None,
-            "hand_vel_right": None
-        }
+
+        # self._is_first = is_first
+        # self._is_last = is_last
+        # self._observations = {
+        #     "time_since_episode_start_ns": None,
+        #     "language_instruction": None,
+        # }
+        # self._image = None  # to be filled with numpy array representing the image
+        # self._actions = {
+        #     "hand_pos_left": None,
+        #     "hand_pos_right": None,
+        #     "hand_vel_left": None,
+        #     "hand_vel_right": None
+        # }
 
     
 
     def set_observation_time(self, value) -> None:
-        self._observations["time_since_episode_start_ns"] = value
+        # self._observations["time_since_episode_start_ns"] = value
+        self._information["observations"]["time_since_episode_start_ns"] = value
+    
+    def get_observation_time(self):
+        return self._information["observations"]["time_since_episode_start_ns"]
+        
+    def set_language_instruction(self, annotations: str) -> None:
+        self._information["observations"]["language_instruction"] = annotations
+
+    def get_language_instruction(self) -> str:
+        return self._information["observations"]["language_instruction"]
+        
+    def get_is_first(self) -> bool:
+        return self._information["is_first"]
+        
+    def get_is_last(self) -> bool:
+        return self._information["is_last"]
     
     def set_hand_data(self, hand_pos_left: list[float], hand_pos_right: list[float], hand_vel_left: list[float], hand_vel_right: list[float]) -> None:
-        self._actions["hand_pos_left"] = hand_pos_left
-        self._actions["hand_pos_right"] = hand_pos_right
-        self._actions["hand_vel_left"] = hand_vel_left
-        self._actions["hand_vel_right"] = hand_vel_right
+        # self._actions["hand_pos_left"] = np.array(hand_pos_left, dtype=np.float32)
+        # self._actions["hand_pos_right"] = np.array(hand_pos_right, dtype=np.float32)
+        # self._actions["hand_vel_left"] = np.array(hand_vel_left, dtype=np.float32) 
+        # self._actions["hand_vel_right"] = np.array(hand_vel_right, dtype=np.float32)
+
+        self._information["actions"]["hand_pos_left"] = np.array(hand_pos_left, dtype=np.float32)
+        self._information["actions"]["hand_pos_right"] = np.array(hand_pos_right, dtype=np.float32)
+        self._information["actions"]["hand_vel_left"] = np.array(hand_vel_left, dtype=np.float32)
+        self._information["actions"]["hand_vel_right"] = np.array(hand_vel_right, dtype=np.float32)
+
+    def set_image(self, image_array: np.ndarray) -> None:
+        if image_array.shape != IMAGE_SIZE:
+            raise ValueError(f"Image array must have shape {IMAGE_SIZE}, but got {image_array.shape}")
+        # self.image = image_array
+        self._information["image"] = image_array
+    
+    def get_image(self) -> np.ndarray:
+        # return self._image
+        return self._information["image"]
+    
         
+    # def convert_dict(self) -> dict:
+    #     return {
+    #         "is_first": self._is_first,
+    #         "is_last": self._is_last,
+    #         "observations": {
+    #             "time_since_episode_start_ns": self._observations["time_since_episode_start_ns"],
+    #             "language_instruction": self._observations["language_instruction"],
+    #         },
+    #         "image": self._image,
+    #         "actions": {
+    #             "hand_pos_left": self._actions["hand_pos_left"],
+    #             "hand_pos_right": self._actions["hand_pos_right"],
+    #             "hand_vel_left": self._actions["hand_vel_left"],
+    #             "hand_vel_right": self._actions["hand_vel_right"],
+    #         }
+    #     }
+    def return_information_dict(self) -> dict:
+        return self._information
 
 
 class Episode:
@@ -47,7 +136,17 @@ class Episode:
     def add_step(self, step: Step) -> None:
         self.steps.append(step)
 
-    
+    def save_to_np(self, save_path: str) -> None:
+        episode_data = {
+            "episode_id": self.episode_id,
+            "agent_id": self.agent_id,
+            "invalid": self.invalid,
+            "steps": [step.return_information_dict() for step in self.steps],
+        }
+        np.save(save_path, episode_data)
+        print(f"Episode {self.episode_id} saved to {save_path}")
+
+        
 
 class VrsToRldsConverter:
     # expects 
@@ -59,8 +158,12 @@ class VrsToRldsConverter:
         self.episodes = []
         self.episodes_timestamps = episodes_timestamps
         self.hand_data_left, self.hand_data_right = self.restructure_hand_velocities()
-
         self.provider = data_provider.create_vrs_data_provider(path.join(vrs_data_path, vrs_file_name))
+
+
+        self._rgb_stream_id = StreamId("214-1")
+        self._rgb_camera_label = "rgb_camera"
+
 
 
 
@@ -77,6 +180,39 @@ class VrsToRldsConverter:
     #             print(metadata_obj)
     # ------------------- END: OUTDATED -------------------
 
+    def undistort_image(self, image_distorted) -> np.ndarray:
+        rgb_camera_calibration = get_camera_calibration(self.provider, self._rgb_stream_id)
+        focal_lengths = rgb_camera_calibration.get_focal_lengths()
+        image_size = rgb_camera_calibration.get_image_size()
+
+        # create pinhole (undistorted) calibration
+        pinhole_calib = calibration.get_linear_camera_calibration(image_size[0], image_size[1], focal_lengths[0])
+        # get device to rgb camera transform
+        
+        # undistort image
+        image_undistorted = distort_by_calibration(
+            image_distorted,
+            rgb_camera_calibration,
+            pinhole_calib,
+        )
+
+        # BGR_dist = cv2.cvtColor(image_distorted, cv2.COLOR_RGB2BGR)
+        # BGR_undist = cv2.cvtColor(image_undistorted, cv2.COLOR_RGB2BGR)
+
+        # Show distorted and undistorted images side by side, rotated -90 degrees
+        # BGR_dist_rot = cv2.rotate(BGR_dist[::2, ::2,], cv2.ROTATE_90_CLOCKWISE)
+        # BGR_undist_rot = cv2.rotate(BGR_undist[::2, ::2,], cv2.ROTATE_90_CLOCKWISE)
+        # combined = np.hstack((BGR_dist_rot, BGR_undist_rot))
+        # cv2.imshow('Distorted (left) vs Undistorted (right)', combined)
+        # cv2.waitKey(0)
+
+        image_undistorted = cv2.rotate(image_undistorted, cv2.ROTATE_90_CLOCKWISE)
+        
+        return image_undistorted
+
+
+
+
     def match_timestamp_to_rgb_frame_id(self, timestamp: int) -> int:
         all_frames_data = self.hand_velocities_data_path + "all_frames.json"
 
@@ -85,7 +221,6 @@ class VrsToRldsConverter:
             
 
     def process_episodes(self) -> None:
-        rgb_stream_id = StreamId("214-1")
 
         episode_frame_idxs = {}
 
@@ -104,7 +239,7 @@ class VrsToRldsConverter:
             if i == len(self.episodes_timestamps) - 1:
                 # episode_frame_idxs[i] = (start_idx, len(self.episodes_timestamps))
                 start_idx = end_idx
-                end_idx = self.provider.get_num_data(rgb_stream_id)
+                end_idx = self.provider.get_num_data(self._rgb_stream_id)
             else:
                 start_idx = end_idx
                 end_idx = self.match_timestamp_to_rgb_frame_id(self.episodes_timestamps[i+1])
@@ -123,17 +258,21 @@ class VrsToRldsConverter:
             for frame_idx in range(start_idx, end_idx):
                 cur_step = Step(is_first=(frame_idx == start_idx), is_last=(frame_idx == end_idx - 1))
 
-                image_data = self.provider.get_image_data_by_index(rgb_stream_id, frame_idx)
+                image_data = self.provider.get_image_data_by_index(self._rgb_stream_id, frame_idx)
     
                 if image_data is None:
                     continue
                 
                 # safety check that frame_idx is within bounds
-                if frame_idx > self.provider.get_num_data(rgb_stream_id):
+                if frame_idx > self.provider.get_num_data(self._rgb_stream_id):
                     raise ValueError("Frame index exceeds number of frames in stream.")
                 
-                # get image as numpy array and its timestamp
-                step_image = image_data[0].to_numpy_array()
+                # get image (distorted) as numpy array and its timestamp
+                step_image_distorted = image_data[0].to_numpy_array()
+                step_image_undistorted = self.undistort_image(step_image_distorted)
+                cur_step.set_image(step_image_undistorted)
+
+
                 step_timestamp = int(image_data[1].capture_timestamp_ns /1000 )
                 # normalize timestamp to episode start
                 step_normalized_timestamp = step_timestamp - cur_base_timestamp
@@ -147,12 +286,7 @@ class VrsToRldsConverter:
                 left_hand_data = self.hand_data_left.get(step_timestamp)
                 right_hand_data = self.hand_data_right.get(step_timestamp)
 
-                # print(f"Looking for hand data at timestamp {step_timestamp}...")
-                # if(left_hand_data is not None):
-                #     print(f"Left hand data for timestamp {step_timestamp} found.")
-                # if(right_hand_data is not None):
-                #     print(f"Right hand data for timestamp {step_timestamp} found.")
-
+                
                 # assert(left_hand_data is not None and right_hand_data is not None), f"Hand data for timestamp {step_timestamp} not found."
 
                 if(left_hand_data is None or right_hand_data is None):
@@ -172,9 +306,6 @@ class VrsToRldsConverter:
 
 
 
-
-                # process the frame data here
-                # ...
                 cur_episode.add_step(cur_step)
 
             # add finished episode to list
@@ -236,10 +367,14 @@ class VrsToRldsConverter:
             json.dump(both_hands, debug_file, indent=4)
         return both_hands[0], both_hands[1]
 
-        
+    def save_episodes(self, save_dir: str) -> None:
+        for episode in self.episodes:
+            save_path = path.join(save_dir, f"{episode.episode_id}.npy")
+            episode.save_to_np(save_path)
     
 
 
 if __name__ == "__main__":
     converter = VrsToRldsConverter(vrs_data_path="C:/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_vrs/vrs_data", vrs_file_name="Microsoft_office_1.vrs", hand_velocities_data_path= "C:/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/utils/final_output/")
     converter.process_episodes()
+    converter.save_episodes(save_dir="C:/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_vrs/rlds_data/")
