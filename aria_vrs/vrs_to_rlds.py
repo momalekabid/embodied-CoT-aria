@@ -30,19 +30,26 @@ class Step:
     def __init__(self, is_first: bool, is_last: bool) -> None:
 
         self._information: dict = {
+
+            # is_first and is_last is currently not used, because the RLDS dataset formatter infers this from the episode length
             "is_first": is_first,
             "is_last": is_last,
-            "observations": {
-                "time_since_episode_start_ns": None,
-                "language_instruction": None,
-            },
+
+
+            "time_since_episode_start_ns": None,
+
+
+            "language_instruction": None,
+            # currently only images of shape (1408, 1408, 3) are supported
             "image": None,
-            "actions": {
-                "hand_pos_left": None,
-                "hand_pos_right": None,
-                "hand_vel_left": None,
-                "hand_vel_right": None
-            }
+            
+            # actions are of shape (2, 3): [hand_vel_left(3), hand_vel_right(3)]
+            "actions": np.zeros((2, 3), dtype=np.float32),
+
+            # state is of shape (2, 3): [hand_pos_left(3), hand_pos_right(3)]
+            "state": np.zeros((2, 3), dtype=np.float32)
+
+            
 
         }
 
@@ -64,16 +71,16 @@ class Step:
 
     def set_observation_time(self, value) -> None:
         # self._observations["time_since_episode_start_ns"] = value
-        self._information["observations"]["time_since_episode_start_ns"] = value
+        self._information["time_since_episode_start_ns"] = value
     
     def get_observation_time(self):
-        return self._information["observations"]["time_since_episode_start_ns"]
+        return self._information["time_since_episode_start_ns"]
         
     def set_language_instruction(self, annotations: str) -> None:
-        self._information["observations"]["language_instruction"] = annotations
+        self._information["language_instruction"] = annotations
 
     def get_language_instruction(self) -> str:
-        return self._information["observations"]["language_instruction"]
+        return self._information["language_instruction"]
         
     def get_is_first(self) -> bool:
         return self._information["is_first"]
@@ -82,15 +89,11 @@ class Step:
         return self._information["is_last"]
     
     def set_hand_data(self, hand_pos_left: list[float], hand_pos_right: list[float], hand_vel_left: list[float], hand_vel_right: list[float]) -> None:
-        # self._actions["hand_pos_left"] = np.array(hand_pos_left, dtype=np.float32)
-        # self._actions["hand_pos_right"] = np.array(hand_pos_right, dtype=np.float32)
-        # self._actions["hand_vel_left"] = np.array(hand_vel_left, dtype=np.float32) 
-        # self._actions["hand_vel_right"] = np.array(hand_vel_right, dtype=np.float32)
+        self._information["state"][0, :] = np.array(hand_pos_left, dtype=np.float32)
+        self._information["state"][1, :] = np.array(hand_pos_right, dtype=np.float32)
+        self._information["actions"][0, :] = np.array(hand_vel_left, dtype=np.float32)
+        self._information["actions"][1, :] = np.array(hand_vel_right, dtype=np.float32)
 
-        self._information["actions"]["hand_pos_left"] = np.array(hand_pos_left, dtype=np.float32)
-        self._information["actions"]["hand_pos_right"] = np.array(hand_pos_right, dtype=np.float32)
-        self._information["actions"]["hand_vel_left"] = np.array(hand_vel_left, dtype=np.float32)
-        self._information["actions"]["hand_vel_right"] = np.array(hand_vel_right, dtype=np.float32)
 
     def set_image(self, image_array: np.ndarray) -> None:
         if image_array.shape != IMAGE_SIZE:
@@ -102,23 +105,6 @@ class Step:
         # return self._image
         return self._information["image"]
     
-        
-    # def convert_dict(self) -> dict:
-    #     return {
-    #         "is_first": self._is_first,
-    #         "is_last": self._is_last,
-    #         "observations": {
-    #             "time_since_episode_start_ns": self._observations["time_since_episode_start_ns"],
-    #             "language_instruction": self._observations["language_instruction"],
-    #         },
-    #         "image": self._image,
-    #         "actions": {
-    #             "hand_pos_left": self._actions["hand_pos_left"],
-    #             "hand_pos_right": self._actions["hand_pos_right"],
-    #             "hand_vel_left": self._actions["hand_vel_left"],
-    #             "hand_vel_right": self._actions["hand_vel_right"],
-    #         }
-    #     }
     def return_information_dict(self) -> dict:
         return self._information
 
@@ -146,7 +132,7 @@ class Episode:
         np.save(save_path, episode_data)
         print(f"Episode {self.episode_id} saved to {save_path}")
 
-        
+
 
 class VrsToRldsConverter:
     # expects 

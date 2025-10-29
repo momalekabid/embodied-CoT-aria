@@ -152,3 +152,6 @@ data/
 # VRS data
 vrs_data/
 extracted_vrs/
+
+# Numpy binary files
+*.npy
