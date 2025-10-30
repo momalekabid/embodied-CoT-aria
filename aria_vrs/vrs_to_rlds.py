@@ -9,6 +9,8 @@ import numpy as np
 
 from sys import path as sys_path
 import os
+
+
 # Add the parent directory (or any path you need) to sys.path
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys_path.append(parent_dir)
@@ -22,29 +24,31 @@ from utils.hand_tracking_utils import (
 )
 from os import path
 import cv2
+import platform
 
 
 IMAGE_SIZE = (1408, 1408, 3)
 
+# RLDS Step class
 class Step:
-    def __init__(self, is_first: bool, is_last: bool) -> None:
+    def __init__(self) -> None:
 
+        # this dictionary will hold all information for the step
         self._information: dict = {
-
             # is_first and is_last is currently not used, because the RLDS dataset formatter infers this from the episode length
-            "is_first": is_first,
-            "is_last": is_last,
+            "is_first": False,
+            "is_last": False,
 
 
             "time_since_episode_start_ns": None,
 
-
-            "language_instruction": None,
+            #TODO: set actual language instruction
+            "language_instruction": "dummy instruction",
             # currently only images of shape (1408, 1408, 3) are supported
             "image": None,
             
-            # actions are of shape (2, 3): [hand_vel_left(3), hand_vel_right(3)]
-            "actions": np.zeros((2, 3), dtype=np.float32),
+            # action are of shape (2, 3): [hand_vel_left(3), hand_vel_right(3)]
+            "action": np.zeros((2, 3), dtype=np.float32),
 
             # state is of shape (2, 3): [hand_pos_left(3), hand_pos_right(3)]
             "state": np.zeros((2, 3), dtype=np.float32)
@@ -60,7 +64,7 @@ class Step:
         #     "language_instruction": None,
         # }
         # self._image = None  # to be filled with numpy array representing the image
-        # self._actions = {
+        # self._action = {
         #     "hand_pos_left": None,
         #     "hand_pos_right": None,
         #     "hand_vel_left": None,
@@ -68,6 +72,11 @@ class Step:
         # }
 
     
+    def set_is_first(self) -> None:
+        self._information["is_first"] = True
+    
+    def set_is_last(self) -> None:
+        self._information["is_last"] = True
 
     def set_observation_time(self, value) -> None:
         # self._observations["time_since_episode_start_ns"] = value
@@ -91,8 +100,8 @@ class Step:
     def set_hand_data(self, hand_pos_left: list[float], hand_pos_right: list[float], hand_vel_left: list[float], hand_vel_right: list[float]) -> None:
         self._information["state"][0, :] = np.array(hand_pos_left, dtype=np.float32)
         self._information["state"][1, :] = np.array(hand_pos_right, dtype=np.float32)
-        self._information["actions"][0, :] = np.array(hand_vel_left, dtype=np.float32)
-        self._information["actions"][1, :] = np.array(hand_vel_right, dtype=np.float32)
+        self._information["action"][0, :] = np.array(hand_vel_left, dtype=np.float32)
+        self._information["action"][1, :] = np.array(hand_vel_right, dtype=np.float32)
 
 
     def set_image(self, image_array: np.ndarray) -> None:
@@ -109,6 +118,7 @@ class Step:
         return self._information
 
 
+# RLDS Episode class
 class Episode:
     def __init__(self, episode_id: str, agent_id: str) -> None:
         self.episode_id: str = episode_id
@@ -122,6 +132,22 @@ class Episode:
     def add_step(self, step: Step) -> None:
         self.steps.append(step)
 
+    # TODO: delete - this is a tempory test function
+    def create_fake_episode(self,path):
+        episode = []
+        for step in range(1):
+            episode.append({
+                'image': np.asarray(np.random.rand(256, 256, 3) * 255, dtype=np.uint8),
+                'wrist_image': np.asarray(np.random.rand(256, 256, 3) * 255, dtype=np.uint8),
+                'state': np.asarray(np.random.rand(7,), dtype=np.float32),
+                'action': np.asarray(np.random.rand(7,), dtype=np.float32),
+                'language_instruction': 'dummy instruction',
+            })
+        print(episode)
+        np.save(path, episode)
+
+
+
     def save_to_np(self, save_path: str) -> None:
         episode_data = {
             "episode_id": self.episode_id,
@@ -129,7 +155,15 @@ class Episode:
             "invalid": self.invalid,
             "steps": [step.return_information_dict() for step in self.steps],
         }
-        np.save(save_path, episode_data)
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+
+        np.save(save_path, [step.return_information_dict() for step in self.steps])
+
+        # self.create_fake_episode(save_path)
+
+        
+
         print(f"Episode {self.episode_id} saved to {save_path}")
 
 
@@ -241,8 +275,11 @@ class VrsToRldsConverter:
 
             # for each episode, process the frames within the start and end indices
             # each frame corresponds to one step in RLDS
+            first_useful_frame_found = False
             for frame_idx in range(start_idx, end_idx):
-                cur_step = Step(is_first=(frame_idx == start_idx), is_last=(frame_idx == end_idx - 1))
+                
+                # create step object
+                cur_step = Step()
 
                 image_data = self.provider.get_image_data_by_index(self._rgb_stream_id, frame_idx)
     
@@ -288,12 +325,14 @@ class VrsToRldsConverter:
                     hand_vel_right=right_hand_data["velocities_3d_ms"]
                 )
 
-
+                
 
 
 
                 cur_episode.add_step(cur_step)
 
+            cur_episode.steps[0].set_is_first()
+            cur_episode.steps[-1].set_is_last()
             # add finished episode to list
             self.episodes.append(cur_episode)
             
@@ -353,14 +392,47 @@ class VrsToRldsConverter:
             json.dump(both_hands, debug_file, indent=4)
         return both_hands[0], both_hands[1]
 
+    # TODO: implement actually differing between train and val episodes
     def save_episodes(self, save_dir: str) -> None:
         for episode in self.episodes:
-            save_path = path.join(save_dir, f"{episode.episode_id}.npy")
-            episode.save_to_np(save_path)
+            save_path_train = path.join(save_dir, f"train/{episode.episode_id}.npy")
+            save_path_val = path.join(save_dir, f"val/{episode.episode_id}.npy")
+            episode.save_to_np(save_path_train)
+            episode.save_to_np(save_path_val)
     
 
 
 if __name__ == "__main__":
-    converter = VrsToRldsConverter(vrs_data_path="C:/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_vrs/vrs_data", vrs_file_name="Microsoft_office_1.vrs", hand_velocities_data_path= "C:/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/utils/final_output/")
-    converter.process_episodes()
-    converter.save_episodes(save_dir="C:/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_vrs/rlds_data/")
+    shared_path_vrs_data = "/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_vrs/vrs_data"
+    vrs_file_name = "Microsoft_office_1.vrs"
+    shared_path_hand_velocities = "/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/utils/final_output/"
+    shared_path_save_rlds_data = "/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data/"
+    
+    windows_base_path = "C:"
+    linux_base_path = "/mnt/c"
+
+    if platform.system() == "Windows":
+        converter = VrsToRldsConverter(
+            vrs_data_path= path.join(windows_base_path,shared_path_vrs_data),
+            vrs_file_name=vrs_file_name,
+            hand_velocities_data_path= path.join(windows_base_path,shared_path_hand_velocities),
+        )
+        converter.process_episodes()
+        converter.save_episodes(save_dir=
+                                path.join(windows_base_path,shared_path_save_rlds_data)
+        )
+    elif platform.system() == "Linux":
+        print("Running on Linux system.")
+        print("Hand velocities path:", path.join(linux_base_path,shared_path_hand_velocities))
+        converter = VrsToRldsConverter(
+            vrs_data_path= linux_base_path + shared_path_vrs_data,
+            
+            # path.join(linux_base_path,shared_path_vrs_data),
+            vrs_file_name=vrs_file_name,
+            hand_velocities_data_path= linux_base_path + shared_path_hand_velocities
+            # path.join(linux_base_path, shared_path_hand_velocities),
+        )
+        converter.process_episodes()
+        converter.save_episodes(save_dir= linux_base_path + shared_path_save_rlds_data
+                                # path.join(linux_base_path,shared_path_save_rlds_data)
+        )

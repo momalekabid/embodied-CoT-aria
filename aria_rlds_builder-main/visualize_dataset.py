@@ -47,7 +47,6 @@ for i, episode in enumerate(ds.take(5)):
         plt.imshow(image_strip)
         plt.title(caption)
 
-
 # visualize action and state statistics
 actions, states = [], []
 for episode in tqdm.tqdm(ds.take(500)):

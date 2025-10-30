@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_hub as hub
 import tensorflow_datasets as tfds
-from aria_vrs.conversion_utils import MultiThreadedDatasetBuilder
+from aria_dataset.conversion_utils import MultiThreadedDatasetBuilder
 
 
 def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
@@ -21,33 +21,44 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
         for k, example in enumerate(data):
             # assemble episode --> here we're assuming demos so we set reward to 1 at the end
             episode = []
-
-            instruction = example['language'][0]
+            
+            instruction = example['language_instruction'][0]
             if instruction:
                 language_embedding = _embed([instruction])[0].numpy()
             else:
                 language_embedding = np.zeros(512, dtype=np.float32)
 
-            for i in range(len(example['observations'])):
+            language_embedding = np.zeros(512, dtype=np.float32)
+
+
+            for i in range(len(example)):
                 observation = {
-                    'state': example['observations'][i]['state'].astype(np.float32),
+                    'state': example['state'].astype(np.float32),
                 }
+
                 for image_idx in range(4):
                     orig_key = f'images{image_idx}'
                     new_key = f'image_{image_idx}'
-                    if orig_key in example['observations'][i]:
-                        observation[new_key] = example['observations'][i][orig_key]
+                    # if orig_key in example['observations'][i]:
+                    #     observation[new_key] = example['observations'][i][orig_key]
+                    # else:
+                    #     observation[new_key] = np.zeros_like(example['observations'][i]['images0'])
+
+                    if image_idx == 0:
+                        observation[new_key] = example['image'].astype(np.uint8)
                     else:
-                        observation[new_key] = np.zeros_like(example['observations'][i]['images0'])
+                        observation[new_key] = np.zeros((1,1,3), dtype=np.uint8)
+
+
 
                 episode.append({
                     'observation': observation,
-                    'action': example['actions'][i].astype(np.float32),
+                    'action': example['action'].astype(np.float32),
                     'discount': 1.0,
-                    'reward': float(i == (len(example['observations']) - 1)),
+                    'reward': float(i == (len(example) - 1)),
                     'is_first': i == 0,
-                    'is_last': i == (len(example['observations']) - 1),
-                    'is_terminal': i == (len(example['observations']) - 1),
+                    'is_last': i == (len(example) - 1),
+                    'is_terminal': i == (len(example) - 1),
                     'language_instruction': instruction,
                     'language_embedding': language_embedding,
                 })
@@ -65,7 +76,10 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
             for image_idx in range(4):
                 orig_key = f'images{image_idx}'
                 new_key = f'image_{image_idx}'
-                sample['episode_metadata'][f'has_{new_key}'] = orig_key in example['observations']
+                if image_idx == 0:
+                    sample['episode_metadata'][f'has_{new_key}'] = True
+                else:
+                    sample['episode_metadata'][f'has_{new_key}'] = False
             sample['episode_metadata']['has_language'] = bool(instruction)
 
             # if you want to skip an example for whatever reason, simply return None
@@ -77,15 +91,15 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
             yield id, sample
 
 
-class BridgeDataset(MultiThreadedDatasetBuilder):
+class AriaDataset(MultiThreadedDatasetBuilder):
     """DatasetBuilder for example dataset."""
 
     VERSION = tfds.core.Version('1.0.0')
     RELEASE_NOTES = {
       '1.0.0': 'Initial release.',
     }
-    N_WORKERS = 40             # number of parallel workers for data conversion
-    MAX_PATHS_IN_MEMORY = 80   # number of paths converted & stored in memory before writing to disk
+    N_WORKERS = 1          # number of parallel workers for data conversion
+    MAX_PATHS_IN_MEMORY = 10   # number of paths converted & stored in memory before writing to disk
                                # -> the higher the faster / more parallel conversion, adjust based on avilable RAM
                                # note that one path may yield multiple episodes and adjust accordingly
     PARSE_FCN = _generate_examples      # handle to parse function from file paths to RLDS episodes
@@ -97,41 +111,39 @@ class BridgeDataset(MultiThreadedDatasetBuilder):
                 'steps': tfds.features.Dataset({
                     'observation': tfds.features.FeaturesDict({
                         'image_0': tfds.features.Image(
-                            shape=(256, 256, 3),
+                            shape=(1408, 1408, 3),
                             dtype=np.uint8,
                             encoding_format='jpeg',
                             doc='Main camera RGB observation.',
                         ),
                         'image_1': tfds.features.Image(
-                            shape=(256, 256, 3),
+                            shape=(1, 1, 3),
                             dtype=np.uint8,
                             encoding_format='jpeg',
-                            doc='Main camera RGB observation.',
+                            doc='Not used - Main camera RGB observation.',
                         ),
                         'image_2': tfds.features.Image(
-                            shape=(256, 256, 3),
+                            shape=(1, 1, 3),
                             dtype=np.uint8,
                             encoding_format='jpeg',
-                            doc='Main camera RGB observation.',
+                            doc='Not used - Main camera RGB observation.',
                         ),
                         'image_3': tfds.features.Image(
-                            shape=(256, 256, 3),
+                            shape=(1, 1, 3),
                             dtype=np.uint8,
                             encoding_format='jpeg',
-                            doc='Main camera RGB observation.',
+                            doc='Not used - Main camera RGB observation.',
                         ),
                         'state': tfds.features.Tensor(
-                            shape=(7,),
+                            shape=(2,3),
                             dtype=np.float32,
-                            doc='Robot state, consists of [7x robot joint angles, '
-                                '2x gripper position, 1x door opening angle].',
+                            doc='Hand positions (l,r) given as x,y,z coordinates in meters (measured in ARIA frame = frame of left SLAM camera).',
                         )
                     }),
                     'action': tfds.features.Tensor(
-                        shape=(7,),
+                        shape=(2,3),
                         dtype=np.float32,
-                        doc='Robot action, consists of [7x joint velocities, '
-                            '2x gripper velocities, 1x terminate episode].',
+                        doc='Hand movements (l,r) given as delta x,y,z coordinates in meters/second (measured in ARIA frame = frame of left SLAM camera).',
                     ),
                     'discount': tfds.features.Scalar(
                         dtype=np.float32,
@@ -196,14 +208,13 @@ class BridgeDataset(MultiThreadedDatasetBuilder):
 
     def _split_paths(self):
         """Define filepaths for data splits."""
-        base_paths = ["/nfs/kun2/users/homer/datasets/bridge_data_all/numpy_256",
-                      "/nfs/kun2/users/homer/datasets/bridge_data_all/scripted_numpy_256"]
+        base_paths = ["""/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data"""]
         train_filenames, val_filenames = [], []
         for path in base_paths:
           for filename in glob.glob(f'{path}/**/*.npy', recursive=True):
-            if '/train/out.npy' in filename:
+            if '/train/' in filename:
                 train_filenames.append(filename)
-            elif '/val/out.npy' in filename:
+            elif '/val/' in filename:
                 val_filenames.append(filename)
             else:
                 raise ValueError(filename)
@@ -212,3 +223,4 @@ class BridgeDataset(MultiThreadedDatasetBuilder):
             'train': train_filenames,
             'val': val_filenames,
         }
+
