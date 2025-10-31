@@ -1,7 +1,7 @@
 import jsons
 import json
 from projectaria_tools.core import data_provider, calibration
-from projectaria_tools.core.sensor_data import TimeDomain, TimeQueryOptions
+from projectaria_tools.core.sensor_data import TimeDomain, TimeQueryOptisons
 from projectaria_tools.core.stream_id import RecordableTypeId, StreamId
 from projectaria_tools.core.calibration import distort_by_calibration
 from tqdm import tqdm
