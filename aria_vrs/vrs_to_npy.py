@@ -56,21 +56,6 @@ class Step:
             
 
         }
-
-        # self._is_first = is_first
-        # self._is_last = is_last
-        # self._observations = {
-        #     "time_since_episode_start_ns": None,
-        #     "language_instruction": None,
-        # }
-        # self._image = None  # to be filled with numpy array representing the image
-        # self._action = {
-        #     "hand_pos_left": None,
-        #     "hand_pos_right": None,
-        #     "hand_vel_left": None,
-        #     "hand_vel_right": None
-        # }
-
     
     def set_is_first(self) -> None:
         self._information["is_first"] = True
@@ -119,6 +104,7 @@ class Step:
 
 
 # RLDS Episode class
+# The episode fields are currently not used in the conversion to rlds.
 class Episode:
     def __init__(self, episode_id: str, agent_id: str) -> None:
         self.episode_id: str = episode_id
@@ -132,22 +118,6 @@ class Episode:
     def add_step(self, step: Step) -> None:
         self.steps.append(step)
 
-    # TODO: delete - this is a tempory test function
-    def create_fake_episode(self,path):
-        episode = []
-        for step in range(1):
-            episode.append({
-                'image': np.asarray(np.random.rand(256, 256, 3) * 255, dtype=np.uint8),
-                'wrist_image': np.asarray(np.random.rand(256, 256, 3) * 255, dtype=np.uint8),
-                'state': np.asarray(np.random.rand(7,), dtype=np.float32),
-                'action': np.asarray(np.random.rand(7,), dtype=np.float32),
-                'language_instruction': 'dummy instruction',
-            })
-        print(episode)
-        np.save(path, episode)
-
-
-
     def save_to_np(self, save_path: str) -> None:
         episode_data = {
             "episode_id": self.episode_id,
@@ -160,9 +130,6 @@ class Episode:
 
         np.save(save_path, [step.return_information_dict() for step in self.steps])
 
-        # self.create_fake_episode(save_path)
-
-        
 
         print(f"Episode {self.episode_id} saved to {save_path}")
 
@@ -185,21 +152,6 @@ class VrsToRldsConverter:
         self._rgb_camera_label = "rgb_camera"
 
 
-
-
-    # ------------------- START: OUTDATED -------------------
-    # this function peeks into the VRS metadata file and prints out the metadata objects
-    # def peek_into_vrs_metadata(self, file_name: str) -> None:
-
-    #     vrs_file_path = f"{self.vrs_data_path}/metadata.jsons"
-
-
-    #     with open(vrs_file_path, "r") as metadata_file:
-    #         for line in metadata_file:
-    #             metadata_obj = json.loads(line)
-    #             print(metadata_obj)
-    # ------------------- END: OUTDATED -------------------
-
     def undistort_image(self, image_distorted) -> np.ndarray:
         rgb_camera_calibration = get_camera_calibration(self.provider, self._rgb_stream_id)
         focal_lengths = rgb_camera_calibration.get_focal_lengths()
@@ -207,7 +159,6 @@ class VrsToRldsConverter:
 
         # create pinhole (undistorted) calibration
         pinhole_calib = calibration.get_linear_camera_calibration(image_size[0], image_size[1], focal_lengths[0])
-        # get device to rgb camera transform
         
         # undistort image
         image_undistorted = distort_by_calibration(
@@ -216,16 +167,7 @@ class VrsToRldsConverter:
             pinhole_calib,
         )
 
-        # BGR_dist = cv2.cvtColor(image_distorted, cv2.COLOR_RGB2BGR)
-        # BGR_undist = cv2.cvtColor(image_undistorted, cv2.COLOR_RGB2BGR)
-
-        # Show distorted and undistorted images side by side, rotated -90 degrees
-        # BGR_dist_rot = cv2.rotate(BGR_dist[::2, ::2,], cv2.ROTATE_90_CLOCKWISE)
-        # BGR_undist_rot = cv2.rotate(BGR_undist[::2, ::2,], cv2.ROTATE_90_CLOCKWISE)
-        # combined = np.hstack((BGR_dist_rot, BGR_undist_rot))
-        # cv2.imshow('Distorted (left) vs Undistorted (right)', combined)
-        # cv2.waitKey(0)
-
+        # rotate image to correct orientation
         image_undistorted = cv2.rotate(image_undistorted, cv2.ROTATE_90_CLOCKWISE)
         
         return image_undistorted
@@ -325,10 +267,7 @@ class VrsToRldsConverter:
                     hand_vel_right=right_hand_data["velocities_3d_ms"]
                 )
 
-                
-
-
-
+                # add step to episode
                 cur_episode.add_step(cur_step)
 
             cur_episode.steps[0].set_is_first()
@@ -402,6 +341,8 @@ class VrsToRldsConverter:
     
 
 
+# IMPORTANT: The conversion from vrs to npy must be run with numpy version 1.24.3 (some others might also work, not >=2.0.0 though!), otherwise RLDS dataset formatter will not be able to read the saved npy files.
+# Not using a compatible numpy version will lead to weird errors when loading the npy files with RLDS dataset formatter, e.g. numpy core not found.
 if __name__ == "__main__":
     shared_path_vrs_data = "/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_vrs/vrs_data"
     vrs_file_name = "Microsoft_office_1.vrs"
