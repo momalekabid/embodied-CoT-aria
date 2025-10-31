@@ -135,7 +135,7 @@ class Episode:
 
 
 
-class VrsToRldsConverter:
+class VrsToRldsNpyConverter:
     # expects 
     #   - paths to folders containing the extracted VRS data hand velocities data,
     #   - list of timestamps (ns) that specify the start of each episode
@@ -353,7 +353,7 @@ if __name__ == "__main__":
     linux_base_path = "/mnt/c"
 
     if platform.system() == "Windows":
-        converter = VrsToRldsConverter(
+        converter = VrsToRldsNpyConverter(
             vrs_data_path= path.join(windows_base_path,shared_path_vrs_data),
             vrs_file_name=vrs_file_name,
             hand_velocities_data_path= path.join(windows_base_path,shared_path_hand_velocities),
@@ -365,7 +365,7 @@ if __name__ == "__main__":
     elif platform.system() == "Linux":
         print("Running on Linux system.")
         print("Hand velocities path:", path.join(linux_base_path,shared_path_hand_velocities))
-        converter = VrsToRldsConverter(
+        converter = VrsToRldsNpyConverter(
             vrs_data_path= linux_base_path + shared_path_vrs_data,
             
             # path.join(linux_base_path,shared_path_vrs_data),
