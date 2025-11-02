@@ -95,7 +95,7 @@ for ep_idx, episode in enumerate(ds):
             b = list(b.astype(int))
             lg = round(lg, 5)
             bboxes.append((lg, p, b))
-            break
+            break  # todo: remove this to enable multiple bboxes per frame
 
         bboxes_list.append(bboxes)
         # break

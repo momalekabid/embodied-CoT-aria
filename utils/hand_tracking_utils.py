@@ -116,7 +116,7 @@ def draw_velocity_axes(frame, right_vel, left_vel):
     # position for left hand axes (top left, below right hand)
     left_origin = (180, 200)
 
-    scale = 40  # pixels per m/s
+    scale = 75  # pixels per m/s
 
     # draw right hand velocity axes
     if right_vel is not None:
