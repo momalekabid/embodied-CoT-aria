@@ -44,6 +44,8 @@ def gaze(take_timestamps: int, path_to_mps_folder: str, vrs_data_provider) -> np
     mps_data_provider = mps.MpsDataProvider(mps_data_paths)
     assert mps_data_provider.has_general_eyegaze(), "The sequence does not have Eye Gaze data"
 
+    gazes = []
+    
     for sample in take_timestamps:
 
         # get the eye gaze data at each timestamp with mps_data_provider
