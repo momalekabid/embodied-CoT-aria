@@ -1,7 +1,7 @@
 import jsons
 import json
 from projectaria_tools.core import data_provider, calibration
-from projectaria_tools.core.sensor_data import TimeDomain, TimeQueryOptisons
+from projectaria_tools.core.sensor_data import TimeDomain, TimeQueryOptions
 from projectaria_tools.core.stream_id import RecordableTypeId, StreamId
 from projectaria_tools.core.calibration import distort_by_calibration
 from tqdm import tqdm
@@ -163,11 +163,10 @@ class VrsToRldsNpyConverter:
         # undistort image
         image_undistorted = distort_by_calibration(
             image_distorted,
-            rgb_camera_calibration,
             pinhole_calib,
+            rgb_camera_calibration
         )
-
-        # rotate image to correct orientation
+                
         image_undistorted = cv2.rotate(image_undistorted, cv2.ROTATE_90_CLOCKWISE)
         
         return image_undistorted
