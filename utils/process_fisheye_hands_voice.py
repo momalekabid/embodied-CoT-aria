@@ -250,33 +250,7 @@ def main():
         # this converts fisheye -> pinhole projection
         undistorted_image = distort_by_calibration(image, pinhole_calib, rgb_camera_calibration)
         undistorted_image = cv2.cvtColor(undistorted_image, cv2.COLOR_RGB2BGR)
-
         
-        # get and draw gaze if available
-        if gaze_loader is not None:
-            try:
-                # get gaze projection for undistorted (pinhole) frame
-                gaze_projection = gaze_loader.get_gaze_projection(
-                    timestamp_ns,
-                    rgb_camera_label,
-                    device_calib,
-                    pinhole_calib,  # use pinhole calib for undistorted frame
-                    depth_m=1.0
-                )
-
-                
-
-                if gaze_projection is not None:
-                    gaze_x, gaze_y = gaze_projection
-                    height, width = undistorted_image.shape[:2]
-                    # draw red circle at gaze point
-                    if 0 <= gaze_x < width and 0 <= gaze_y < height:
-                        cv2.circle(undistorted_image, (gaze_x, gaze_y), 10, (0, 0, 255), -1)
-            except Exception as e:
-                    # silently skip if gaze projection fails for this frame
-                    print(f"warning: gaze projection failed at {timestamp_ns} ns: {e}")
-                    pass
-
         if timestamp_ns >= current_audio_timestamp[0] and timestamp_ns <= current_audio_timestamp[1]:
             current_speech_text = speech_data[audio_idx][1]
         elif timestamp_ns > current_audio_timestamp[1]:
@@ -376,8 +350,31 @@ def main():
             left_vels = compute_velocity(np.array(left_palm_positions), np.array(left_palm_timestamps), window_size=3)
             left_vel = left_vels[-1]
 
-        # draw velocity overlay
         undistorted_image = cv2.rotate(undistorted_image, cv2.ROTATE_90_CLOCKWISE)
+        # get and draw gaze if available
+        if gaze_loader is not None:
+            try:
+                # get gaze projection for undistorted (pinhole) frame
+                gaze_projection = gaze_loader.get_gaze_projection(
+                    timestamp_ns,
+                    rgb_camera_label,
+                    device_calib,
+                    pinhole_calib,  # use pinhole calib for undistorted frame
+                    depth_m=1.0
+                )
+
+                if gaze_projection is not None:
+                    gaze_x, gaze_y = gaze_projection
+                    height, width = undistorted_image.shape[:2]
+                    # draw red circle at gaze point
+                    if 0 <= gaze_x < width and 0 <= gaze_y < height:
+                        cv2.circle(undistorted_image, (gaze_x, gaze_y), 10, (0, 0, 255), -1)
+            except Exception as e:
+                    # silently skip if gaze projection fails for this frame
+                    print(f"warning: gaze projection failed at {timestamp_ns} ns: {e}")
+                    pass
+            
+        # draw velocity overlay
         undistorted_image = draw_velocity_axes(undistorted_image, right_vel, left_vel)
         if current_speech_text:
             font = cv2.FONT_HERSHEY_DUPLEX

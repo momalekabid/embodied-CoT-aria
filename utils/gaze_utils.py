@@ -217,8 +217,6 @@ class GazeMPSLoader:
         self.device_calibration = vrs_data_provider.get_device_calibration()
         self.rgb_camera_calibration = self.device_calibration.get_camera_calib(self.rgb_stream_label)
 
-        # TODO: remove line below (redundant)
-        # rgb_camera_calibration = get_camera_calibration(vrs_data_provider, rgb_stream_id)
         self.focal_lengths = self.rgb_camera_calibration.get_focal_lengths()
         self.image_size = self.rgb_camera_calibration.get_image_size()
 
@@ -268,11 +266,11 @@ class GazeMPSLoader:
         gaze_projection = np.round(gaze_projection, decimals=0).astype(int)
 
         # create fake image with gaze point
-        fake_image = np.zeros((1408, 1408, 3), dtype=np.uint8)
+        fake_image = np.zeros((self.image_size[0], self.image_size[1], 3), dtype=np.uint8)
         # mark gaze point in red
         fake_image[gaze_projection[1], gaze_projection[0]] = [255, 0, 0]
         # rotate image 90 degrees clockwise to match aria orientation
-        # fake_image = cv2.rotate(fake_image, cv2.ROTATE_90_CLOCKWISE)
+        fake_image = cv2.rotate(fake_image, cv2.ROTATE_90_CLOCKWISE)
         # distort fake image to match camera distortion
         undistorted_fake_image = distort_by_calibration(fake_image, self.pinhole_calib, self.rgb_camera_calibration)
 
