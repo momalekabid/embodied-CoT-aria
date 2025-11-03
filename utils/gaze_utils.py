@@ -5,8 +5,13 @@ minimal utility for loading and using aria eye gaze data
 import numpy as np
 import csv
 from pathlib import Path
-from projectaria_tools.core import mps
+from projectaria_tools.core import mps, data_provider, calibration
 from projectaria_tools.core.mps.utils import get_gaze_vector_reprojection
+from projectaria_tools.core.stream_id import StreamId
+from projectaria_tools.core.calibration import distort_by_calibration
+import cv2
+
+
 
 
 class GazeLoader:
@@ -191,7 +196,7 @@ class GazeMPSLoader:
     uses projectaria_tools native gaze projection (more accurate than csv-based approach)
     """
 
-    def __init__(self, mps_path, use_general_gaze=True):
+    def __init__(self, mps_path, vrs_data_provider, use_general_gaze=True):
         """
         args:
             mps_path: path to mps output folder (contains eye_gaze subfolder)
@@ -203,6 +208,23 @@ class GazeMPSLoader:
         mps_data_paths_provider = mps.MpsDataPathsProvider(mps_path)
         mps_data_paths = mps_data_paths_provider.get_data_paths()
         self.mps_data_provider = mps.MpsDataProvider(mps_data_paths)
+
+        # set the data provider (needed for distortion correction)
+        self.vrs_data_provider = vrs_data_provider
+
+        self.rgb_stream_id = StreamId("214-1")
+        self.rgb_stream_label = vrs_data_provider.get_label_from_stream_id(self.rgb_stream_id)
+        self.device_calibration = vrs_data_provider.get_device_calibration()
+        self.rgb_camera_calibration = self.device_calibration.get_camera_calib(self.rgb_stream_label)
+
+        # TODO: remove line below (redundant)
+        # rgb_camera_calibration = get_camera_calibration(vrs_data_provider, rgb_stream_id)
+        self.focal_lengths = self.rgb_camera_calibration.get_focal_lengths()
+        self.image_size = self.rgb_camera_calibration.get_image_size()
+
+
+        # # create pinhole (undistorted) calibration
+        self.pinhole_calib = calibration.get_linear_camera_calibration(self.image_size[0], self.image_size[1], self.focal_lengths[0])
 
         # verify eye gaze data exists
         assert self.mps_data_provider.has_general_eyegaze(), "no eye gaze data in mps"
@@ -242,6 +264,28 @@ class GazeMPSLoader:
             camera_calibration,
             actual_depth,
         )
+        
+        gaze_projection = np.round(gaze_projection, decimals=0).astype(int)
+
+        # create fake image with gaze point
+        fake_image = np.zeros((1408, 1408, 3), dtype=np.uint8)
+        # mark gaze point in red
+        fake_image[gaze_projection[1], gaze_projection[0]] = [255, 0, 0]
+        # rotate image 90 degrees clockwise to match aria orientation
+        # fake_image = cv2.rotate(fake_image, cv2.ROTATE_90_CLOCKWISE)
+        # distort fake image to match camera distortion
+        undistorted_fake_image = distort_by_calibration(fake_image, self.pinhole_calib, self.rgb_camera_calibration)
+
+        undistorted_fake_image = np.sum(undistorted_fake_image, axis=2)
+
+        # find index (row, col) of the maximum value in the undistorted fake image
+        max_pos = np.unravel_index(np.argmax(undistorted_fake_image), undistorted_fake_image.shape)
+        max_y, max_x = int(max_pos[0]), int(max_pos[1])
+
+        # use the brightest pixel as the gaze projection (x, y)
+        gaze_projection = np.array([max_x, max_y])
+
+        gaze_projection = np.round(gaze_projection, decimals=0).astype(int)
 
         return gaze_projection
 

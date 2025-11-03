@@ -13,7 +13,7 @@ import cv2
 import pandas as pd
 import json
 from tqdm import tqdm
-import whisper
+#import whisper
 from faster_whisper import WhisperModel
 import shutil
 import textwrap
@@ -200,7 +200,7 @@ def main():
 
         print(f"loading gaze from: {mps_base}")
         try:
-            gaze_loader = GazeMPSLoader(mps_base, use_general_gaze=True)
+            gaze_loader = GazeMPSLoader(mps_base, vrs_data_provider, use_general_gaze=True)
         except Exception as e:
             print(f"warning: could not load gaze data: {e}")
             print("continuing without gaze overlay...")
@@ -251,6 +251,7 @@ def main():
         undistorted_image = distort_by_calibration(image, pinhole_calib, rgb_camera_calibration)
         undistorted_image = cv2.cvtColor(undistorted_image, cv2.COLOR_RGB2BGR)
 
+        
         # get and draw gaze if available
         if gaze_loader is not None:
             try:
@@ -263,15 +264,18 @@ def main():
                     depth_m=1.0
                 )
 
+                
+
                 if gaze_projection is not None:
-                    gaze_x, gaze_y = int(gaze_projection[0]), int(gaze_projection[1])
+                    gaze_x, gaze_y = gaze_projection
                     height, width = undistorted_image.shape[:2]
                     # draw red circle at gaze point
                     if 0 <= gaze_x < width and 0 <= gaze_y < height:
                         cv2.circle(undistorted_image, (gaze_x, gaze_y), 10, (0, 0, 255), -1)
             except Exception as e:
-                # silently skip if gaze projection fails for this frame
-                pass
+                    # silently skip if gaze projection fails for this frame
+                    print(f"warning: gaze projection failed at {timestamp_ns} ns: {e}")
+                    pass
 
         if timestamp_ns >= current_audio_timestamp[0] and timestamp_ns <= current_audio_timestamp[1]:
             current_speech_text = speech_data[audio_idx][1]
