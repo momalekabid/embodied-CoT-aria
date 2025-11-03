@@ -151,7 +151,14 @@ data/
 
 # VRS data
 vrs_data/
+vrs_data_1/
 extracted_vrs/
 
 # Numpy binary files
 *.npy
+
+# Json
+*.json
+
+# Videos
+*.mp4
