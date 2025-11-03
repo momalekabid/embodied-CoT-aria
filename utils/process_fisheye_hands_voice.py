@@ -34,6 +34,8 @@ from hand_tracking_utils import (
     compute_velocity,
 )
 
+from gaze_utils import GazeMPSLoader
+
 def extract_audio(vrs_file_path: str) -> Optional[str]:
     """Extract audio from a VRS file as a wav file in a temporary folder."""
     temp_folder = tempfile.mkdtemp()
@@ -54,8 +56,10 @@ def main():
     parser = argparse.ArgumentParser(description="process hand tracking on undistorted rgb camera")
     parser.add_argument("--vrs", type=str, required=True, help="path to .vrs file")
     parser.add_argument("--mps", type=str, required=True, help="path to hand_tracking_results.csv")
+    parser.add_argument("--mps_base", type=str, default=None, help="path to mps base folder (optional, auto-derived if not provided)")
     parser.add_argument("--output", type=str, default="output_rgb_hands", help="output directory")
     parser.add_argument("--frame_skip", type=int, default=1, help="process every nth frame")
+    parser.add_argument("--show_gaze", action="store_true", help="overlay eye gaze on video")
     args = parser.parse_args()
 
     if not os.path.exists(args.vrs):
@@ -184,11 +188,30 @@ def main():
     hand_tracking_df = pd.read_csv(args.mps)
     print(f"loaded {len(hand_tracking_df)} tracking samples")
 
+    # load gaze if requested
+    gaze_loader = None
+    if args.show_gaze:
+        # derive mps base path from hand tracking csv path if not provided
+        if args.mps_base is None:
+            # e.g., "path/to/mps_Orange_v1_vrs/hand_tracking/hand_tracking_results.csv" -> "path/to/mps_Orange_v1_vrs"
+            mps_base = os.path.dirname(os.path.dirname(args.mps))
+        else:
+            mps_base = args.mps_base
+
+        print(f"loading gaze from: {mps_base}")
+        try:
+            gaze_loader = GazeMPSLoader(mps_base, use_general_gaze=True)
+        except Exception as e:
+            print(f"warning: could not load gaze data: {e}")
+            print("continuing without gaze overlay...")
+            args.show_gaze = False
+
     # setup output
     os.makedirs(args.output, exist_ok=True)
 
     # setup video writer
-    output_video_path = os.path.join(args.output, "undistorted_rgb_with_hands.mp4")
+    video_filename = "undistorted_rgb_with_hands_and_gaze.mp4" if args.show_gaze else "undistorted_rgb_with_hands.mp4"
+    output_video_path = os.path.join(args.output, video_filename)
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
     # fourcc = cv2.VideoWriter_fourcc(*"MJPG")
     # output_video_path = "undistorted_rgb_with_hands.avi"
@@ -227,6 +250,28 @@ def main():
         # this converts fisheye -> pinhole projection
         undistorted_image = distort_by_calibration(image, pinhole_calib, rgb_camera_calibration)
         undistorted_image = cv2.cvtColor(undistorted_image, cv2.COLOR_RGB2BGR)
+
+        # get and draw gaze if available
+        if gaze_loader is not None:
+            try:
+                # get gaze projection for undistorted (pinhole) frame
+                gaze_projection = gaze_loader.get_gaze_projection(
+                    timestamp_ns,
+                    rgb_camera_label,
+                    device_calib,
+                    pinhole_calib,  # use pinhole calib for undistorted frame
+                    depth_m=1.0
+                )
+
+                if gaze_projection is not None:
+                    gaze_x, gaze_y = int(gaze_projection[0]), int(gaze_projection[1])
+                    height, width = undistorted_image.shape[:2]
+                    # draw red circle at gaze point
+                    if 0 <= gaze_x < width and 0 <= gaze_y < height:
+                        cv2.circle(undistorted_image, (gaze_x, gaze_y), 10, (0, 0, 255), -1)
+            except Exception as e:
+                # silently skip if gaze projection fails for this frame
+                pass
 
         if timestamp_ns >= current_audio_timestamp[0] and timestamp_ns <= current_audio_timestamp[1]:
             current_speech_text = speech_data[audio_idx][1]
