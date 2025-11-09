@@ -51,6 +51,216 @@ def extract_audio(vrs_file_path: str) -> Optional[str]:
     # Else we were not able to export a Wav file from the VRS file
     return None
 
+def is_hand_closed_by_distance(landmarks, wrist_idx=0, threshold=0.12):
+    """
+    Check if hand is closed by measuring fingertip distances from wrist.
+    Threshold should be around 0.12 for normalized coordinates.
+    """
+    if landmarks[wrist_idx] is None:
+        return False
+    
+    wrist = landmarks[wrist_idx]
+    tip_indices = [4, 8, 12, 16, 20]  # thumb, index, middle, ring, pinky
+    dists = []
+    
+    for i in tip_indices:
+        if landmarks[i] is not None:
+            dists.append(np.linalg.norm(landmarks[i] - wrist))
+    
+    if len(dists) == 0:
+        return False
+    
+    mean_dist = np.mean(dists)
+    # Closed if mean distance is small
+    # Typical values: closed ~0.08-0.12, open ~0.20-0.30
+    return mean_dist < threshold
+
+
+def is_finger_extended(landmarks, mcp_idx, pip_idx, dip_idx, tip_idx, threshold_deg=160):
+    """
+    Check if a finger is extended by measuring joint angles.
+    Extended fingers have angles CLOSE TO 180° (straight).
+    """
+    if any(landmarks[i] is None for i in [mcp_idx, pip_idx, dip_idx, tip_idx]):
+        return False
+    
+    mcp = landmarks[mcp_idx]
+    pip = landmarks[pip_idx]
+    dip = landmarks[dip_idx]
+    tip = landmarks[tip_idx]
+    
+    # Vectors for finger segments
+    v1 = pip - mcp
+    v2 = dip - pip
+    v3 = tip - dip
+    
+    # Normalize
+    v1 /= np.linalg.norm(v1)
+    v2 /= np.linalg.norm(v2)
+    v3 /= np.linalg.norm(v3)
+    
+    # Angles between segments
+    ang1 = np.degrees(np.arccos(np.clip(np.dot(v1, v2), -1.0, 1.0)))
+    ang2 = np.degrees(np.arccos(np.clip(np.dot(v2, v3), -1.0, 1.0)))
+    
+    # Extended if both joints are relatively straight (angles close to 180°)
+    # Use GREATER THAN threshold (not less than)
+    return (ang1 > threshold_deg) and (ang2 > threshold_deg)
+
+
+def is_thumb_extended(landmarks, threshold_dist=0.08):
+    """
+    Special check for thumb since it moves differently.
+    Compare thumb tip distance to index finger MCP.
+    """
+    thumb_tip = landmarks[4]
+    thumb_mcp = landmarks[2]
+    index_mcp = landmarks[5]
+    
+    if any(x is None for x in [thumb_tip, thumb_mcp, index_mcp]):
+        return False
+    
+    # Distance from thumb tip to its base
+    thumb_length = np.linalg.norm(thumb_tip - thumb_mcp)
+    
+    # Distance from thumb tip to index MCP
+    thumb_to_index = np.linalg.norm(thumb_tip - index_mcp)
+    
+    # Thumb is extended if it's far from the index finger
+    return thumb_to_index > threshold_dist
+
+
+def is_hand_open(landmarks):
+    """
+    Check if hand is open by counting extended fingers.
+    """
+    # Define finger joint indices (MCP, PIP, DIP, TIP)
+    fingers = {
+        "index":  (5, 6, 7, 8),
+        "middle": (9, 10, 11, 12),
+        "ring":   (13, 14, 15, 16),
+        "pinky":  (17, 18, 19, 20),
+    }
+    
+    extended_count = 0
+    
+    # Check thumb separately (different anatomy)
+    if is_thumb_extended(landmarks):
+        extended_count += 1
+    
+    # Check other four fingers
+    for finger_name, (mcp, pip, dip, tip) in fingers.items():
+        if is_finger_extended(landmarks, mcp, pip, dip, tip, threshold_deg=160):
+            extended_count += 1
+    
+    # Hand is open if 4 or more fingers are extended
+    return extended_count >= 4
+
+
+def is_hand_closed(landmarks):
+    """
+    Check if hand is closed (fist).
+    """
+    # Define finger joint indices
+    fingers = {
+        "index":  (5, 6, 7, 8),
+        "middle": (9, 10, 11, 12),
+        "ring":   (13, 14, 15, 16),
+        "pinky":  (17, 18, 19, 20),
+    }
+    
+    closed_count = 0
+    
+    # Check if thumb is tucked in
+    if not is_thumb_extended(landmarks):
+        closed_count += 1
+    
+    # Check other four fingers
+    for finger_name, (mcp, pip, dip, tip) in fingers.items():
+        # Closed = NOT extended
+        if not is_finger_extended(landmarks, mcp, pip, dip, tip, threshold_deg=160):
+            closed_count += 1
+    
+    # Hand is closed if 4 or more fingers are NOT extended
+    return closed_count >= 4
+
+
+from scipy.spatial.transform import Rotation as R
+
+def compute_hand_rotation_matrix(landmarks_3d):
+    wrist = landmarks_3d[0]
+    index_mcp = landmarks_3d[5]
+    middle_mcp = landmarks_3d[9]
+    ring_mcp = landmarks_3d[13]
+    
+    if any(v is None for v in (wrist, index_mcp, middle_mcp, ring_mcp)):
+        return None
+    
+    # Define axes more clearly:
+    # X-axis: points from wrist toward middle finger (forward)
+    x_axis = middle_mcp - wrist
+    x_axis /= np.linalg.norm(x_axis)
+    
+    # Y-axis: points from middle to index (sideways across palm)
+    side_vec = index_mcp - ring_mcp
+    side_vec /= np.linalg.norm(side_vec)
+    
+    # Z-axis: palm normal (perpendicular to palm surface)
+    z_axis = np.cross(x_axis, side_vec)
+    z_axis /= np.linalg.norm(z_axis)
+    
+    # Recompute Y to ensure orthogonality
+    y_axis = np.cross(z_axis, x_axis)
+    y_axis /= np.linalg.norm(y_axis)
+    
+    # Build rotation matrix with proper column ordering
+    R_hand = np.column_stack((x_axis, y_axis, z_axis))
+    return R_hand
+
+
+def draw_centered_rotating_rectangle(image, R_hand, size=100, color=(0,255,0)):
+    """
+    Draw a rotated rectangle representing hand orientation.
+    The rectangle plane is aligned with the palm.
+    """
+    h, w, _ = image.shape
+    cx, cy = w // 2, h // 2
+    
+    # Use X and Y axes from the rotation matrix
+    # These represent the palm plane directions
+    x_axis = R_hand[:, 0]  # forward direction
+    y_axis = R_hand[:, 1]  # side direction
+    
+    # Project 3D axes to 2D screen coordinates
+    # Flip Y because screen coordinates have Y pointing down
+    x_dir = np.array([x_axis[0], -x_axis[1]]) * size
+    y_dir = np.array([y_axis[0], -y_axis[1]]) * size
+    
+    # Define rectangle corners
+    corners = np.array([
+        [cx, cy] + x_dir + y_dir,
+        [cx, cy] - x_dir + y_dir,
+        [cx, cy] - x_dir - y_dir,
+        [cx, cy] + x_dir - y_dir
+    ]).astype(int)
+    
+    # Draw with transparency
+    overlay = image.copy()
+    cv2.fillPoly(overlay, [corners], color)
+    image = cv2.addWeighted(overlay, 0.3, image, 0.7, 0)
+    cv2.polylines(image, [corners], isClosed=True, color=color, thickness=2)
+    
+    # Optional: Draw axis indicators to debug orientation
+    cv2.arrowedLine(image, (cx, cy), 
+                    (int(cx + x_dir[0]), int(cy + x_dir[1])),
+                    (255, 0, 0), 2, tipLength=0.3)  # Red: X-axis
+    cv2.arrowedLine(image, (cx, cy), 
+                    (int(cx + y_dir[0]), int(cy + y_dir[1])),
+                    (0, 255, 0), 2, tipLength=0.3)  # Green: Y-axis
+    
+    return image
+
+
 
 def main():
     parser = argparse.ArgumentParser(description="process hand tracking on undistorted rgb camera")
@@ -228,6 +438,7 @@ def main():
     right_palm_timestamps = []
     left_palm_positions = []
     left_palm_timestamps = []
+    hand_rot = []
 
     all_frame_data = []
 
@@ -303,6 +514,20 @@ def main():
 
                 frame_data["right_palm_3d"] = landmarks_3d[20].tolist()
                 frame_data["right_palm_confidence"] = tracking_data["right_tracking_confidence"]
+
+            R_hand = compute_hand_rotation_matrix(landmarks_3d)
+            if R_hand is not None:
+                hand_rot.append(R_hand)
+                undistorted_image = draw_centered_rotating_rectangle(undistorted_image, R_hand, size=100, color=(0,255,0))
+
+            # hand_open = is_hand_open(landmarks_3d)
+            hand_open = is_hand_open(landmarks_3d)
+            # frame_data["hand_open"] = hand_open
+
+            label_text = "OPEN" if hand_open else "CLOSED"
+            cv2.putText(undistorted_image, f"Right hand: {label_text}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0) if hand_open else (0,0,255), 2)
+
+
 
             # draw skeleton on undistorted frame
             undistorted_image = draw_hand_skeleton(undistorted_image, landmarks_2d, hand_label="right")
@@ -430,6 +655,9 @@ def main():
 
     # cleanup
     video_writer.release()
+
+    print("Hand rotations")
+    print(hand_rot)
 
     # compute final velocities and save
     print("\ncomputing velocities...")
