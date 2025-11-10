@@ -131,9 +131,14 @@ def main():
             # print(f"[{begin}ns, -> {end}ns] {word.word}")
             # data.append([begin, end, word.word, word.probability])
     
-    print(speech_data)
+    # print(speech_data)
 
     speech_json_name = os.path.join(args.output, "speech_data.json")
+
+    print(f"saving speech data to json...")
+    print(speech_json_name)
+    print(f"cur_path: {os.getcwd()}")
+
     with open(speech_json_name, "w") as f:
         json.dump(speech_data, f, indent=2)
     print(f"speech data saved to: {speech_json_name}")
@@ -288,6 +293,7 @@ def main():
                 frame_data["right_palm_3d"] = landmarks_3d[20].tolist()
                 frame_data["right_palm_confidence"] = tracking_data["right_tracking_confidence"]
 
+            # calculates hand in form of (X-Axis, Y-Axis, Z-Axis)
             R_hand = compute_hand_rotation_matrix(landmarks_3d)
             R_rot.append(R_hand)
             # if R_hand is not None:
@@ -455,8 +461,19 @@ def main():
     # cleanup
     video_writer.release()
 
-    print("Hand rotations")
-    print(hand_rot)
+    # save hand open states and rotations to json
+    hand_open_states_json_path = os.path.join(args.output, "hand_open_states.json")
+    print("\nsaving hand open states to json...")
+    with open(hand_open_states_json_path, "w") as f:
+        json.dump(hand_open_states, f, indent=2)
+    
+    hand_rot_json_path = os.path.join(args.output, "hand_rotations.json")
+    print("saving hand rotations to json...")
+    with open(hand_rot_json_path, "w") as f:
+        json.dump(hand_rot, f, indent=2)
+
+    
+
 
     # compute final velocities and save
     print("\ncomputing velocities...")
