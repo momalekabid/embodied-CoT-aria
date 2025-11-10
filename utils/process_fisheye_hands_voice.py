@@ -119,7 +119,7 @@ def main():
             end = int(word.end * s_to_ns + audio_starting_timestamp)
             if word.word.endswith(","):
                 current_phrase += word.word[:-1]
-                speech_data.append([(cuurrent_start, end), current_phrase])
+                speech_data.append([(cuurrent_start, end), current_phrase.strip()])
                 cuurrent_start = None
                 current_phrase = ""
             else:
@@ -127,12 +127,17 @@ def main():
                 current_phrase += " "
         
         if current_phrase != "":
-            speech_data.append([(cuurrent_start, end), current_phrase])
+            speech_data.append([(cuurrent_start, end), current_phrase.strip()])
             # print(f"[{begin}ns, -> {end}ns] {word.word}")
             # data.append([begin, end, word.word, word.probability])
     
     print(speech_data)
 
+    speech_json_name = os.path.join(args.output, "speech_data.json")
+    with open(speech_json_name, "w") as f:
+        json.dump(speech_data, f, indent=2)
+    print(f"speech data saved to: {speech_json_name}")
+    
     if audio_path:
         shutil.rmtree(os.path.dirname(audio_path))
 
