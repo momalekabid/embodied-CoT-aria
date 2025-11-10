@@ -23,9 +23,9 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3 :: Only",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
@@ -52,7 +52,14 @@ dependencies = [
     "tensorflow==2.15.0",
     "tensorflow_datasets==4.9.3",
     "tensorflow_graphics==2021.12.3",
-    "dlimp @ git+https://github.com/kvablack/dlimp@ad72ce3a9b414db2185bc0b38461d4101a65477a"
+    "dlimp @ git+https://github.com/kvablack/dlimp@ad72ce3a9b414db2185bc0b38461d4101a65477a",
+    "numpy>=1.26.4",
+    "opencv-python",
+    "pandas>=2.3.3",
+    "whisper>=1.1.10",
+    "projectaria-tools>=2.0.0",
+    "openai-whisper>=20250625",
+    "faster-whisper>=1.2.1",
 ]
 
 [project.optional-dependencies]
@@ -82,12 +89,12 @@ exclude = ["cache"]
 
 [tool.black]
 line-length = 121
-target-version = ["py38", "py39", "py310"]
+target-version = ["py39", "py310", "py311"]
 preview = true
 
 [tool.ruff]
 line-length = 121
-target-version = "py38"
+target-version = "py39"
 
 [tool.ruff.lint]
 select = ["A", "B", "E", "F", "I", "RUF", "W"]

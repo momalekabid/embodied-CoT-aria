@@ -57,7 +57,7 @@ def make_dataset_from_rlds(
     action_normalization_mask: Optional[List[bool]] = None,
     num_parallel_reads: int = tf.data.AUTOTUNE,
     num_parallel_calls: int = tf.data.AUTOTUNE,
-    reasoning_dataset_path: str = "~/.cache/reasonings_dataset.json",
+    reasoning_dataset_path: Optional[str] = None,
 ) -> Tuple[dl.DLataset, dict]:
     """
     This function is responsible for loading a specific RLDS dataset from storage and getting it into a standardized
@@ -117,6 +117,8 @@ def make_dataset_from_rlds(
             it's always exactly 0 or 1. By default, all action dimensions are normalized.
         num_parallel_reads (int): number of parallel read workers. Default to AUTOTUNE.
         num_parallel_calls (int): number of parallel calls for traj_map operations. Default to AUTOTUNE.
+        reasoning_dataset_path (str, optional): Path to reasonings dataset JSON file. If not provided, uses
+            REASONING_DATASET_PATH env var or defaults to ~/.cache/reasonings_dataset.json.
     Returns:
         Dataset of trajectories where each step has the following fields:
         - observation:
@@ -133,6 +135,23 @@ def make_dataset_from_rlds(
     if language_key is not None:
         REQUIRED_KEYS.add(language_key)
 
+    # determine the reasoning dataset path: explicit param > env var > default
+    if reasoning_dataset_path is None:
+        if "REASONING_DATASET_PATH" in os.environ:
+            reasoning_dataset_path = os.environ["REASONING_DATASET_PATH"]
+        elif "SCRATCH" in os.environ:
+            # cluster environment - use scratch directory
+            reasoning_dataset_path = os.path.join(
+                os.environ["SCRATCH"], "embodied-CoT-aria/.cache/reasonings_dataset.json"
+            )
+        else:
+            # local environment - use home directory
+            reasoning_dataset_path = "~/.cache/reasonings_dataset.json"
+
+    # expand the tilde and make the path absolute
+    reasoning_dataset_path = os.path.expanduser(reasoning_dataset_path)
+    reasoning_dataset_path = os.path.abspath(reasoning_dataset_path)
+
     if os.path.isfile(reasoning_dataset_path):
         print(f"Loading from local checkpoint path `{reasoning_dataset_path}`.")
     else:
@@ -144,6 +163,8 @@ def make_dataset_from_rlds(
             repo_type="dataset",
         )
 
+        # ensure the directory exists before copying
+        os.makedirs(os.path.dirname(reasoning_dataset_path), exist_ok=True)
         shutil.copyfile(download_path, reasoning_dataset_path)
 
     with open(reasoning_dataset_path, "r") as f:
