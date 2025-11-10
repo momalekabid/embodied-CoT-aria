@@ -361,9 +361,14 @@ def main():
             # print(f"[{begin}ns, -> {end}ns] {word.word}")
             # data.append([begin, end, word.word, word.probability])
     
-    print(speech_data)
+    # print(speech_data)
 
     speech_json_name = os.path.join(args.output, "speech_data.json")
+
+    print(f"saving speech data to json...")
+    print(speech_json_name)
+    print(f"cur_path: {os.getcwd()}")
+
     with open(speech_json_name, "w") as f:
         json.dump(speech_data, f, indent=2)
     print(f"speech data saved to: {speech_json_name}")
@@ -443,7 +448,8 @@ def main():
     right_palm_timestamps = []
     left_palm_positions = []
     left_palm_timestamps = []
-    hand_rot = []
+    hand_rot = {} # timestamp_us -> R_hand
+    hand_open_states =  {} # timestamp_us -> bool
 
     all_frame_data = []
 
@@ -520,9 +526,13 @@ def main():
                 frame_data["right_palm_3d"] = landmarks_3d[20].tolist()
                 frame_data["right_palm_confidence"] = tracking_data["right_tracking_confidence"]
 
+            # calculates hand in form of (X-Axis, Y-Axis, Z-Axis)
             R_hand = compute_hand_rotation_matrix(landmarks_3d)
             if R_hand is not None:
-                hand_rot.append(R_hand)
+                if timestamp_us not in hand_rot:
+                    hand_rot[timestamp_us] = R_hand.tolist()
+                else: 
+                    raise ValueError("Duplicate timestamp in hand rotations!")
                 undistorted_image = draw_centered_rotating_rectangle(undistorted_image, R_hand, size=100, color=(0,255,0))
 
             # hand_open = is_hand_open(landmarks_3d)
@@ -530,10 +540,19 @@ def main():
             # frame_data["hand_open"] = hand_open
 
             label_text = "OPEN" if hand_open else "CLOSED"
+            
             cv2.putText(undistorted_image, f"Right hand: {label_text}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0) if hand_open else (0,0,255), 2)
-
-
-
+    
+            if timestamp_us not in hand_open_states:
+                if label_text == "OPEN":
+                    hand_open_states[timestamp_us] = True
+                elif label_text == "CLOSED":
+                    hand_open_states[timestamp_us] = False
+                else:
+                    raise ValueError("Unexpected hand state label!")                    
+            else:
+                raise ValueError("Duplicate timestamp in hand open states!")
+            
             # draw skeleton on undistorted frame
             undistorted_image = draw_hand_skeleton(undistorted_image, landmarks_2d, hand_label="right")
 
@@ -661,8 +680,19 @@ def main():
     # cleanup
     video_writer.release()
 
-    print("Hand rotations")
-    print(hand_rot)
+    # save hand open states and rotations to json
+    hand_open_states_json_path = os.path.join(args.output, "hand_open_states.json")
+    print("\nsaving hand open states to json...")
+    with open(hand_open_states_json_path, "w") as f:
+        json.dump(hand_open_states, f, indent=2)
+    
+    hand_rot_json_path = os.path.join(args.output, "hand_rotations.json")
+    print("saving hand rotations to json...")
+    with open(hand_rot_json_path, "w") as f:
+        json.dump(hand_rot, f, indent=2)
+
+    
+
 
     # compute final velocities and save
     print("\ncomputing velocities...")
