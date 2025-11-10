@@ -53,8 +53,6 @@ class Step:
             # state is of shape (2, 3): [hand_pos_left(3), hand_pos_right(3)]
             "state": np.zeros((2, 3), dtype=np.float32)
 
-            
-
         }
     
     def set_is_first(self) -> None:
@@ -110,6 +108,7 @@ class Episode:
         self.episode_id: str = episode_id
         self.agent_id: str = agent_id
         self.invalid: bool = False
+        self.description: str = ""
         self.steps: list[Step] = []
 
     def mark_invalid(self) -> None:
@@ -133,19 +132,23 @@ class Episode:
 
         print(f"Episode {self.episode_id} saved to {save_path}")
 
+    def set_description(self, description: str) -> None:
+        self.description = description
+
 
 
 class VrsToRldsNpyConverter:
     # expects 
     #   - paths to folders containing the extracted VRS data hand velocities data,
     #   - list of timestamps (ns) that specify the start of each episode
-    def __init__(self, vrs_data_path: str, vrs_file_name: str,hand_velocities_data_path : str, episodes_timestamps: list[int] = [0]) -> None:
+    def __init__(self, vrs_data_path: str, vrs_file_name: str,processed_data_path : str, episodes_timestamps: list[int] = [0]) -> None:
         self.vrs_data_path = vrs_data_path
-        self.hand_velocities_data_path = hand_velocities_data_path
+        self.processed_data_path = processed_data_path
         self.episodes = []
         self.episodes_timestamps = episodes_timestamps
         self.hand_data_left, self.hand_data_right = self.restructure_hand_velocities()
         self.provider = data_provider.create_vrs_data_provider(path.join(vrs_data_path, vrs_file_name))
+        self.speech_annotations = self.load_speech_annotations(processed_data_path + "speech_data.json")
 
 
         self._rgb_stream_id = StreamId("214-1")
@@ -172,15 +175,45 @@ class VrsToRldsNpyConverter:
         
         return image_undistorted
 
+    # REQUIRES: 
+    # - speech_data_path: path to json file containing speech annotations
+    # - speech data to have the structure: 
+                # [
+                #     [
+                #         [
+                #         starttime_ns,
+                #         endtime_ns
+                #         ],
+                #         "annotation text"
+                #     ],
+                # ]
+    # ENSURES: 
+    # - 
 
+    def load_speech_annotations(self, speech_data_path: str) -> dict:
+        with open(speech_data_path, "r") as speech_file:
+            speech_data = json.load(speech_file)
+        
+        annotations_dict = {}
+        annotations_dict = {"General Task": speech_data[1][1]}
+        for i, entry in enumerate(speech_data):
+            print(entry)
+            timestamp_us = int(entry[0][0]/1000) # convert from ns to us
+            annotation = entry[1]
+            annotations_dict[timestamp_us] = annotation
+
+        
+        print(annotations_dict)
+        return annotations_dict
 
 
     def match_timestamp_to_rgb_frame_id(self, timestamp: int) -> int:
-        all_frames_data = self.hand_velocities_data_path + "all_frames.json"
+        all_frames_data = self.processed_data_path + "all_frames.json"
 
         image_data = self.provider.get_image_data_by_ns_timestamp(StreamId("214-1"), timestamp)
         return image_data.frame_index
             
+    
 
     def process_episodes(self) -> None:
 
@@ -213,11 +246,20 @@ class VrsToRldsNpyConverter:
             agent_id = "human"
 
             cur_episode = Episode(episode_id, agent_id)
+            cur_episode.set_description(self.speech_annotations.pop("General Task", ""))
+            
 
 
             # for each episode, process the frames within the start and end indices
             # each frame corresponds to one step in RLDS
             first_useful_frame_found = False
+
+            speech_annotation_timestamps = [0] + [ts for ts in self.speech_annotations.keys()]
+            speech_annotation_timestamps = sorted(speech_annotation_timestamps)
+            print(speech_annotation_timestamps)
+
+            speech_annotation_idx = 0
+
             for frame_idx in range(start_idx, end_idx):
                 
                 # create step object
@@ -237,12 +279,22 @@ class VrsToRldsNpyConverter:
                 step_image_undistorted = self.undistort_image(step_image_distorted)
                 cur_step.set_image(step_image_undistorted)
 
-
                 step_timestamp = int(image_data[1].capture_timestamp_ns /1000 )
                 # normalize timestamp to episode start
                 step_normalized_timestamp = step_timestamp - cur_base_timestamp
 
                 cur_step.set_observation_time(step_normalized_timestamp)
+
+                if speech_annotation_idx < len(speech_annotation_timestamps)-1:
+                    if step_timestamp < speech_annotation_timestamps[speech_annotation_idx + 1]:
+                        cur_step.set_language_instruction(self.speech_annotations.get(speech_annotation_timestamps[speech_annotation_idx]))
+                    else:
+                        speech_annotation_idx += 1
+                        cur_step.set_language_instruction(self.speech_annotations.get(speech_annotation_timestamps[speech_annotation_idx]))
+                else:
+                    cur_step.set_language_instruction(self.speech_annotations.get(speech_annotation_timestamps[speech_annotation_idx]))
+
+                
 
                 # print(step_normalized_timestamp)
                 # print(self.hand_data_left.keys())
@@ -254,11 +306,19 @@ class VrsToRldsNpyConverter:
                 
                 # assert(left_hand_data is not None and right_hand_data is not None), f"Hand data for timestamp {step_timestamp} not found."
 
-                if(left_hand_data is None or right_hand_data is None):
+                if(left_hand_data is None and right_hand_data is None):
                     count += 1
                     continue
-                else:
-                    print(f"Found hand data for timestamp {step_timestamp}.")
+                elif (left_hand_data is None):
+                    left_hand_data = {
+                        "positions_3d_m": [0.0, 0.0, 0.0],
+                        "velocities_3d_ms": [0.0, 0.0, 0.0]
+                    }
+                elif (right_hand_data is None):
+                    right_hand_data = {
+                        "positions_3d_m": [0.0, 0.0, 0.0],
+                        "velocities_3d_ms": [0.0, 0.0, 0.0]
+                    }
 
                 cur_step.set_hand_data(
                     hand_pos_left=left_hand_data["positions_3d_m"],
@@ -288,7 +348,7 @@ class VrsToRldsNpyConverter:
 
 
     def restructure_hand_velocities(self)-> list[dict]:
-        hand_velocities_files = [self.hand_velocities_data_path + "left_hand_velocity.json", self.hand_velocities_data_path + "right_hand_velocity.json"]
+        hand_velocities_files = [self.processed_data_path + "left_hand_velocity.json", self.processed_data_path + "right_hand_velocity.json"]
         restructured = {}
         both_hands = []
         for file_path in hand_velocities_files:
@@ -324,16 +384,15 @@ class VrsToRldsNpyConverter:
                 }
             both_hands.append(restructured)
             restructured = {}
+
+        return both_hands  # [left_hand_dict, right_hand_dict]
             
             
-        # format: left hand data, right hand data
-        with open("hand_data_debug.json", "w") as debug_file:
-            json.dump(both_hands, debug_file, indent=4)
-        return both_hands[0], both_hands[1]
 
     # TODO: implement actually differing between train and val episodes
     def save_episodes(self, save_dir: str) -> None:
         for episode in self.episodes:
+            print(f"Saving episode {episode.episode_id} with {len(episode.steps)} steps.")
             save_path_train = path.join(save_dir, f"train/{episode.episode_id}.npy")
             save_path_val = path.join(save_dir, f"val/{episode.episode_id}.npy")
             episode.save_to_np(save_path_train)
@@ -344,10 +403,11 @@ class VrsToRldsNpyConverter:
 # IMPORTANT: The conversion from vrs to npy must be run with numpy version 1.24.3 (some others might also work, not >=2.0.0 though!), otherwise RLDS dataset formatter will not be able to read the saved npy files.
 # Not using a compatible numpy version will lead to weird errors when loading the npy files with RLDS dataset formatter, e.g. numpy core not found.
 if __name__ == "__main__":
-    shared_path_vrs_data = "/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_vrs/vrs_data"
-    vrs_file_name = "Microsoft_office_1.vrs"
-    shared_path_hand_velocities = "/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/utils/final_output/"
-    shared_path_save_rlds_data = "/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data/"
+    name = "Banana_v1"
+    shared_path_vrs_data = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_vrs/vrs_data_1/{name}/"
+    vrs_file_name = f"{name}.vrs"
+    processed_data = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/utils/output/{name}_output/"
+    shared_path_save_rlds_data = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data/{name}/"
     
     windows_base_path = "C:"
     linux_base_path = "/mnt/c"
@@ -356,7 +416,7 @@ if __name__ == "__main__":
         converter = VrsToRldsNpyConverter(
             vrs_data_path= path.join(windows_base_path,shared_path_vrs_data),
             vrs_file_name=vrs_file_name,
-            hand_velocities_data_path= path.join(windows_base_path,shared_path_hand_velocities),
+            processed_data_path= path.join(windows_base_path,processed_data),
         )
         converter.process_episodes()
         converter.save_episodes(save_dir=
@@ -364,14 +424,14 @@ if __name__ == "__main__":
         )
     elif platform.system() == "Linux":
         print("Running on Linux system.")
-        print("Hand velocities path:", path.join(linux_base_path,shared_path_hand_velocities))
+        print("Hand velocities path:", path.join(linux_base_path,processed_data))
         converter = VrsToRldsNpyConverter(
             vrs_data_path= linux_base_path + shared_path_vrs_data,
             
             # path.join(linux_base_path,shared_path_vrs_data),
             vrs_file_name=vrs_file_name,
-            hand_velocities_data_path= linux_base_path + shared_path_hand_velocities
-            # path.join(linux_base_path, shared_path_hand_velocities),
+            processed_data_path= linux_base_path + processed_data
+            # path.join(linux_base_path, processed_data),
         )
         converter.process_episodes()
         converter.save_episodes(save_dir= linux_base_path + shared_path_save_rlds_data

@@ -17,7 +17,7 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
     def _parse_examples(episode_path):
         # load raw data --> this should change for your dataset
         data = np.load(episode_path, allow_pickle=True)  # this is a list of dicts in our case
-
+        print(f"Parsing {episode_path} with {len(data)} examples.")
         for k, example in enumerate(data):
             # assemble episode --> here we're assuming demos so we set reward to 1 at the end
             episode = []
@@ -73,7 +73,7 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
             }
 
             # mark dummy values
-            for image_idx in range(4):
+            for image_idx in range(1):
                 orig_key = f'images{image_idx}'
                 new_key = f'image_{image_idx}'
                 if image_idx == 0:
@@ -115,24 +115,6 @@ class AriaDataset(MultiThreadedDatasetBuilder):
                             dtype=np.uint8,
                             encoding_format='jpeg',
                             doc='Main camera RGB observation.',
-                        ),
-                        'image_1': tfds.features.Image(
-                            shape=(1, 1, 3),
-                            dtype=np.uint8,
-                            encoding_format='jpeg',
-                            doc='Not used - Main camera RGB observation.',
-                        ),
-                        'image_2': tfds.features.Image(
-                            shape=(1, 1, 3),
-                            dtype=np.uint8,
-                            encoding_format='jpeg',
-                            doc='Not used - Main camera RGB observation.',
-                        ),
-                        'image_3': tfds.features.Image(
-                            shape=(1, 1, 3),
-                            dtype=np.uint8,
-                            encoding_format='jpeg',
-                            doc='Not used - Main camera RGB observation.',
                         ),
                         'state': tfds.features.Tensor(
                             shape=(2,3),
@@ -187,18 +169,6 @@ class AriaDataset(MultiThreadedDatasetBuilder):
                         dtype=np.bool_,
                         doc='True if image0 exists in observation, otherwise dummy value.'
                     ),
-                    'has_image_1': tfds.features.Scalar(
-                        dtype=np.bool_,
-                        doc='True if image1 exists in observation, otherwise dummy value.'
-                    ),
-                    'has_image_2': tfds.features.Scalar(
-                        dtype=np.bool_,
-                        doc='True if image2 exists in observation, otherwise dummy value.'
-                    ),
-                    'has_image_3': tfds.features.Scalar(
-                        dtype=np.bool_,
-                        doc='True if image3 exists in observation, otherwise dummy value.'
-                    ),
                     'has_language': tfds.features.Scalar(
                         dtype=np.bool_,
                         doc='True if language exists in observation, otherwise empty string.'
@@ -208,7 +178,7 @@ class AriaDataset(MultiThreadedDatasetBuilder):
 
     def _split_paths(self):
         """Define filepaths for data splits."""
-        base_paths = ["""/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data"""]
+        base_paths = ["""/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data/Banana_v1"""]
         train_filenames, val_filenames = [], []
         for path in base_paths:
           for filename in glob.glob(f'{path}/**/*.npy', recursive=True):
