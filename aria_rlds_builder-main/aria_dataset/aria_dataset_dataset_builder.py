@@ -17,14 +17,16 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
     def _parse_examples(episode_path):
         # load raw data --> this should change for your dataset
         data = np.load(episode_path, allow_pickle=True)  # this is a list of dicts in our case
+
         print(f"Parsing {episode_path} with {len(data)} examples.")
-        for k, example in enumerate(data):
+        task_description = data[0].get('task_description', '')
+        for k, example in enumerate(data[1:]): # the first entry is episode metadata
             # assemble episode --> here we're assuming demos so we set reward to 1 at the end
             episode = []
             
-            instruction = example['language_instruction'][0]
+            instruction = example['language_instruction']
             if instruction:
-                language_embedding = _embed([instruction])[0].numpy()
+                language_embedding = _embed([instruction]).numpy()
             else:
                 language_embedding = np.zeros(512, dtype=np.float32)
 
@@ -36,7 +38,7 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
                     'state': example['state'].astype(np.float32),
                 }
 
-                for image_idx in range(4):
+                for image_idx in range(1):
                     orig_key = f'images{image_idx}'
                     new_key = f'image_{image_idx}'
                     # if orig_key in example['observations'][i]:
@@ -61,6 +63,8 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
                     'is_terminal': i == (len(example) - 1),
                     'language_instruction': instruction,
                     'language_embedding': language_embedding,
+                    #TODO: add hand open states (l,r) as bools
+                    #TODO: add hand rotations
                 })
 
             # create output data sample
@@ -81,6 +85,7 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
                 else:
                     sample['episode_metadata'][f'has_{new_key}'] = False
             sample['episode_metadata']['has_language'] = bool(instruction)
+            # sample['episode_metadata']['task_description'] = task_description
 
             # if you want to skip an example for whatever reason, simply return None
             yield episode_path + str(k), sample
@@ -98,7 +103,7 @@ class AriaDataset(MultiThreadedDatasetBuilder):
     RELEASE_NOTES = {
       '1.0.0': 'Initial release.',
     }
-    N_WORKERS = 1          # number of parallel workers for data conversion
+    N_WORKERS = 12          # number of parallel workers for data conversion
     MAX_PATHS_IN_MEMORY = 10   # number of paths converted & stored in memory before writing to disk
                                # -> the higher the faster / more parallel conversion, adjust based on avilable RAM
                                # note that one path may yield multiple episodes and adjust accordingly
@@ -150,6 +155,26 @@ class AriaDataset(MultiThreadedDatasetBuilder):
                     'language_instruction': tfds.features.Text(
                         doc='Language Instruction.'
                     ),
+                    # 'hand_open_right': tfds.features.Scalar(
+                    #     dtype=np.bool_,
+                    #     doc='True if right hand is open, False if closed.'
+                    # ),
+                    # 'hand_open_left': tfds.features.Scalar(
+                    #     dtype=np.bool_,
+                    #     doc='True if left hand is open, False if closed.'
+                    # ),
+                    # 'hand_rotation_left': tfds.features.Tensor(
+                    #     shape=(3,3),
+                    #     dtype=np.float32,
+                    #     doc='Left hand rotation matrix.'
+                    # ),
+                    # 'hand_rotation_right': tfds.features.Tensor(
+                    #     shape=(3,3),
+                    #     dtype=np.float32,
+                    #     doc='Right hand rotation matrix.'
+                    # ),
+                    #TODO: add hand open states (l,r) as bools
+                    #TODO: add hand rotations
                     'language_embedding': tfds.features.Tensor(
                         shape=(512,),
                         dtype=np.float32,
@@ -165,6 +190,9 @@ class AriaDataset(MultiThreadedDatasetBuilder):
                         dtype=np.int32,
                         doc='ID of episode in file_path.'
                     ),
+                    'task_description': tfds.features.Text(
+                        doc='Language Instruction.'
+                    ),
                     'has_image_0': tfds.features.Scalar(
                         dtype=np.bool_,
                         doc='True if image0 exists in observation, otherwise dummy value.'
@@ -178,7 +206,8 @@ class AriaDataset(MultiThreadedDatasetBuilder):
 
     def _split_paths(self):
         """Define filepaths for data splits."""
-        base_paths = ["""/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data/Banana_v1"""]
+        base_paths = ["""/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data1/Banana_v1""",
+                      """/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data1/Banana_v2"""]
         train_filenames, val_filenames = [], []
         for path in base_paths:
           for filename in glob.glob(f'{path}/**/*.npy', recursive=True):
