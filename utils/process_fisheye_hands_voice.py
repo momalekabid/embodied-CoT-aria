@@ -350,7 +350,6 @@ def main():
             if word.word.endswith(","):
                 current_phrase += word.word[:-1]
                 speech_data.append([(cuurrent_start, end), current_phrase.strip()])
-                speech_data.append([(cuurrent_start, end), current_phrase.strip()])
                 cuurrent_start = None
                 current_phrase = ""
             else:
@@ -358,7 +357,6 @@ def main():
                 current_phrase += " "
         
         if current_phrase != "":
-            speech_data.append([(cuurrent_start, end), current_phrase.strip()])
             speech_data.append([(cuurrent_start, end), current_phrase.strip()])
             # print(f"[{begin}ns, -> {end}ns] {word.word}")
             # data.append([begin, end, word.word, word.probability])
@@ -450,8 +448,8 @@ def main():
     right_palm_timestamps = []
     left_palm_positions = []
     left_palm_timestamps = []
-    hand_rot = {} # timestamp_us -> R_hand
-    hand_open_states =  {} # timestamp_us -> bool
+    hand_rot = {} # timestamp_us -> (R_hand, L_hand) : (3x3 list, 3x3 list)
+    hand_open_states =  {} # timestamp_us -> (l_open, r_open) : (bool, bool)
 
     all_frame_data = []
 

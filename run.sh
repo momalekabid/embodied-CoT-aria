@@ -1,5 +1,7 @@
 # files=("Banana_v1")
-files=("Banana_v1" "Banana_v2" "Bottle_v1" "Bottle_v2" "Orange_v1" "Sponge_v1" "Sponge_v2")
+# files=("Banana_v1" "Banana_v2" "Bottle_v1" "Bottle_v2" "Orange_v1" "Sponge_v1" "Sponge_v2" "Stack_bowls_in_drawer_v1" "Pot_into_pot_corrective_behavior_v1")
+files=("Stack_bowls_in_drawer_v1" "Pot_into_pot_corrective_behavior_v1")
+
 # conda init
 # conda activate rlds_env
 cd utils
