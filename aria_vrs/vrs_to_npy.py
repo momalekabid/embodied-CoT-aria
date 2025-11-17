@@ -41,15 +41,14 @@ class Step:
             # currently only images of shape (1408, 1408, 3) are supported
             "image": None,
             
-            # action are of shape (2, 3): [hand_vel_left(3), hand_vel_right(3)]
-            "action": np.zeros((2, 3), dtype=np.float32),
+            # action are of shape (2, 7): [[hand_vel_left(3), hand_rot_left(3), hand_open_left(1)],
+            #                             [hand_vel_right(3), hand_rot_right(3), hand_open_right(1)]]
 
-            # state is of shape (2, 3): [hand_pos_left(3), hand_pos_right(3)]
-            "state": np.zeros((2, 3), dtype=np.float32)
+            "action": np.zeros((2, 7), dtype=np.float32),
 
-            #TODO: add hand open states (l,r) as bools
-            #TODO: add hand rotations (l,r)
-            
+            # observation state are of shape (2, 7): [[hand_pos_left(3), hand_rot_left(3), hand_open_left(1)],
+            #                                   [hand_pos_right(3), hand_rot_right(3), hand_open_right(1)]]
+            "state": np.zeros((2, 7), dtype=np.float32)
 
         }
     
@@ -80,11 +79,18 @@ class Step:
     
     # set hand positions and velocities
     def set_hand_data(self, hand_pos_left: list[float], hand_pos_right: list[float], hand_vel_left: list[float], hand_vel_right: list[float]) -> None:
-        self._information["state"][0, :] = np.array(hand_pos_left, dtype=np.float32)
-        self._information["state"][1, :] = np.array(hand_pos_right, dtype=np.float32)
-        self._information["action"][0, :] = np.array(hand_vel_left, dtype=np.float32)
-        self._information["action"][1, :] = np.array(hand_vel_right, dtype=np.float32)
+        self._information["state"][0, 0:3] = np.array(hand_pos_left, dtype=np.float32)
+        self._information["state"][1, 0:3] = np.array(hand_pos_right, dtype=np.float32)
+        self._information["action"][0, 0:3] = np.array(hand_vel_left, dtype=np.float32)
+        self._information["action"][1, 0:3] = np.array(hand_vel_right, dtype=np.float32)
 
+    def set_hand_open_states(self, hand_open_left: float, hand_open_right: float) -> None:
+        self._information["state"][0, 6] = float(hand_open_left)
+        self._information["state"][1, 6] = float(hand_open_right)
+    
+    def set_hand_rotations(self, hand_rot_left: list[float], hand_rot_right: list[float]) -> None:
+        self._information["state"][0, 3:6] = np.array(hand_rot_left, dtype=np.float32)
+        self._information["state"][1, 3:6] = np.array(hand_rot_right, dtype=np.float32)
 
     def set_image(self, image_array: np.ndarray) -> None:
         if image_array.shape != IMAGE_SIZE:
@@ -128,8 +134,8 @@ class Episode:
 
 
         # np.save(save_path, [step.return_information_dict() for step in self.steps])
-
         np.save(save_path, episode_data)
+
 
         print(f"Episode {self.episode_id} saved to {save_path}")
 
@@ -169,13 +175,14 @@ class VrsToRldsNpyConverter:
         # undistort image
         image_undistorted = distort_by_calibration(
             image_distorted,
-            rgb_camera_calibration,
             pinhole_calib,
+            rgb_camera_calibration
+            
         )
 
         # rotate image to correct orientation
         image_undistorted = cv2.rotate(image_undistorted, cv2.ROTATE_90_CLOCKWISE)
-        
+
         return image_undistorted
 
     # REQUIRES: 
@@ -402,6 +409,7 @@ class VrsToRldsNpyConverter:
             save_path_val = path.join(save_dir, f"val/{episode.episode_id}.npy")
             episode.save_to_np(save_path_train)
             episode.save_to_np(save_path_val)
+            print(f"Episode {episode.episode_id} saved to {save_path_train} and {save_path_val}.")
     
 
 
@@ -417,9 +425,9 @@ class VrsToRldsNpyConverter:
 #   - allrecording_names/recording_name/recording_name.vrs
 if __name__ == "__main__":
     # list of episode (recording) names to process
-    recording_names = ["Banana_v1", "Banana_v2", "Bottle_v1", "Bottle_v2", "Orange_v1", "Sponge_v1", "Sponge_v2", "Stack_bowls_in_drawer_v1", "Pot_into_pot_corrective_behavior_v1"]
+    # recording_names = ["Banana_v1", "Banana_v2", "Bottle_v1", "Bottle_v2", "Orange_v1", "Sponge_v1", "Sponge_v2", "Stack_bowls_in_drawer_v1", "Pot_into_pot_corrective_behavior_v1"]
     # recording_names = ["Stack_bowls_in_drawer_v1", "Pot_into_pot_corrective_behavior_v1"]
-    # recording_names = ["Bottle_v1"]
+    recording_names = ["Bottle_v1"]
     for name in tqdm(recording_names):
         print(f"Processing episode: {name}")
 
@@ -427,7 +435,7 @@ if __name__ == "__main__":
         shared_path_vrs_data = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_vrs/vrs_data_1/{name}/"
         vrs_file_name = f"{name}.vrs"
         processed_data = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/utils/output/{name}_output/"
-        shared_path_save_rlds_data = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data1/{name}/"
+        shared_path_save_rlds_data = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data_new_format/{name}/"
         
         # Define base paths for Windows and Linux
         windows_base_path = "C:"
