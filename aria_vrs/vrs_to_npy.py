@@ -425,9 +425,9 @@ class VrsToRldsNpyConverter:
 #   - allrecording_names/recording_name/recording_name.vrs
 if __name__ == "__main__":
     # list of episode (recording) names to process
-    # recording_names = ["Banana_v1", "Banana_v2", "Bottle_v1", "Bottle_v2", "Orange_v1", "Sponge_v1", "Sponge_v2", "Stack_bowls_in_drawer_v1", "Pot_into_pot_corrective_behavior_v1"]
+    recording_names = ["Banana_v1", "Banana_v2", "Bottle_v1", "Bottle_v2", "Orange_v1", "Sponge_v1", "Sponge_v2", "Stack_bowls_in_drawer_v1", "Pot_into_pot_corrective_behavior_v1"]
     # recording_names = ["Stack_bowls_in_drawer_v1", "Pot_into_pot_corrective_behavior_v1"]
-    recording_names = ["Bottle_v1"]
+    # recording_names = ["Bottle_v1"]
     for name in tqdm(recording_names):
         print(f"Processing episode: {name}")
 
