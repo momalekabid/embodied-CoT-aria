@@ -15,12 +15,26 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
     _embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder-large/5")
 
     def _parse_examples(episode_path):
-        # load raw data --> this should change for your dataset
-        data = np.load(episode_path, allow_pickle=True)  # this is a list of dicts in our case
+        #  load raw data --> this should change for your dataset
+        data = np.load(episode_path, allow_pickle=True).item()  # this is a list of dicts in our case
+        # print("Type:", type(data))
+        # print("Keys:", data.keys())
+        # print(f"Parsing {episode_path} with {len(data['steps'])} steps.")
+        # task_description = data.get('task_description', '')
+        # steps = data.get('steps', [])
+        steps = data['steps']
+        task_description = data["task_description"]
+        print(f"Number of steps in episode: {len(steps)}")
+        print(f"Type step: {type(steps)}")
+        # print(f"Step shape: {len(steps)}")
+        # print(f"Example step keys: {list(steps[0].keys()) if len(steps) > 0 else 'N/A'}")
 
-        print(f"Parsing {episode_path} with {len(data)} examples.")
-        task_description = data[0].get('task_description', '')
-        for k, example in enumerate(data[1:]): # the first entry is episode metadata
+        # data = np.load(episode_path, allow_pickle=True)  # this is a list of dicts in our case
+        # print("Type:", type(data))
+        # print(f"Parsing {episode_path} with {len(data)} examples.")
+        # task_description = data[0].get('task_description', '')
+        # raise NotImplementedError("Check data loading and parsing logic here.")
+        for k, example in enumerate(steps):
             # assemble episode --> here we're assuming demos so we set reward to 1 at the end
             episode = []
             
@@ -63,8 +77,7 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
                     'is_terminal': i == (len(example) - 1),
                     'language_instruction': instruction,
                     'language_embedding': language_embedding,
-                    #TODO: add hand open states (l,r) as bools
-                    #TODO: add hand rotations
+                   
                 })
 
             # create output data sample
@@ -85,7 +98,7 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
                 else:
                     sample['episode_metadata'][f'has_{new_key}'] = False
             sample['episode_metadata']['has_language'] = bool(instruction)
-            # sample['episode_metadata']['task_description'] = task_description
+            sample['episode_metadata']['task_description'] = task_description
 
             # if you want to skip an example for whatever reason, simply return None
             yield episode_path + str(k), sample
@@ -103,8 +116,8 @@ class AriaDataset(MultiThreadedDatasetBuilder):
     RELEASE_NOTES = {
       '1.0.0': 'Initial release.',
     }
-    N_WORKERS = 12          # number of parallel workers for data conversion
-    MAX_PATHS_IN_MEMORY = 10   # number of paths converted & stored in memory before writing to disk
+    N_WORKERS = 2              # number of parallel workers for data conversion
+    MAX_PATHS_IN_MEMORY = 2   # number of paths converted & stored in memory before writing to disk
                                # -> the higher the faster / more parallel conversion, adjust based on avilable RAM
                                # note that one path may yield multiple episodes and adjust accordingly
     PARSE_FCN = _generate_examples      # handle to parse function from file paths to RLDS episodes
@@ -122,15 +135,20 @@ class AriaDataset(MultiThreadedDatasetBuilder):
                             doc='Main camera RGB observation.',
                         ),
                         'state': tfds.features.Tensor(
-                            shape=(2,3),
+                            shape=(2,7),
                             dtype=np.float32,
-                            doc='Hand positions (l,r) given as x,y,z coordinates in meters (measured in ARIA frame = frame of left SLAM camera).',
+                            doc="""Hand positions (l,r) given as x,y,z coordinates in meters (measured in ARIA frame = frame of left SLAM camera).
+                                    Then hand rotations (l,r) given x,y,z rotations in ARIA frame.
+                                    Then hand open states (l,r) as float {0,1}.""",
                         )
                     }),
                     'action': tfds.features.Tensor(
-                        shape=(2,3),
+                        shape=(2,7),
                         dtype=np.float32,
-                        doc='Hand movements (l,r) given as delta x,y,z coordinates in meters/second (measured in ARIA frame = frame of left SLAM camera).',
+                        # TODO: in what measurement are the rotation actions?
+                        doc="""Hand positions (l,r) given as x,y,z coordinates in meters/s (measured in ARIA frame = frame of left SLAM camera).
+                                    WRONG - NEEDS TO BE CHANGED: Then hand rotations (l,r) given x,y,z rotations in ARIA frame.
+                                    Then hand open states (l,r) as float {0,1}.""",
                     ),
                     'discount': tfds.features.Scalar(
                         dtype=np.float32,
@@ -206,8 +224,10 @@ class AriaDataset(MultiThreadedDatasetBuilder):
 
     def _split_paths(self):
         """Define filepaths for data splits."""
-        base_paths = ["""/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data1/Banana_v1""",
-                      """/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data1/Banana_v2"""]
+        # base_paths = ["""/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data/Bottle_v1/"""]        
+        base_paths = ["""/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data_new_format/Banana_v1/""",
+                      """/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data_new_format/Banana_v2/"""]
+
         train_filenames, val_filenames = [], []
         for path in base_paths:
           for filename in glob.glob(f'{path}/**/*.npy', recursive=True):
