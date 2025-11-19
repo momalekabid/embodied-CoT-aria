@@ -314,14 +314,14 @@ def finetune(cfg: FinetuneConfig) -> None:
 
                 # Merge LoRA weights into model backbone for faster inference
                 #   =>> Note that merging is slow and can be done post-hoc to speed up training
-                if cfg.use_lora:
+                if cfg.use_lora and distributed_state.is_main_process:
+                    # only merge on main process to avoid oom on other gpus
                     base_vla = AutoModelForVision2Seq.from_pretrained(
                         cfg.vla_path, torch_dtype=torch.bfloat16, low_cpu_mem_usage=True, trust_remote_code=True
                     )
                     merged_vla = PeftModel.from_pretrained(base_vla, adapter_dir)
                     merged_vla = merged_vla.merge_and_unload()
-                    if distributed_state.is_main_process:
-                        merged_vla.save_pretrained(run_dir)
+                    merged_vla.save_pretrained(run_dir)
 
                 # Block on Main Process Checkpointing
                 dist.barrier()
