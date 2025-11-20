@@ -120,6 +120,7 @@ def main():
             if word.word.endswith(","):
                 current_phrase += word.word[:-1]
                 speech_data.append([(cuurrent_start, end), current_phrase.strip()])
+                speech_data.append([(cuurrent_start, end), current_phrase.strip()])
                 cuurrent_start = None
                 current_phrase = ""
             else:
@@ -128,8 +129,21 @@ def main():
         
         if current_phrase != "":
             speech_data.append([(cuurrent_start, end), current_phrase.strip()])
+            speech_data.append([(cuurrent_start, end), current_phrase.strip()])
             # print(f"[{begin}ns, -> {end}ns] {word.word}")
             # data.append([begin, end, word.word, word.probability])
+    
+    # print(speech_data)
+
+    speech_json_name = os.path.join(args.output, "speech_data.json")
+
+    print(f"saving speech data to json...")
+    print(speech_json_name)
+    print(f"cur_path: {os.getcwd()}")
+
+    with open(speech_json_name, "w") as f:
+        json.dump(speech_data, f, indent=2)
+    print(f"speech data saved to: {speech_json_name}")
     
     # print(speech_data)
 
@@ -211,17 +225,8 @@ def main():
     right_palm_timestamps = []
     left_palm_positions = []
     left_palm_timestamps = []
-<<<<<<< HEAD
-    hand_rot = []
-    R_rot = []
-    L_rot = []
-    R_grip = []
-    L_grip = []
-    gripper_max = [None, None]
-=======
     hand_rot = {} # timestamp_us -> (R_hand, L_hand) : (3x3 list, 3x3 list)
     hand_open_states =  {} # timestamp_us -> (l_open, r_open) : (bool, bool)
->>>>>>> 3de49acf19300f09875c8c09cb45f33da1751724
 
     all_frame_data = []
 
@@ -299,38 +304,19 @@ def main():
                 frame_data["right_palm_confidence"] = tracking_data["right_tracking_confidence"]
 
             # calculates hand in form of (X-Axis, Y-Axis, Z-Axis)
+            # calculates hand in form of (X-Axis, Y-Axis, Z-Axis)
             R_hand = compute_hand_rotation_matrix(landmarks_3d)
-<<<<<<< HEAD
-            R_rot.append(R_hand)
-            # if R_hand is not None:
-            #     R_hand_corrected, R_calibration = compute_calibrated_hand_rotation(R_hand, R_calibration)
-            #     hand_rot.append(R_hand_corrected)
-            #     undistorted_image = draw_centered_rotating_rectangle(undistorted_image, R_hand_corrected, 2, size=100, color=(0,255,0))
-=======
             if R_hand is not None:
                 if timestamp_us not in hand_rot:
                     hand_rot[timestamp_us] = R_hand.tolist()
                 else: 
                     raise ValueError("Duplicate timestamp in hand rotations!")
                 undistorted_image = draw_centered_rotating_rectangle(undistorted_image, R_hand, size=100, color=(0,255,0))
->>>>>>> 3de49acf19300f09875c8c09cb45f33da1751724
 
             # hand_open = is_hand_open(landmarks_3d)
             r_gripper, hand_open = is_hand_closed_by_distance(landmarks_3d)
             # frame_data["hand_open"] = hand_open
 
-<<<<<<< HEAD
-            if gripper_max[1] == None:
-                gripper_max[1] = int(r_gripper*1000)
-            if int(r_gripper*1000) > gripper_max[1]:
-                gripper_max[1] = int(r_gripper*1000)
-            label_text = int((r_gripper*1000)/gripper_max[1]*100)
-            R_grip.append(label_text)
-            cv2.putText(undistorted_image, f"R gripper: {label_text} %", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
-
-
-
-=======
             label_text = "OPEN" if hand_open else "CLOSED"
             
             cv2.putText(undistorted_image, f"Right hand: {label_text}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0) if hand_open else (0,0,255), 2)
@@ -345,7 +331,6 @@ def main():
             else:
                 raise ValueError("Duplicate timestamp in hand open states!")
             
->>>>>>> 3de49acf19300f09875c8c09cb45f33da1751724
             # draw skeleton on undistorted frame
             undistorted_image = draw_hand_skeleton(undistorted_image, landmarks_2d, hand_label="right")
 
@@ -491,6 +476,19 @@ def main():
 
     # cleanup
     video_writer.release()
+
+    # save hand open states and rotations to json
+    hand_open_states_json_path = os.path.join(args.output, "hand_open_states.json")
+    print("\nsaving hand open states to json...")
+    with open(hand_open_states_json_path, "w") as f:
+        json.dump(hand_open_states, f, indent=2)
+    
+    hand_rot_json_path = os.path.join(args.output, "hand_rotations.json")
+    print("saving hand rotations to json...")
+    with open(hand_rot_json_path, "w") as f:
+        json.dump(hand_rot, f, indent=2)
+
+    
 
     # save hand open states and rotations to json
     hand_open_states_json_path = os.path.join(args.output, "hand_open_states.json")
