@@ -39,9 +39,8 @@ class Step:
             # tracks time since episode start in nanoseconds
             "time_since_episode_start_ns": None,
 
-            #TODO: set actual language instruction
             "language_instruction": "dummy instruction",
-            # currently only images of shape (1408, 1408, 3) are supported
+
             "image": None,
             
             # action are of shape (2, 7): [[hand_vel_left(3), hand_rot_left(3), hand_open_left(1)],
@@ -81,19 +80,27 @@ class Step:
         return self._information["is_last"]
     
     # set hand positions and velocities
-    def set_hand_data(self, hand_pos_left: list[float], hand_pos_right: list[float], hand_vel_left: list[float], hand_vel_right: list[float]) -> None:
+    def set_hand_pos_and_speed(self, hand_pos_left: list[float], hand_pos_right: list[float], hand_vel_left: list[float], hand_vel_right: list[float]) -> None:
         self._information["state"][0, 0:3] = np.array(hand_pos_left, dtype=np.float32)
         self._information["state"][1, 0:3] = np.array(hand_pos_right, dtype=np.float32)
         self._information["action"][0, 0:3] = np.array(hand_vel_left, dtype=np.float32)
         self._information["action"][1, 0:3] = np.array(hand_vel_right, dtype=np.float32)
 
-    def set_hand_open_states(self, hand_open_left: float, hand_open_right: float) -> None:
-        self._information["state"][0, 6] = float(hand_open_left)
-        self._information["state"][1, 6] = float(hand_open_right)
+    def set_hand_open_states(self, hand_open_left: bool, hand_open_right: bool) -> None:
+        self._information["state"][0, 6] = 1.0 if hand_open_left else 0.0
+        self._information["state"][1, 6] = 1.0 if hand_open_right else 0.0
     
-    def set_hand_rotations(self, hand_rot_left: list[float], hand_rot_right: list[float]) -> None:
+    def set_hand_rotation_states(self, hand_rot_left: list[float], hand_rot_right: list[float]) -> None:
         self._information["state"][0, 3:6] = np.array(hand_rot_left, dtype=np.float32)
         self._information["state"][1, 3:6] = np.array(hand_rot_right, dtype=np.float32)
+    
+    def set_hand_rotation_velocities(self, hand_rot_vel_left: list[float], hand_rot_vel_right: list[float]) -> None:
+        self._information["action"][0, 3:6] = np.array(hand_rot_vel_left, dtype=np.float32)
+        self._information["action"][1, 3:6] = np.array(hand_rot_vel_right, dtype=np.float32)
+    
+    def set_hand_open_changes(self, hand_open_change_left: bool, hand_open_change_right: bool) -> None:
+        self._information["action"][0, 6] = 1.0 if hand_open_change_left else 0.0
+        self._information["action"][1, 6] = 1.0 if hand_open_change_right else 0.0
 
     def set_image(self, image_array: np.ndarray) -> None:
         # if image_array.shape != IMAGE_SIZE:
@@ -162,7 +169,7 @@ class VrsToRldsNpyConverter:
         self.provider = data_provider.create_vrs_data_provider(path.join(vrs_data_path, vrs_file_name))
         self.speech_annotations = self.load_speech_annotations(processed_data_path + "speech_data.json")
         self.episode_name = episode_name
-
+        self.hand_rot_open_states, self.hand_rot_open_vel = self.load_hand_rotation_and_open_states()
 
         self._rgb_stream_id = StreamId("214-1")
         self._rgb_camera_label = "rgb_camera"
@@ -217,6 +224,16 @@ class VrsToRldsNpyConverter:
         
         return annotations_dict
 
+    def load_hand_rotation_and_open_states(self) -> dict:
+        hand_rot_open_states_path = self.processed_data_path + "hand_rot_open_states.json"
+        with open(hand_rot_open_states_path, "r") as hros_file:
+            hand_rot_open_states = json.load(hros_file)
+        
+        hand_rot_open_changes = self.processed_data_path + "hand_rot_open_vel.json"
+        with open(hand_rot_open_changes, "r") as hroc_file:
+            hand_rot_open_changes = json.load(hroc_file)
+        
+        return hand_rot_open_states, hand_rot_open_changes
 
     # given a timestamp (ns), find the corresponding rgb frame index    
     def match_timestamp_to_rgb_frame_id(self, timestamp: int) -> int:
@@ -313,7 +330,6 @@ class VrsToRldsNpyConverter:
                 right_hand_data = self.hand_data_right.get(step_timestamp)
 
                 
-                # assert(left_hand_data is not None and right_hand_data is not None), f"Hand data for timestamp {step_timestamp} not found."
 
                 # handle missing hand data
                 if(left_hand_data is None and right_hand_data is None):
@@ -331,11 +347,36 @@ class VrsToRldsNpyConverter:
                     }
 
                 # set hand data in step
-                cur_step.set_hand_data(
+                cur_step.set_hand_pos_and_speed(
                     hand_pos_left=left_hand_data["positions_3d_m"],
                     hand_pos_right=right_hand_data["positions_3d_m"],
                     hand_vel_left=left_hand_data["velocities_3d_ms"],
                     hand_vel_right=right_hand_data["velocities_3d_ms"]
+                )
+
+                # set hand rotation and open states (state and action/change)
+                cur_hand_rot_open_state = self.hand_rot_open_states[str(step_timestamp)]
+                cur_hand_rot_open_vel = self.hand_rot_open_vel[str(step_timestamp)]
+
+                cur_step.set_hand_rotation_states(
+                    # uses the y component of the rotation matrix
+                    hand_rot_left=cur_hand_rot_open_state["L_rot"][2],
+                    hand_rot_right=cur_hand_rot_open_state["R_rot"][2]
+                )
+
+                cur_step.set_hand_rotation_velocities(
+                    hand_rot_vel_left=cur_hand_rot_open_vel["L_rot_vel"][2],
+                    hand_rot_vel_right=cur_hand_rot_open_vel["R_rot_vel"][2]
+                )
+
+                cur_step.set_hand_open_states(
+                    hand_open_left=cur_hand_rot_open_state["L_open"],
+                    hand_open_right=cur_hand_rot_open_state["R_open"]
+                )
+
+                cur_step.set_hand_open_changes(
+                    hand_open_change_left=cur_hand_rot_open_vel["L_grip_change"],
+                    hand_open_change_right=cur_hand_rot_open_vel["R_grip_change"]
                 )
 
                 # add step to episode
@@ -418,7 +459,7 @@ class VrsToRldsNpyConverter:
 # Requires:
 # - processed VRS data (using /utils/process_fisheye_with_hands_voice.py) in a folder structure:
 #   - recording_name/placeholder.json
-# where placeholder is to be replaced with all_frames, hand_open_states, left_hand_velocity, right_hand_velocity, speech_data
+# where placeholder is to be replaced with all_frames, hand_rot_open_states, left_hand_velocity, right_hand_velocity, speech_data
 # - VRS file in within the following folder structure:
 #   - allrecording_names/recording_name/recording_name.vrs
 def main():
@@ -431,9 +472,9 @@ def main():
 
     # Set default values if values not provided via command line arguments
     # list of episode (recording) names to process
-    recording_names = ["Banana_v1", "Banana_v2", "Bottle_v1", "Bottle_v2", "Orange_v1", "Sponge_v1", "Sponge_v2", "Stack_bowls_in_drawer_v1", "Pot_into_pot_corrective_behavior_v1"]
+    # recording_names = ["Banana_v1", "Banana_v2", "Bottle_v1", "Bottle_v2", "Orange_v1", "Sponge_v1", "Sponge_v2", "Stack_bowls_in_drawer_v1", "Pot_into_pot_corrective_behavior_v1"]
     # recording_names = ["Stack_bowls_in_drawer_v1", "Pot_into_pot_corrective_behavior_v1"]
-    # recording_names = ["Banana_v1", "Bottle_v1"]
+    recording_names = ["Banana_v1"]
     shared_path_vrs_data = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_vrs/vrs_data_1/"
     processed_data_base_path = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/utils/output"
     save_rlds_npy_data_base_path = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data_new_format/"

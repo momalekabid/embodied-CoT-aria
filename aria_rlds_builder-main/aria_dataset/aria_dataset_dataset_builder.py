@@ -129,7 +129,7 @@ class AriaDataset(MultiThreadedDatasetBuilder):
                 'steps': tfds.features.Dataset({
                     'observation': tfds.features.FeaturesDict({
                         'image_0': tfds.features.Image(
-                            shape=(1408, 1408, 3),
+                            shape=(224, 224, 3),
                             dtype=np.uint8,
                             encoding_format='jpeg',
                             doc='Main camera RGB observation.',
@@ -225,8 +225,8 @@ class AriaDataset(MultiThreadedDatasetBuilder):
     def _split_paths(self):
         """Define filepaths for data splits."""
         # base_paths = ["""/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data/Bottle_v1/"""]        
-        base_paths = ["""/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data_new_format/Banana_v1/""",
-                      """/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data_new_format/Bottle_v1/"""]
+        base_paths = ["""/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data_new_format/Banana_v1/"""]
+                    #   """/mnt/c/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data_new_format/Bottle_v1/"""]
 
         train_filenames, val_filenames = [], []
         for path in base_paths:

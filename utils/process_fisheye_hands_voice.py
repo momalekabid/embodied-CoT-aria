@@ -216,8 +216,15 @@ def main():
     L_rot = []
     R_grip = []
     L_grip = []
+    R_closed = []
+    L_closed = []
     gripper_max = [None, None]
-
+    hand_rot_open_states = {} # Layout: {timestamp_us: {"R_rot": R_rot[-1], "L_rot": L_rot[-1], "R_open": !R_closed[-1], "L_open": !L_closed[-1]}}
+    hand_rot_open_vel = {} # Layout: {timestamp_us: 
+                                        # {"R_rot_vel": R_rot[-1]-R_rot[-2], 
+                                        # "L_rot_vel": L_rot[-1]-L_rot[-2], 
+                                        # "R_grip_change": R_closed[-1]==R_closed[-2], 
+                                        # "L_grip_change": L_closed[-1]==L_closed[-2]}}
     all_frame_data = []
 
     audio_idx = 0
@@ -302,14 +309,15 @@ def main():
             #     undistorted_image = draw_centered_rotating_rectangle(undistorted_image, R_hand_corrected, 2, size=100, color=(0,255,0))
 
             # hand_open = is_hand_open(landmarks_3d)
-            r_gripper, hand_open = is_hand_closed_by_distance(landmarks_3d)
+            
+            r_gripper, hand_closed_r = is_hand_closed_by_distance(landmarks_3d)
             # frame_data["hand_open"] = hand_open
-
+            R_closed.append(hand_closed_r)
             if gripper_max[1] == None:
                 gripper_max[1] = int(r_gripper*1000)
             if int(r_gripper*1000) > gripper_max[1]:
                 gripper_max[1] = int(r_gripper*1000)
-            label_text = int((r_gripper*1000)/gripper_max[1]*100)
+            label_text = int(((r_gripper*1000)/gripper_max[1])*100)
             R_grip.append(label_text)
             cv2.putText(undistorted_image, f"R gripper: {label_text} %", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
 
@@ -354,15 +362,15 @@ def main():
             #     hand_rot.append(L_hand_corrected)
             #     undistorted_image = draw_centered_rotating_rectangle(undistorted_image, L_hand_corrected, 4, size=100, color=(255,0,0))
 
-            l_gripper, hand_open = is_hand_closed_by_distance(landmarks_3d)
+            l_gripper, hand_closed_l = is_hand_closed_by_distance(landmarks_3d)
             # frame_data["hand_open"] = hand_open
-
+            L_closed.append(hand_closed_l)
             # label_text = "OPEN" if hand_open else "CLOSED"
             if gripper_max[0] == None:
                 gripper_max[0] = int(l_gripper*1000)
             if int(l_gripper*1000) > gripper_max[0]:
                 gripper_max[0] = int(l_gripper*1000)
-            label_text = int((l_gripper*1000)/gripper_max[0]*100)
+            label_text = int(((l_gripper*1000)/gripper_max[0])*100)
             L_grip.append(label_text)
             cv2.putText(undistorted_image, f"L gripper: {label_text} %", (50, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 2)
 
@@ -458,20 +466,35 @@ def main():
         # write frame
         video_writer.write(undistorted_image)
 
+
+        # save hand rotation and open states to dictionary which is later saved to json
+        hand_rot_open_states[timestamp_us] = {
+            "R_rot": R_rot[-1].tolist() if R_rot and R_rot[-1] is not None else np.zeros((3,3)).tolist(),
+            "L_rot": L_rot[-1].tolist() if L_rot and L_rot[-1] is not None else np.zeros((3,3)).tolist(),
+            "R_open": not bool(R_closed[-1]) if R_closed and R_closed[-1] is not None else False,
+            "L_open": not bool(L_closed[-1]) if R_closed and L_closed[-1] is not None else False
+        }
+
+        hand_rot_open_vel[timestamp_us] = {
+            "R_rot_vel": (R_rot[-1] - R_rot[-2]).tolist() if len(R_rot) >= 2 and R_rot[-1] is not None and R_rot[-2] is not None else np.zeros((3,3)).tolist(),
+            "L_rot_vel": (L_rot[-1] - L_rot[-2]).tolist() if len(L_rot) >= 2 and L_rot[-1] is not None and L_rot[-2] is not None else np.zeros((3,3)).tolist(),
+            "R_grip_change": bool(R_closed[-1] != R_closed[-2]) if len(R_closed) >= 2 and R_closed[-1] is not None and R_closed[-2] is not None else False,
+            "L_grip_change": bool(L_closed[-1] != L_closed[-2]) if len(L_closed) >= 2 and L_closed[-1] is not None and L_closed[-2] is not None else False
+        }
+
     # cleanup
     video_writer.release()
 
     # save hand open states and rotations to json
-    hand_open_states_json_path = os.path.join(args.output, "hand_open_states.json")
-    print("\nsaving hand open states to json...")
+    hand_open_states_json_path = os.path.join(args.output, "hand_rot_open_states.json")
     with open(hand_open_states_json_path, "w") as f:
-        json.dump(hand_open_states, f, indent=2)
-    
-    hand_rot_json_path = os.path.join(args.output, "hand_rotations.json")
-    print("saving hand rotations to json...")
-    with open(hand_rot_json_path, "w") as f:
-        json.dump(hand_rot, f, indent=2)
+        json.dump(hand_rot_open_states, f, indent=2)
+    print(f"hand rotation and open states saved to: {hand_open_states_json_path}")
 
+    hand_open_vel_json_path = os.path.join(args.output, "hand_rot_open_vel.json")
+    with open(hand_open_vel_json_path, "w") as f:
+        json.dump(hand_rot_open_vel, f, indent=2)
+    print(f"hand rotation and open states velocity saved to: {hand_open_vel_json_path}")
     
 
 
