@@ -5,6 +5,8 @@ from projectaria_tools.core.stream_id import StreamId
 from projectaria_tools.core.calibration import distort_by_calibration
 from tqdm import tqdm
 import numpy as np
+import argparse
+
 
 from sys import path as sys_path
 import os
@@ -21,6 +23,7 @@ import platform
 
 
 IMAGE_SIZE = (1408, 1408, 3)
+IMAGE_SIZE_DOWNSAMPLED = (224, 224, 3)
 
 # RLDS Step class
 class Step:
@@ -93,10 +96,11 @@ class Step:
         self._information["state"][1, 3:6] = np.array(hand_rot_right, dtype=np.float32)
 
     def set_image(self, image_array: np.ndarray) -> None:
-        if image_array.shape != IMAGE_SIZE:
-            raise ValueError(f"Image array must have shape {IMAGE_SIZE}, but got {image_array.shape}")
+        # if image_array.shape != IMAGE_SIZE:
+        #     raise ValueError(f"Image array must have shape {IMAGE_SIZE}, but got {image_array.shape}")
         # self.image = image_array
-        self._information["image"] = image_array
+        image_resized = cv2.resize(image_array, (IMAGE_SIZE_DOWNSAMPLED[0], IMAGE_SIZE_DOWNSAMPLED[1]))
+        self._information["image"] = image_resized
     
     def get_image(self) -> np.ndarray:
         # return self._image
@@ -252,12 +256,6 @@ class VrsToRldsNpyConverter:
             cur_episode = Episode(episode_id, agent_id)
             cur_episode.set_description(self.speech_annotations.pop("General Task", ""))
             
-
-            #TODO: cut all frames until first useful frame (e.g. first frame with hand data, or first frame with non-empty annotation?)
-            # for each episode, process the frames within the start and end indices
-            # each frame corresponds to one step in RLDS
-            first_useful_frame_found = False
-
             # prepare list of speech annotation timestamps (us) for easier lookup
             speech_annotation_timestamps = [0] + [ts for ts in self.speech_annotations.keys()]
             speech_annotation_timestamps = sorted(speech_annotation_timestamps)
@@ -410,7 +408,7 @@ class VrsToRldsNpyConverter:
             episode.save_to_np(save_path_train)
             episode.save_to_np(save_path_val)
             print(f"Episode {episode.episode_id} saved to {save_path_train} and {save_path_val}.")
-    
+
 
 
 # NOTE: The conversion from vrs to npy must be run with numpy version 1.24.3 (some others might also work, not >=2.0.0 though!), otherwise RLDS dataset formatter will not be able to read the saved npy files.
@@ -423,19 +421,47 @@ class VrsToRldsNpyConverter:
 # where placeholder is to be replaced with all_frames, hand_open_states, left_hand_velocity, right_hand_velocity, speech_data
 # - VRS file in within the following folder structure:
 #   - allrecording_names/recording_name/recording_name.vrs
-if __name__ == "__main__":
+def main():
+    parser = argparse.ArgumentParser(description="Convert VRS data to RLDS npy format.")
+    parser.add_argument("--recording_names", nargs="+", type=str, help="List of recording names to process.", required=False)
+    parser.add_argument("--vrs_data_base_path", type=str, help="Base path to VRS data folders. Each folder must be named as its corresponding recording name.", required=False)
+    parser.add_argument("--processed_data_base_path", type=str, help="Base path to processed data folders. Each folder must be named as its corresponding recording name.", required=False)
+    parser.add_argument("--save_base_path", type=str, help="Base path to save RLDS npy files. Each folder will be named as its corresponding recording name.", required=False)
+    args = parser.parse_args()
+
+    # Set default values if values not provided via command line arguments
     # list of episode (recording) names to process
     recording_names = ["Banana_v1", "Banana_v2", "Bottle_v1", "Bottle_v2", "Orange_v1", "Sponge_v1", "Sponge_v2", "Stack_bowls_in_drawer_v1", "Pot_into_pot_corrective_behavior_v1"]
     # recording_names = ["Stack_bowls_in_drawer_v1", "Pot_into_pot_corrective_behavior_v1"]
-    # recording_names = ["Bottle_v1"]
+    # recording_names = ["Banana_v1", "Bottle_v1"]
+    shared_path_vrs_data = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_vrs/vrs_data_1/"
+    processed_data_base_path = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/utils/output"
+    save_rlds_npy_data_base_path = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data_new_format/"
+
+    # Check if values through flags were provided
+    if args.recording_names is not None:
+        print("--recording_names flag was used.")
+        recording_names = args.recording_names
+    if args.vrs_data_base_path is not None:
+        print("--vrs_data_base_path flag was used.")
+        shared_path_vrs_data = args.vrs_data_base_path
+    if args.processed_data_base_path is not None:
+        print("--processed_data_base_path flag was used.")
+        processed_data_base_path = args.processed_data_base_path
+    if args.save_base_path is not None:
+        print("--save_base_path flag was used.")
+        save_rlds_npy_data_base_path = args.save_base_path
+
+
+    
     for name in tqdm(recording_names):
         print(f"Processing episode: {name}")
 
         # IMPORTANT: Update these paths to your local setup
-        shared_path_vrs_data = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_vrs/vrs_data_1/{name}/"
+        path_vrs_data = f"{shared_path_vrs_data}{name}/"
         vrs_file_name = f"{name}.vrs"
-        processed_data = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/utils/output/{name}_output/"
-        shared_path_save_rlds_data = f"/Users/konst/OneDrive/Dokumente/ETH/Jahr 2025 - 2026/Mixed Reality/embodied-CoT-aria/aria_rlds_builder-main/aria_dataset/data_new_format/{name}/"
+        processed_data = f"{processed_data_base_path}/{name}_output/"
+        path_save_rlds_data = f"{save_rlds_npy_data_base_path}{name}/"
         
         # Define base paths for Windows and Linux
         windows_base_path = "C:"
@@ -444,25 +470,30 @@ if __name__ == "__main__":
         # Initialize converter and process/save episodes based on the operating system
         if platform.system() == "Windows":
             converter = VrsToRldsNpyConverter(
-                vrs_data_path= path.join(windows_base_path,shared_path_vrs_data),
+                vrs_data_path= path.join(windows_base_path,path_vrs_data),
                 vrs_file_name=vrs_file_name,
                 processed_data_path= path.join(windows_base_path,processed_data),
                 episode_name = name
             )
             converter.process_episodes()
             converter.save_episodes(save_dir=
-                                    path.join(windows_base_path,shared_path_save_rlds_data)
+                                    path.join(windows_base_path,path_save_rlds_data)
             )
         elif platform.system() == "Linux":
             print("Running on Linux system.")
             print("Hand velocities path:", path.join(linux_base_path,processed_data))
             converter = VrsToRldsNpyConverter(
-                vrs_data_path= linux_base_path + shared_path_vrs_data,
+                vrs_data_path= linux_base_path + path_vrs_data,
                 
                 vrs_file_name=vrs_file_name,
                 processed_data_path= linux_base_path + processed_data,
                 episode_name = name
             )
             converter.process_episodes()
-            converter.save_episodes(save_dir= linux_base_path + shared_path_save_rlds_data
+            converter.save_episodes(save_dir= linux_base_path + path_save_rlds_data
             )
+
+
+
+if __name__ == "__main__":
+    main()
