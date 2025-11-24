@@ -92,6 +92,8 @@ class FinetuneConfig:
     lora_dropout: float = 0.0                                       # Dropout applied to LoRA weights
     use_quantization: bool = False                                  # Whether to 4-bit quantize VLA for LoRA fine-tuning
                                                                     #   => CAUTION: Reduces memory but hurts performance
+    merge_lora_checkpoints: bool = False                            # Whether to merge LoRA into base model during training
+                                                                    #   => Set to False to avoid OOM/timeout, merge post-hoc instead
 
     # Tracking Parameters
     wandb_project: str = "openvla"                                  # Name of W&B project to log to (use default!)
@@ -314,14 +316,15 @@ def finetune(cfg: FinetuneConfig) -> None:
 
                 # Merge LoRA weights into model backbone for faster inference
                 #   =>> Note that merging is slow and can be done post-hoc to speed up training
-                if cfg.use_lora and distributed_state.is_main_process:
-                    # only merge on main process to avoid oom on other gpus
+                #   =>> Use --merge_lora_checkpoints=False to skip merging (recommended to avoid oom/timeout)
+                if cfg.use_lora and cfg.merge_lora_checkpoints:
                     base_vla = AutoModelForVision2Seq.from_pretrained(
                         cfg.vla_path, torch_dtype=torch.bfloat16, low_cpu_mem_usage=True, trust_remote_code=True
                     )
                     merged_vla = PeftModel.from_pretrained(base_vla, adapter_dir)
                     merged_vla = merged_vla.merge_and_unload()
-                    merged_vla.save_pretrained(run_dir)
+                    if distributed_state.is_main_process:
+                        merged_vla.save_pretrained(run_dir)
 
                 # Block on Main Process Checkpointing
                 dist.barrier()

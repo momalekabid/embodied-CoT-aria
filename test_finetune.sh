@@ -44,6 +44,7 @@ pip install flash-attn==2.7.3 --no-build-isolation
 wandb login
 
 # test run with limited data - batch size 2, only 50 max_steps for testing
+# merging lora checkpoitns disabled, change to True to enable
 torchrun --standalone --nnodes 1 --nproc-per-node 2 vla-scripts/finetune.py \
   --vla_path "openvla/openvla-7b" \
   --data_root_dir "${SCRATCH}/embodied-cot-aria/" \
@@ -57,6 +58,7 @@ torchrun --standalone --nnodes 1 --nproc-per-node 2 vla-scripts/finetune.py \
   --image_aug True \
   --save_steps 25 \
   --max_steps 50 \
-  --shuffle_buffer_size 1000 \
+  --merge_lora_checkpoints=False \ 
+--shuffle_buffer_size 1000 \
   --wandb_project "embodied-cot-test" \
   --wandb_entity "mabid-university-of-zurich"
