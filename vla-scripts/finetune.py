@@ -92,7 +92,7 @@ class FinetuneConfig:
     lora_dropout: float = 0.0                                       # Dropout applied to LoRA weights
     use_quantization: bool = False                                  # Whether to 4-bit quantize VLA for LoRA fine-tuning
                                                                     #   => CAUTION: Reduces memory but hurts performance
-    merge_lora_checkpoints: bool = False                            # Whether to merge LoRA into base model during training
+    merge_lora_checkpoints: bool = True                             # Whether to merge LoRA into base model during training
                                                                     #   => Set to False to avoid OOM/timeout, merge post-hoc instead
 
     # Tracking Parameters
