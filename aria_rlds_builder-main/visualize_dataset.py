@@ -59,19 +59,30 @@ action_mean = actions.mean(0)
 state_mean = states.mean(0)
 
 def vis_stats(vector, vector_mean, tag):
-    assert len(vector.shape) == 2
-    assert len(vector_mean.shape) == 1
+    print(vector.shape, vector_mean.shape)
+    assert len(vector.shape) == 3
+    assert len(vector_mean.shape) == 2
     assert vector.shape[1] == vector_mean.shape[0]
+    assert vector.shape[2] == vector_mean.shape[1]
 
-    n_elems = vector.shape[1]
-    fig = plt.figure(tag, figsize=(5*n_elems, 5))
+    n_elems = vector.shape[2]
+    fig = plt.figure(f"{tag}_left", figsize=(5*n_elems, 5))
     for elem in range(n_elems):
         plt.subplot(1, n_elems, elem+1)
-        plt.hist(vector[:, elem], bins=20)
-        plt.title(vector_mean[elem])
-
+        plt.hist(vector[:,0, elem], bins=20)
+        plt.title(vector_mean[0][elem])
+ 
     if render_wandb:
-        wandb.log({tag: wandb.Image(fig)})
+        wandb.log({f"{tag}_left": wandb.Image(fig)})
+
+    fig = plt.figure(f"{tag}_right", figsize=(5*n_elems, 5))
+    for elem in range(n_elems):
+        plt.subplot(1, n_elems, elem+1)
+        plt.hist(vector[:,0, elem], bins=20)
+        plt.title(vector_mean[0][elem])
+ 
+    if render_wandb:
+        wandb.log({f"{tag}_right": wandb.Image(fig)})
 
 vis_stats(actions, action_mean, 'action_stats')
 vis_stats(states, state_mean, 'state_stats')
