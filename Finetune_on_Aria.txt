@@ -1,0 +1,163 @@
+# aria vrs to openvla fine-tuning pipeline
+
+## pipeline: .vrs → mps → processed jsons → .npy episodes → rlds tfrecords → openvla
+
+## step 1: run aria mps
+
+process .vrs file to extract hand tracking and gaze data:
+
+```bash
+mps run --vrs /path/to/recording.vrs --output /path/to/mps_output
+```
+
+outputs:
+- `hand_tracking/hand_tracking_results.csv` - 3d hand landmarks
+- `eye_gaze/generalized_eye_gaze.csv` - gaze directions
+
+## step 2: extract hand rotations, open states, speech
+
+compute hand orientations (euler angles), grasp states, transcribe speech:
+
+```bash
+python utils/process_fisheye_hands_voice.py \
+  --vrs /path/to/recording.vrs \
+  --mps /path/to/mps_output/hand_tracking/hand_tracking_results.csv \
+  --mps_base /path/to/mps_output \
+  --output /path/to/processed_output \
+  --show_gaze  # optional
+```
+
+outputs: `hand_rot_open_states.json`, `hand_rot_open_vel.json`, `speech_data.json`, `*_velocity.json`, `all_frames.json`, visualization video
+
+## step 3: convert to .npy episodes
+
+```bash
+python aria_vrs/vrs_to_npy.py \
+  --vrs_path /path/to/vrs_directory \
+  --vrs_file recording.vrs \
+  --processed_data_path /path/to/processed_output/ \
+  --output_path /path/to/npy_episodes \
+  --episode_name "task_v1" \
+  --episode_timestamps 0  # ns timestamps for episode boundaries, space-separated for multiple episodes
+```
+
+outputs: `episode_task_v1_0.npy`, etc.
+format: `{'task_description': str, 'steps': [{'language_instruction': str, 'image': (224,224,3) uint8, 'state': (2,7) float32, 'action': (2,7) float32, 'time_since_episode_start_ns': int}]}`
+
+## step 4: organize for rlds
+
+```bash
+mkdir -p /path/to/rlds_data/{train,val}
+# split episodes into train/val folders (e.g., 80/20 split)
+mv episode_*.npy /path/to/rlds_data/train/  # or split manually
+```
+
+## step 5: build rlds dataset
+
+edit `aria_rlds_builder-main/aria_dataset/aria_dataset_dataset_builder.py` line ~209:
+
+```python
+def _split_paths(self):
+    base_paths = ["/path/to/rlds_data"]
+    train_filenames, val_filenames = [], []
+    for path in base_paths:
+        for filename in glob.glob(f'{path}/**/*.npy', recursive=True):
+            if '/train/' in filename: train_filenames.append(filename)
+            elif '/val/' in filename: val_filenames.append(filename)
+            else: raise ValueError(filename)
+    return {'train': train_filenames, 'val': val_filenames}
+```
+
+build:
+
+```bash
+cd aria_rlds_builder-main
+tfds build --data_dir /path/to/output_rlds_dataset
+```
+
+output structure:
+```
+/path/to/output_rlds_dataset/aria_dataset/1.0.0/{dataset_info.json, features.json, train.tfrecord-*, val.tfrecord-*}
+```
+
+verify:
+```bash
+python visualize_dataset.py --data_dir /path/to/output_rlds_dataset
+```
+
+## step 6: fine-tune openvla
+
+```bash
+torchrun --standalone --nnodes 1 --nproc-per-node 1 vla-scripts/finetune.py \
+  --vla_path "openvla/openvla-7b" \
+  --data_root_dir /path/to/output_rlds_dataset \
+  --dataset_name aria_dataset \
+  --run_root_dir ./checkpoints \
+  --adapter_tmp_dir ./adapter_tmp \
+  --lora_rank 32 \
+  --batch_size 8 \
+  --grad_accumulation_steps 2 \
+  --learning_rate 5e-4 \
+  --image_aug False \
+  --save_steps 100
+```
+
+## full pipeline script
+
+```bash
+#!/bin/bash
+VRS_FILE="/path/to/recording.vrs"
+VRS_DIR="$(dirname $VRS_FILE)"
+MPS_OUT="/path/to/mps_output"
+PROC_OUT="/path/to/processed"
+NPY_OUT="/path/to/npy_episodes"
+RLDS_OUT="/path/to/rlds_dataset"
+
+# 1. run mps
+mps run --vrs $VRS_FILE --output $MPS_OUT
+
+# 2. process hands/voice
+python utils/process_fisheye_hands_voice.py \
+  --vrs $VRS_FILE \
+  --mps $MPS_OUT/hand_tracking/hand_tracking_results.csv \
+  --mps_base $MPS_OUT \
+  --output $PROC_OUT \
+  --show_gaze
+
+# 3. convert to npy
+python aria_vrs/vrs_to_npy.py \
+  --vrs_path $VRS_DIR \
+  --vrs_file $(basename $VRS_FILE) \
+  --processed_data_path $PROC_OUT/ \
+  --output_path $NPY_OUT \
+  --episode_name "task_v1" \
+  --episode_timestamps 0
+
+# 4. organize episodes (split train/val manually or script)
+mkdir -p $NPY_OUT/{train,val}
+
+# 5. build rlds (update _split_paths first!)
+cd aria_rlds_builder-main
+tfds build --data_dir $RLDS_OUT
+
+# 6. verify
+python visualize_dataset.py --data_dir $RLDS_OUT
+```
+
+## troubleshooting
+
+| issue | fix |
+|-------|-----|
+| "no such file: hand_rot_open_states.json" | verify step 2 completed, check `--output` from step 2 == `--processed_data_path` in step 3 |
+| "failed to construct dataset" | verify .npy in train/val folders, check _split_paths() paths, try `tensorflow_datasets==4.9.3` |
+| "rotation matrix conversion error" | use latest code from aria-train branch |
+| "image size mismatch" | verify IMAGE_SIZE_DOWNSAMPLED=(224,224,3) in vrs_to_npy.py |
+
+## notes
+
+- aria data: ~30 fps, downsample to 5-10 hz for control
+- episode splitting: use multiple timestamps in --episode_timestamps to split recordings
+- data augmentation: set --image_aug True during fine-tuning for generalization
+- language instructions from speech transcription - speak clearly during recording
+- state/action format: (2,7) bimanual [left, right] where each is [x, y, z, roll, pitch, yaw, open_state]
+- openvla uses right hand only (index 1), extracts to 8d state + 7d action

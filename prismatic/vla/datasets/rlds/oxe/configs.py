@@ -641,4 +641,12 @@ OXE_DATASET_CONFIGS = {
         "state_encoding": StateEncoding.POS_EULER,
         "action_encoding": ActionEncoding.EEF_POS,
     },
+    # aria hand tracking dataset
+    "aria_dataset": {
+        "image_obs_keys": {"primary": "image_0", "secondary": None, "wrist": None},
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "state_obs_keys": ["state"],  # bimanual (2,7), will extract right hand in transform
+        "state_encoding": StateEncoding.POS_EULER,  # xyz + rpy + gripper
+        "action_encoding": ActionEncoding.EEF_POS,  # delta xyz + rpy + gripper (velocities)
+    },
 }

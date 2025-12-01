@@ -824,6 +824,40 @@ def tdroid_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
     return trajectory
 
 
+def aria_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    transform aria bimanual (2, 7) format to openvla right-hand-only format
+
+    aria state/action format: (2, 7) where:
+      - row 0: left hand [x, y, z, roll, pitch, yaw, open_state]
+      - row 1: right hand [x, y, z, roll, pitch, yaw, open_state]
+
+    openvla expects:
+      - state: [x, y, z, roll, pitch, yaw, <pad>, gripper] (8d)
+      - action: [dx, dy, dz, droll, dpitch, dyaw, dgripper] (7d)
+
+    note: aria actions are velocities (m/s, rad/s), not position deltas
+    """
+    # extract right hand (index 1) from bimanual state
+    right_hand_state = trajectory["observation"]["state"][:, 1, :]  # (T, 7)
+
+    # build state components: xyz + rpy (6d) and gripper (1d)
+    trajectory["observation"]["EEF_state"] = right_hand_state[:, :6]  # xyz + rpy
+    trajectory["observation"]["gripper_state"] = right_hand_state[:, 6:7]  # open_state
+
+    # extract right hand from bimanual action
+    right_hand_action = trajectory["action"][:, 1, :]  # (T, 7)
+
+    # build 7d action: [dxyz (3) + drpy (3) + dgripper (1)]
+    # actions are already velocities, which work as deltas at the control frequency
+    trajectory["action"] = right_hand_action
+
+    # language_instruction is stored at trajectory level in rlds
+    # no need to move it - already in the right place
+
+    return trajectory
+
+
 # === Registry ===
 OXE_STANDARDIZATION_TRANSFORMS = {
     "bridge_oxe": bridge_oxe_dataset_transform,
@@ -897,4 +931,6 @@ OXE_STANDARDIZATION_TRANSFORMS = {
     "tdroid_cover_object_with_towel": tdroid_dataset_transform,
     ### DROID Finetuning datasets
     "droid_wipe": droid_finetuning_transform,
+    ### Aria hand tracking dataset
+    "aria_dataset": aria_dataset_transform,
 }

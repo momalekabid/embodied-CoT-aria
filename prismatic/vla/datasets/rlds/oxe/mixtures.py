@@ -192,5 +192,10 @@ OXE_NAMED_MIXTURES: Dict[str, List[Tuple[str, float]]] = {
     "droid_wipe": [
         ("droid_wipe", 1.0),
     ],
+
+    # === Aria Hand Tracking Dataset ===
+    "aria_dataset": [
+        ("aria_dataset", 1.0),
+    ],
 }
 # fmt: on
