@@ -37,14 +37,25 @@ def main():
     parser.add_argument("--vrs", type=str, required=True, help="path to .vrs file")
     parser.add_argument("--mps", type=str, required=True, help="path to hand_tracking_results.csv")
     parser.add_argument("--mps_base", type=str, default=None, help="path to mps base folder (for gaze)")
-    parser.add_argument("--text_prompt", type=str, required=True, help="text prompt for object detection (e.g., 'bottle. hand. cup.')")
+    parser.add_argument("--text_prompt", type=str, default=None, help="text prompt for object detection (e.g., 'bottle. hand. cup.')")
+    parser.add_argument("--instruction", type=str, default=None, help="task instruction (e.g., 'pick up the bottle') for primary object classification")
     parser.add_argument("--output", type=str, default="bboxes_with_gaze.json", help="output json path")
     parser.add_argument("--gpu", type=int, default=0, help="gpu device id")
     parser.add_argument("--frame_skip", type=int, default=1, help="process every nth frame")
     parser.add_argument("--box_threshold", type=float, default=0.3)
     parser.add_argument("--text_threshold", type=float, default=0.2)
-    parser.add_argument("--primary_threshold", type=float, default=100.0, help="max pixel distance for primary classification")
+    parser.add_argument("--gaze_distance_threshold", type=float, default=100.0, help="max pixel distance for gaze focus classification")
+    parser.add_argument("--no_classification", action="store_true", help="skip primary/secondary/gaze classification (condition b)")
     args = parser.parse_args()
+
+    # determine detection prompt
+    if args.instruction is not None:
+        # extract objects from instruction for condition a
+        detection_prompt = args.instruction + ". hand. table. desk."
+    elif args.text_prompt is not None:
+        detection_prompt = args.text_prompt
+    else:
+        raise ValueError("must provide either --instruction or --text_prompt")
 
     # load vrs data
     print(f"\nloading vrs file: {args.vrs}")
@@ -95,7 +106,9 @@ def main():
 
     results = {
         "vrs_path": args.vrs,
-        "text_prompt": args.text_prompt,
+        "text_prompt": detection_prompt,
+        "instruction": args.instruction if args.instruction else "",
+        "classification_mode": "none" if args.no_classification else "gaze_aware",
         "frames": []
     }
 
@@ -134,7 +147,7 @@ def main():
         pil_image = Image.fromarray(cv2.cvtColor(undistorted_image, cv2.COLOR_BGR2RGB))
         inputs = processor(
             images=pil_image,
-            text=args.text_prompt,
+            text=detection_prompt,
             return_tensors="pt",
         ).to(device)
 
@@ -153,42 +166,46 @@ def main():
         labels = detection_results["labels"]
         boxes = detection_results["boxes"].cpu().numpy()
 
-        # classify each bbox as PRIMARY (actively looking at) or SECONDARY (context)
-        categorized_bboxes = {
-            "PRIMARY": [],
-            "SECONDARY": []
-        }
-
+        # classify bboxes based on mode
+        all_bboxes = []
         for lg, label, box in zip(logits, labels, boxes):
             box_int = list(box.astype(int))
             confidence = round(float(lg), 5)
 
-            bbox_dict = {
+            bbox_entry = {
                 "confidence": confidence,
                 "label": label,
                 "bbox": box_int
             }
 
-            # classify using gaze proximity
-            if gaze_point is not None:
-                category, gaze_dist = classify_bbox_by_gaze(
+            # compute gaze distance if gaze available
+            if gaze_point is not None and not args.no_classification:
+                bbox_dict = {"bbox": box_int}
+                _, gaze_dist = classify_bbox_by_gaze(
                     bbox_dict,
                     gaze_point,
-                    primary_threshold=args.primary_threshold
+                    primary_threshold=args.gaze_distance_threshold
                 )
-            else:
-                # no gaze data, all objects are secondary
-                category = "SECONDARY"
-                gaze_dist = None
+                bbox_entry["gaze_distance"] = float(gaze_dist) if gaze_dist is not None else None
 
-            bbox_entry = {
-                "confidence": confidence,
-                "label": label,
-                "box": box_int,
-                "gaze_distance": float(gaze_dist) if gaze_dist is not None else None
-            }
+            all_bboxes.append(bbox_entry)
 
-            categorized_bboxes[category].append(bbox_entry)
+        # if classification enabled, find the object closest to gaze (the one being looked at)
+        if not args.no_classification and gaze_point is not None and len(all_bboxes) > 0:
+            # find bbox with minimum gaze distance
+            gaze_target_idx = None
+            min_dist = float('inf')
+            for i, bbox in enumerate(all_bboxes):
+                if "gaze_distance" in bbox and bbox["gaze_distance"] is not None:
+                    if bbox["gaze_distance"] < min_dist:
+                        min_dist = bbox["gaze_distance"]
+                        gaze_target_idx = i
+
+            # mark the gaze target
+            if gaze_target_idx is not None:
+                all_bboxes[gaze_target_idx]["is_gaze_target"] = True
+
+        categorized_bboxes = all_bboxes
 
         # store frame results
         frame_data = {

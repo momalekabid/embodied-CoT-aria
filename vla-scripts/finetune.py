@@ -43,6 +43,11 @@ from prismatic.vla.action_tokenizer import ActionTokenizer
 from prismatic.vla.datasets import RLDSBatchTransform, RLDSDataset
 from prismatic.vla.datasets.rlds.utils.data_utils import save_dataset_statistics
 
+# bbox logging callback for embodied-cot reasoning visualization
+import sys
+sys.path.insert(0, str(Path(__file__).parent))
+from log_training_bboxes import BboxLoggingCallback
+
 # Sane Defaults
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -99,12 +104,25 @@ class FinetuneConfig:
     wandb_project: str = "openvla"                                  # Name of W&B project to log to (use default!)
     wandb_entity: str = "stanford-voltron"                          # Name of entity to log under
 
+    # Aria-specific Parameters
+    use_gaze_classification: bool = False                           # Whether to use eye gaze for bbox classification
+
+    # Logging Parameters
+    bbox_log_dir: Path = Path("training_logs/bboxes")              # Directory for bbox + reasoning logs
+    bbox_log_frequency: int = 100                                   # Log bbox visualizations every N steps
+    disable_bbox_logging: bool = False                              # Set to True to disable bbox logging
+
     # fmt: on
 
 
 @draccus.wrap()
 def finetune(cfg: FinetuneConfig) -> None:
     print(f"Fine-tuning OpenVLA Model `{cfg.vla_path}` on `{cfg.dataset_name}`")
+
+    # set aria gaze classification flag as environment variable for transform access
+    os.environ["USE_GAZE_CLASSIFICATION"] = str(cfg.use_gaze_classification)
+    if cfg.use_gaze_classification:
+        print("using eye gaze for bbox classification during training")
 
     # [Validate] Ensure GPU Available & Set Device / Distributed Context
     assert torch.cuda.is_available(), "Fine-tuning assumes at least one GPU is available!"
@@ -223,6 +241,15 @@ def finetune(cfg: FinetuneConfig) -> None:
     if distributed_state.is_main_process:
         wandb.init(entity=cfg.wandb_entity, project=cfg.wandb_project, name=f"ft+{exp_id}")
 
+    # Initialize BboxLoggingCallback for embodied-cot reasoning visualization
+    bbox_callback = None
+    if not cfg.disable_bbox_logging and distributed_state.is_main_process:
+        bbox_callback = BboxLoggingCallback(
+            log_dir=str(cfg.bbox_log_dir),
+            log_frequency=cfg.bbox_log_frequency
+        )
+        print(f"bbox logging enabled → saving to {cfg.bbox_log_dir} every {cfg.bbox_log_frequency} steps")
+
     # Deque to store recent train metrics (used for computing smoothened metrics for gradient accumulation)
     recent_losses = deque(maxlen=cfg.grad_accumulation_steps)
     recent_action_accuracies = deque(maxlen=cfg.grad_accumulation_steps)
@@ -271,6 +298,10 @@ def finetune(cfg: FinetuneConfig) -> None:
             recent_losses.append(loss.item())
             recent_action_accuracies.append(action_accuracy.item())
             recent_l1_losses.append(action_l1_loss.item())
+
+            # Log bbox detections and reasoning chain
+            if bbox_callback is not None:
+                bbox_callback(batch)
 
             # Compute gradient step index
             gradient_step_idx = batch_idx // cfg.grad_accumulation_steps
