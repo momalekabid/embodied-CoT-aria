@@ -1,19 +1,5 @@
 # Aria Training & Evaluation Guide
 
-
-
-## Table of Contents
-1. [Prerequisites](#prerequisites)
-2. [Dataset Setup](#dataset-setup)
-3. [Training the Model](#training-the-model)
-4. [Understanding Training Logs](#understanding-training-logs)
-5. [Extracting Test Samples](#extracting-test-samples)
-6. [Running Inference & Visualization](#running-inference--visualization)
-7. [Understanding the Output](#understanding-the-output)
-8. [Troubleshooting](#troubleshooting)
-
----
-
 ## Prerequisite
 ### Dataset Requirements
 your aria dataset should be in rlds format with the following structure:
@@ -33,23 +19,6 @@ the dataset must include:
 
 ---
 
-## Dataset Setup
-
-### Option 1: Use Existing RLDS Dataset
-if you already have an rlds-formatted dataset:
-```bash
-# set the data directory
-export DATA_DIR=/path/to/datasets/open-x-embodiment
-```
-
-### Option 2: Convert Your Data to RLDS
-if you need to create an rlds dataset from scratch:
-```bash
-# see scripts/generate_embodied_data/ for conversion tools
-python scripts/generate_embodied_data/bounding_boxes/generate_bboxes_with_gaze.py \
-    --input_dir /path/to/aria/recordings \
-    --output_dir datasets/open-x-embodiment/aria_dataset
-```
 
 ### Training with Gaze Classification
 to use eye gaze for classifying objects as PRIMARY/GAZE_FOCUS/AUXILIARY:
@@ -61,6 +30,7 @@ python vla-scripts/finetune.py \
     --batch_size 8 \
     --max_steps 50000
 ```
+
 #### Model & Dataset
 - `--vla_path`: huggingface model path (default: `openvla/openvla-7b`)
 - `--data_root_dir`: root directory containing rlds datasets
