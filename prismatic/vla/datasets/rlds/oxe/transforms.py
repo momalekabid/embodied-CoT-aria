@@ -896,7 +896,9 @@ def _add_gaze_classified_bboxes(trajectory: Dict[str, Any]) -> Dict[str, Any]:
         print(f"warning: could not import required modules for bbox classification: {e}")
         return trajectory
 
-    # get instruction for detection
+    # wrap entire processing in try/except to prevent crashes during training
+    try:
+        # get instruction for detection
     instruction = trajectory.get("language_instruction", b"").decode().lower() if isinstance(
         trajectory.get("language_instruction", ""), bytes
     ) else trajectory.get("language_instruction", "").lower()
@@ -989,12 +991,17 @@ def _add_gaze_classified_bboxes(trajectory: Dict[str, Any]) -> Dict[str, Any]:
 
         classified_bboxes_per_frame.append(frame_bboxes)
 
-    # add classified bboxes to trajectory observation
-    # convert to tf tensors for consistency
-    import tensorflow as tf
-    trajectory["observation"]["classified_bboxes"] = tf.constant(
-        str(classified_bboxes_per_frame), dtype=tf.string
-    )
+        # add classified bboxes to trajectory observation
+        # convert to tf tensors for consistency
+        import tensorflow as tf
+        trajectory["observation"]["classified_bboxes"] = tf.constant(
+            str(classified_bboxes_per_frame), dtype=tf.string
+        )
+
+    except Exception as e:
+        # if anything fails during bbox classification, log warning and return trajectory unchanged
+        # this prevents training crashes due to detection/gaze issues
+        print(f"warning: bbox classification failed, skipping for this trajectory: {e}")
 
     return trajectory
 

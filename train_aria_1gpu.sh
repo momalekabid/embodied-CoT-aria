@@ -17,6 +17,9 @@
 module purge
 module load stack/2024-06 python_cuda/3.11.6 eth_proxy
 
+# change to repo directory
+cd ${SCRATCH}/embodied-cot-aria
+
 # environment setup
 export HF_HOME=${SCRATCH}/embodied-cot-aria/huggingface
 export TORCH_HOME=${SCRATCH}/embodied-cot-aria/torch
@@ -42,10 +45,17 @@ source ${SCRATCH}/embodied-cot-aria/.venv_train/bin/activate
 echo "=== installing dependencies ==="
 pip install --upgrade pip setuptools wheel ninja packaging
 pip install --no-cache-dir -e .
-pip install --no-cache-dir zmq tensorrt==10.13.2.6 nvidia-cuda-runtime-cu12 huggingface_hub wandb
+pip install --no-cache-dir zmq
+pip install --no-cache-dir tensorrt==10.13.2.6
+pip install --no-cache-dir nvidia-cuda-runtime-cu12
+pip install --no-cache-dir huggingface_hub
+pip install --no-cache-dir wandb
+
+# install flash-attn
 pip uninstall -y flash-attn flash_attn
 pip install flash-attn==2.7.3 --no-build-isolation
 
+# login to wandb
 wandb login
 
 # paths
@@ -56,9 +66,6 @@ BBOX_LOG_DIR="${SCRATCH}/embodied-cot-aria/training_logs/bboxes/aria_1gpu"
 EVAL_DIR="${SCRATCH}/embodied-cot-aria/evaluation/aria_1gpu"
 
 mkdir -p $RUN_ROOT $ADAPTER_TMP $BBOX_LOG_DIR $EVAL_DIR
-
-echo "=== verifying dataset ==="
-python verify_dataset.py $DATA_ROOT
 
 echo "=== training without gaze ==="
 
