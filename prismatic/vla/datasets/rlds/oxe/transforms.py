@@ -899,104 +899,104 @@ def _add_gaze_classified_bboxes(trajectory: Dict[str, Any]) -> Dict[str, Any]:
     # wrap entire processing in try/except to prevent crashes during training
     try:
         # get instruction for detection
-    instruction = trajectory.get("language_instruction", b"").decode().lower() if isinstance(
-        trajectory.get("language_instruction", ""), bytes
-    ) else trajectory.get("language_instruction", "").lower()
+        instruction = trajectory.get("language_instruction", b"").decode().lower() if isinstance(
+            trajectory.get("language_instruction", ""), bytes
+        ) else trajectory.get("language_instruction", "").lower()
 
-    # build detection prompt from instruction
-    detection_prompt = instruction + ". hand. table. desk."
+        # build detection prompt from instruction
+        detection_prompt = instruction + ". hand. table. desk."
 
-    # lazy load grounding dino model (global singleton)
-    global _grounding_dino_model, _grounding_dino_processor
-    if '_grounding_dino_model' not in globals() or _grounding_dino_model is None:
-        model_id = "IDEA-Research/grounding-dino-base"
-        device = "cuda:0" if torch.cuda.is_available() else "cpu"
-        _grounding_dino_processor = AutoProcessor.from_pretrained(
-            model_id, size={"shortest_edge": 256, "longest_edge": 256}
-        )
-        _grounding_dino_model = AutoModelForZeroShotObjectDetection.from_pretrained(model_id).to(device)
-        _grounding_dino_model.eval()
+        # lazy load grounding dino model (global singleton)
+        global _grounding_dino_model, _grounding_dino_processor
+        if '_grounding_dino_model' not in globals() or _grounding_dino_model is None:
+            model_id = "IDEA-Research/grounding-dino-base"
+            device = "cuda:0" if torch.cuda.is_available() else "cpu"
+            _grounding_dino_processor = AutoProcessor.from_pretrained(
+                model_id, size={"shortest_edge": 256, "longest_edge": 256}
+            )
+            _grounding_dino_model = AutoModelForZeroShotObjectDetection.from_pretrained(model_id).to(device)
+            _grounding_dino_model.eval()
 
-    # process each frame in trajectory
-    classified_bboxes_per_frame = []
-    images = trajectory["observation"]["image_primary"]  # (T, H, W, 3)
+        # process each frame in trajectory
+        classified_bboxes_per_frame = []
+        images = trajectory["observation"]["image_primary"]  # (T, H, W, 3)
 
-    # check if gaze data exists in trajectory
-    has_gaze = "gaze_point" in trajectory.get("observation", {})
+        # check if gaze data exists in trajectory
+        has_gaze = "gaze_point" in trajectory.get("observation", {})
 
-    for t in range(len(images)):
-        image_np = images[t].numpy() if hasattr(images[t], 'numpy') else np.array(images[t])
-        pil_image = Image.fromarray(image_np.astype(np.uint8))
+        for t in range(len(images)):
+            image_np = images[t].numpy() if hasattr(images[t], 'numpy') else np.array(images[t])
+            pil_image = Image.fromarray(image_np.astype(np.uint8))
 
-        # get gaze point for this frame if available
-        gaze_point = None
-        if has_gaze:
-            gaze_data = trajectory["observation"]["gaze_point"][t]
-            if gaze_data is not None and len(gaze_data) == 2:
-                gaze_point = (float(gaze_data[0]), float(gaze_data[1]))
+            # get gaze point for this frame if available
+            gaze_point = None
+            if has_gaze:
+                gaze_data = trajectory["observation"]["gaze_point"][t]
+                if gaze_data is not None and len(gaze_data) == 2:
+                    gaze_point = (float(gaze_data[0]), float(gaze_data[1]))
 
-        # run object detection
-        inputs = _grounding_dino_processor(
-            images=pil_image,
-            text=detection_prompt,
-            return_tensors="pt"
-        ).to(_grounding_dino_model.device)
+            # run object detection
+            inputs = _grounding_dino_processor(
+                images=pil_image,
+                text=detection_prompt,
+                return_tensors="pt"
+            ).to(_grounding_dino_model.device)
 
-        with torch.no_grad():
-            outputs = _grounding_dino_model(**inputs)
+            with torch.no_grad():
+                outputs = _grounding_dino_model(**inputs)
 
-        detection_results = _grounding_dino_processor.post_process_grounded_object_detection(
-            outputs,
-            inputs.input_ids,
-            box_threshold=0.3,
-            text_threshold=0.2,
-            target_sizes=[pil_image.size[::-1]]
-        )[0]
+            detection_results = _grounding_dino_processor.post_process_grounded_object_detection(
+                outputs,
+                inputs.input_ids,
+                box_threshold=0.3,
+                text_threshold=0.2,
+                target_sizes=[pil_image.size[::-1]]
+            )[0]
 
-        # collect all detected bboxes
-        frame_bboxes = []
-        boxes = detection_results["boxes"].cpu().numpy()
-        labels = detection_results["labels"]
-        scores = detection_results["scores"].cpu().numpy()
+            # collect all detected bboxes
+            frame_bboxes = []
+            boxes = detection_results["boxes"].cpu().numpy()
+            labels = detection_results["labels"]
+            scores = detection_results["scores"].cpu().numpy()
 
-        for box, label, score in zip(boxes, labels, scores):
-            bbox_dict = {
-                "bbox": box.tolist(),
-                "label": label,
-                "confidence": float(score)
-            }
+            for box, label, score in zip(boxes, labels, scores):
+                bbox_dict = {
+                    "bbox": box.tolist(),
+                    "label": label,
+                    "confidence": float(score)
+                }
 
-            # compute gaze distance if gaze available
-            if gaze_point is not None:
-                _, gaze_dist = classify_bbox_by_gaze(
-                    bbox_dict, gaze_point, primary_threshold=100.0
-                )
-                bbox_dict["gaze_distance"] = float(gaze_dist)
+                # compute gaze distance if gaze available
+                if gaze_point is not None:
+                    _, gaze_dist = classify_bbox_by_gaze(
+                        bbox_dict, gaze_point, primary_threshold=100.0
+                    )
+                    bbox_dict["gaze_distance"] = float(gaze_dist)
 
-            frame_bboxes.append(bbox_dict)
+                frame_bboxes.append(bbox_dict)
 
-        # find the object closest to gaze (the one being looked at)
-        if gaze_point is not None and len(frame_bboxes) > 0:
-            gaze_target_idx = None
-            min_dist = float('inf')
-            for i, bbox in enumerate(frame_bboxes):
-                if "gaze_distance" in bbox:
-                    if bbox["gaze_distance"] < min_dist:
-                        min_dist = bbox["gaze_distance"]
-                        gaze_target_idx = i
+            # find the object closest to gaze (the one being looked at)
+            if gaze_point is not None and len(frame_bboxes) > 0:
+                gaze_target_idx = None
+                min_dist = float('inf')
+                for i, bbox in enumerate(frame_bboxes):
+                    if "gaze_distance" in bbox:
+                        if bbox["gaze_distance"] < min_dist:
+                            min_dist = bbox["gaze_distance"]
+                            gaze_target_idx = i
 
-            # mark the gaze target
-            if gaze_target_idx is not None:
-                frame_bboxes[gaze_target_idx]["is_gaze_target"] = True
+                # mark the gaze target
+                if gaze_target_idx is not None:
+                    frame_bboxes[gaze_target_idx]["is_gaze_target"] = True
 
-        classified_bboxes_per_frame.append(frame_bboxes)
+            classified_bboxes_per_frame.append(frame_bboxes)
 
-        # add classified bboxes to trajectory observation
-        # convert to tf tensors for consistency
-        import tensorflow as tf
-        trajectory["observation"]["classified_bboxes"] = tf.constant(
-            str(classified_bboxes_per_frame), dtype=tf.string
-        )
+            # add classified bboxes to trajectory observation
+            # convert to tf tensors for consistency
+            import tensorflow as tf
+            trajectory["observation"]["classified_bboxes"] = tf.constant(
+                str(classified_bboxes_per_frame), dtype=tf.string
+            )
 
     except Exception as e:
         # if anything fails during bbox classification, log warning and return trajectory unchanged
