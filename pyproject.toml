@@ -87,8 +87,6 @@ exclude = [
     "logs*",
     "media*",
     "aria_vrs*",
-    "evaluation*",
-    "experiments*",
     "checkpoints*",
     "adapter_tmp*",
     "huggingface*",
