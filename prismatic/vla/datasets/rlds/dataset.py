@@ -18,6 +18,12 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 from huggingface_hub import hf_hub_download
 
+# import custom dataset builders so tfds can find them
+try:
+    import aria_dataset
+except ImportError:
+    pass  # aria_dataset not installed
+
 from prismatic.overwatch import initialize_overwatch
 from prismatic.util.cot_utils import get_cot_database_keys, get_cot_tags_list
 from prismatic.vla.datasets.rlds import obs_transforms, traj_transforms
