@@ -211,14 +211,15 @@ def draw_frame_with_info(image, bboxes, action, instruction, model_name, show_cl
 
 
 def main():
-    parser = argparse.ArgumentParser(description="visualize inference on aria test data")
+    parser = argparse.ArgumentParser(description="visualize inference on aria test data - all 3 ablations")
     parser.add_argument("--test_json", type=str, required=True, help="test_samples.json from extract_test_samples.py")
-    parser.add_argument("--base_model", type=str, default="openvla/openvla-7b")
-    parser.add_argument("--finetuned_a", type=str, help="model with classification")
-    parser.add_argument("--finetuned_b", type=str, help="model without classification")
+    parser.add_argument("--base_model", type=str, default="Embodied-CoT/ecot-openvla-7b-bridge")
+    parser.add_argument("--finetuned_with_gaze", type=str, help="condition a: with gaze classification")
+    parser.add_argument("--finetuned_no_gaze", type=str, help="condition b: no gaze classification")
+    parser.add_argument("--finetuned_speech_only", type=str, help="baseline: speech only, no llm")
     parser.add_argument("--output_dir", type=str, default="./inference_viz")
     parser.add_argument("--device", type=str, default="cuda:0")
-    parser.add_argument("--training_logs_dir", type=str, help="optional: path to training logs with reasoning (from log_training_bboxes.py)")
+    parser.add_argument("--training_logs_dir", type=str, help="optional: path to training logs with reasoning")
     args = parser.parse_args()
 
     Path(args.output_dir).mkdir(parents=True, exist_ok=True)
@@ -234,19 +235,25 @@ def main():
     if args.base_model:
         models['base'] = {
             'path': args.base_model,
-            'name': 'Base OpenVLA',
+            'name': 'Base E-CoT',
             'show_class': False
         }
-    if args.finetuned_a:
-        models['finetuned_a'] = {
-            'path': args.finetuned_a,
-            'name': 'Fine-tuned (with classification)',
+    if args.finetuned_with_gaze:
+        models['with_gaze'] = {
+            'path': args.finetuned_with_gaze,
+            'name': 'Condition A (with gaze)',
             'show_class': True
         }
-    if args.finetuned_b:
-        models['finetuned_b'] = {
-            'path': args.finetuned_b,
-            'name': 'Fine-tuned (no classification)',
+    if args.finetuned_no_gaze:
+        models['no_gaze'] = {
+            'path': args.finetuned_no_gaze,
+            'name': 'Condition B (no gaze)',
+            'show_class': False
+        }
+    if args.finetuned_speech_only:
+        models['speech_only'] = {
+            'path': args.finetuned_speech_only,
+            'name': 'Baseline (speech only)',
             'show_class': False
         }
 
