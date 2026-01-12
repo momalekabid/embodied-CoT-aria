@@ -1,0 +1,423 @@
+Many modules are hidden in this stack. Use "module --show_hidden spider SOFTWARE" if you are not able to find the required software
+Requirement already satisfied: pip in ./.venv_train/lib/python3.11/site-packages (25.3)
+Requirement already satisfied: setuptools in ./.venv_train/lib/python3.11/site-packages (80.9.0)
+Requirement already satisfied: wheel in ./.venv_train/lib/python3.11/site-packages (0.45.1)
+Requirement already satisfied: ninja in ./.venv_train/lib/python3.11/site-packages (1.13.0)
+Requirement already satisfied: packaging in ./.venv_train/lib/python3.11/site-packages (25.0)
+Obtaining file:///cluster/scratch/jterrassier/embodied-CoT-aria
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Requirement already satisfied: accelerate>=0.25.0 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (1.11.0)
+Requirement already satisfied: draccus==0.8.0 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (0.8.0)
+Requirement already satisfied: einops in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (0.8.1)
+Requirement already satisfied: huggingface_hub in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (0.36.0)
+Requirement already satisfied: json-numpy in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (2.1.1)
+Requirement already satisfied: jsonlines in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (4.0.0)
+Requirement already satisfied: matplotlib in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (3.10.7)
+Requirement already satisfied: peft==0.11.1 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (0.11.1)
+Requirement already satisfied: protobuf in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (4.25.8)
+Requirement already satisfied: rich in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (14.2.0)
+Requirement already satisfied: sentencepiece==0.1.99 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (0.1.99)
+Requirement already satisfied: timm==0.9.10 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (0.9.10)
+Requirement already satisfied: tokenizers==0.19.1 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (0.19.1)
+Requirement already satisfied: torch==2.2.0 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (2.2.0)
+Requirement already satisfied: torchvision>=0.16.0 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (0.17.0)
+Requirement already satisfied: torchaudio in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (2.2.0)
+Requirement already satisfied: transformers==4.40.1 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (4.40.1)
+Requirement already satisfied: wandb in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (0.22.3)
+Requirement already satisfied: tensorflow==2.15.0 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (2.15.0)
+Requirement already satisfied: tensorflow_datasets==4.9.3 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (4.9.3)
+Requirement already satisfied: tensorflow_graphics==2021.12.3 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (2021.12.3)
+Collecting dlimp@ git+https://github.com/kvablack/dlimp@ad72ce3a9b414db2185bc0b38461d4101a65477a (from embodied-cot==1.0)
+  Cloning https://github.com/kvablack/dlimp (to revision ad72ce3a9b414db2185bc0b38461d4101a65477a) to ./.tmp/pip-install-cvvxdcw4/dlimp_b3d4dec26e73430291d1b43469675f6d
+  Running command git clone --filter=blob:none --quiet https://github.com/kvablack/dlimp /cluster/scratch/jterrassier/embodied-CoT-aria/.tmp/pip-install-cvvxdcw4/dlimp_b3d4dec26e73430291d1b43469675f6d
+  Running command git rev-parse -q --verify 'sha^ad72ce3a9b414db2185bc0b38461d4101a65477a'
+  Running command git fetch -q https://github.com/kvablack/dlimp ad72ce3a9b414db2185bc0b38461d4101a65477a
+  Running command git checkout -q ad72ce3a9b414db2185bc0b38461d4101a65477a
+  Resolved https://github.com/kvablack/dlimp to commit ad72ce3a9b414db2185bc0b38461d4101a65477a
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Requirement already satisfied: numpy>=1.26.4 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (1.26.4)
+Requirement already satisfied: opencv-python in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (4.11.0.86)
+Requirement already satisfied: pandas>=2.3.3 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (2.3.3)
+Requirement already satisfied: whisper>=1.1.10 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (1.1.10)
+Requirement already satisfied: projectaria-tools>=2.0.0 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (2.0.0)
+Requirement already satisfied: openai-whisper>=20250625 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (20250625)
+Requirement already satisfied: faster-whisper>=1.2.1 in ./.venv_train/lib/python3.11/site-packages (from embodied-cot==1.0) (1.2.1)
+Requirement already satisfied: mergedeep~=1.3 in ./.venv_train/lib/python3.11/site-packages (from draccus==0.8.0->embodied-cot==1.0) (1.3.4)
+Requirement already satisfied: pyyaml~=6.0 in ./.venv_train/lib/python3.11/site-packages (from draccus==0.8.0->embodied-cot==1.0) (6.0.3)
+Requirement already satisfied: pyyaml-include~=1.4 in ./.venv_train/lib/python3.11/site-packages (from draccus==0.8.0->embodied-cot==1.0) (1.4.1)
+Requirement already satisfied: toml~=0.10 in ./.venv_train/lib/python3.11/site-packages (from draccus==0.8.0->embodied-cot==1.0) (0.10.2)
+Requirement already satisfied: typing-inspect~=0.9.0 in ./.venv_train/lib/python3.11/site-packages (from draccus==0.8.0->embodied-cot==1.0) (0.9.0)
+Requirement already satisfied: packaging>=20.0 in ./.venv_train/lib/python3.11/site-packages (from peft==0.11.1->embodied-cot==1.0) (25.0)
+Requirement already satisfied: psutil in ./.venv_train/lib/python3.11/site-packages (from peft==0.11.1->embodied-cot==1.0) (7.1.3)
+Requirement already satisfied: tqdm in ./.venv_train/lib/python3.11/site-packages (from peft==0.11.1->embodied-cot==1.0) (4.67.1)
+Requirement already satisfied: safetensors in ./.venv_train/lib/python3.11/site-packages (from peft==0.11.1->embodied-cot==1.0) (0.6.2)
+Requirement already satisfied: absl-py>=1.0.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (2.3.1)
+Requirement already satisfied: astunparse>=1.6.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (1.6.3)
+Requirement already satisfied: flatbuffers>=23.5.26 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (25.9.23)
+Requirement already satisfied: gast!=0.5.0,!=0.5.1,!=0.5.2,>=0.2.1 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (0.6.0)
+Requirement already satisfied: google-pasta>=0.1.1 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (0.2.0)
+Requirement already satisfied: h5py>=2.9.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (3.15.1)
+Requirement already satisfied: libclang>=13.0.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (18.1.1)
+Requirement already satisfied: ml-dtypes~=0.2.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (0.2.0)
+Requirement already satisfied: opt-einsum>=2.3.2 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (3.4.0)
+Requirement already satisfied: setuptools in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (80.9.0)
+Requirement already satisfied: six>=1.12.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (1.17.0)
+Requirement already satisfied: termcolor>=1.1.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (3.2.0)
+Requirement already satisfied: typing-extensions>=3.6.6 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (4.15.0)
+Requirement already satisfied: wrapt<1.15,>=1.11.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (1.14.2)
+Requirement already satisfied: tensorflow-io-gcs-filesystem>=0.23.1 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (0.37.1)
+Requirement already satisfied: grpcio<2.0,>=1.24.3 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (1.76.0)
+Requirement already satisfied: tensorboard<2.16,>=2.15 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (2.15.2)
+Requirement already satisfied: tensorflow-estimator<2.16,>=2.15.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (2.15.0)
+Requirement already satisfied: keras<2.16,>=2.15.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow==2.15.0->embodied-cot==1.0) (2.15.0)
+Requirement already satisfied: array-record in ./.venv_train/lib/python3.11/site-packages (from tensorflow_datasets==4.9.3->embodied-cot==1.0) (0.8.2)
+Requirement already satisfied: click in ./.venv_train/lib/python3.11/site-packages (from tensorflow_datasets==4.9.3->embodied-cot==1.0) (8.3.0)
+Requirement already satisfied: dm-tree in ./.venv_train/lib/python3.11/site-packages (from tensorflow_datasets==4.9.3->embodied-cot==1.0) (0.1.9)
+Requirement already satisfied: etils>=0.9.0 in ./.venv_train/lib/python3.11/site-packages (from etils[enp,epath,etree]>=0.9.0->tensorflow_datasets==4.9.3->embodied-cot==1.0) (1.13.0)
+Requirement already satisfied: promise in ./.venv_train/lib/python3.11/site-packages (from tensorflow_datasets==4.9.3->embodied-cot==1.0) (2.3)
+Requirement already satisfied: requests>=2.19.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow_datasets==4.9.3->embodied-cot==1.0) (2.32.5)
+Requirement already satisfied: tensorflow-metadata in ./.venv_train/lib/python3.11/site-packages (from tensorflow_datasets==4.9.3->embodied-cot==1.0) (1.17.2)
+Requirement already satisfied: tensorflow-addons>=0.10.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow_graphics==2021.12.3->embodied-cot==1.0) (0.23.0)
+Requirement already satisfied: scipy>=1.1.0 in ./.venv_train/lib/python3.11/site-packages (from tensorflow_graphics==2021.12.3->embodied-cot==1.0) (1.16.3)
+Requirement already satisfied: OpenEXR>=1.3.2 in ./.venv_train/lib/python3.11/site-packages (from tensorflow_graphics==2021.12.3->embodied-cot==1.0) (3.4.3)
+Requirement already satisfied: trimesh>=2.37.22 in ./.venv_train/lib/python3.11/site-packages (from tensorflow_graphics==2021.12.3->embodied-cot==1.0) (4.9.0)
+Requirement already satisfied: networkx in ./.venv_train/lib/python3.11/site-packages (from tensorflow_graphics==2021.12.3->embodied-cot==1.0) (3.5)
+Requirement already satisfied: filelock in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (3.20.0)
+Requirement already satisfied: sympy in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (1.14.0)
+Requirement already satisfied: jinja2 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (3.1.6)
+Requirement already satisfied: fsspec in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (2025.10.0)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.1.105 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (12.1.105)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.1.105 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (12.1.105)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.1.105 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (12.1.105)
+Requirement already satisfied: nvidia-cudnn-cu12==8.9.2.26 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (8.9.2.26)
+Requirement already satisfied: nvidia-cublas-cu12==12.1.3.1 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (12.1.3.1)
+Requirement already satisfied: nvidia-cufft-cu12==11.0.2.54 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (11.0.2.54)
+Requirement already satisfied: nvidia-curand-cu12==10.3.2.106 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (10.3.2.106)
+Requirement already satisfied: nvidia-cusolver-cu12==11.4.5.107 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (11.4.5.107)
+Requirement already satisfied: nvidia-cusparse-cu12==12.1.0.106 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (12.1.0.106)
+Requirement already satisfied: nvidia-nccl-cu12==2.19.3 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (2.19.3)
+Requirement already satisfied: nvidia-nvtx-cu12==12.1.105 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (12.1.105)
+Requirement already satisfied: triton==2.2.0 in ./.venv_train/lib/python3.11/site-packages (from torch==2.2.0->embodied-cot==1.0) (2.2.0)
+Requirement already satisfied: nvidia-nvjitlink-cu12 in ./.venv_train/lib/python3.11/site-packages (from nvidia-cusolver-cu12==11.4.5.107->torch==2.2.0->embodied-cot==1.0) (12.9.86)
+Requirement already satisfied: regex!=2019.12.17 in ./.venv_train/lib/python3.11/site-packages (from transformers==4.40.1->embodied-cot==1.0) (2025.11.3)
+Requirement already satisfied: hf-xet<2.0.0,>=1.1.3 in ./.venv_train/lib/python3.11/site-packages (from huggingface_hub->embodied-cot==1.0) (1.2.0)
+Requirement already satisfied: google-auth<3,>=1.6.3 in ./.venv_train/lib/python3.11/site-packages (from tensorboard<2.16,>=2.15->tensorflow==2.15.0->embodied-cot==1.0) (2.41.1)
+Requirement already satisfied: google-auth-oauthlib<2,>=0.5 in ./.venv_train/lib/python3.11/site-packages (from tensorboard<2.16,>=2.15->tensorflow==2.15.0->embodied-cot==1.0) (1.2.3)
+Requirement already satisfied: markdown>=2.6.8 in ./.venv_train/lib/python3.11/site-packages (from tensorboard<2.16,>=2.15->tensorflow==2.15.0->embodied-cot==1.0) (3.10)
+Requirement already satisfied: tensorboard-data-server<0.8.0,>=0.7.0 in ./.venv_train/lib/python3.11/site-packages (from tensorboard<2.16,>=2.15->tensorflow==2.15.0->embodied-cot==1.0) (0.7.2)
+Requirement already satisfied: werkzeug>=1.0.1 in ./.venv_train/lib/python3.11/site-packages (from tensorboard<2.16,>=2.15->tensorflow==2.15.0->embodied-cot==1.0) (3.1.3)
+Requirement already satisfied: cachetools<7.0,>=2.0.0 in ./.venv_train/lib/python3.11/site-packages (from google-auth<3,>=1.6.3->tensorboard<2.16,>=2.15->tensorflow==2.15.0->embodied-cot==1.0) (6.2.1)
+Requirement already satisfied: pyasn1-modules>=0.2.1 in ./.venv_train/lib/python3.11/site-packages (from google-auth<3,>=1.6.3->tensorboard<2.16,>=2.15->tensorflow==2.15.0->embodied-cot==1.0) (0.4.2)
+Requirement already satisfied: rsa<5,>=3.1.4 in ./.venv_train/lib/python3.11/site-packages (from google-auth<3,>=1.6.3->tensorboard<2.16,>=2.15->tensorflow==2.15.0->embodied-cot==1.0) (4.9.1)
+Requirement already satisfied: requests-oauthlib>=0.7.0 in ./.venv_train/lib/python3.11/site-packages (from google-auth-oauthlib<2,>=0.5->tensorboard<2.16,>=2.15->tensorflow==2.15.0->embodied-cot==1.0) (2.0.0)
+Requirement already satisfied: charset_normalizer<4,>=2 in ./.venv_train/lib/python3.11/site-packages (from requests>=2.19.0->tensorflow_datasets==4.9.3->embodied-cot==1.0) (3.4.4)
+Requirement already satisfied: idna<4,>=2.5 in ./.venv_train/lib/python3.11/site-packages (from requests>=2.19.0->tensorflow_datasets==4.9.3->embodied-cot==1.0) (3.11)
+Requirement already satisfied: urllib3<3,>=1.21.1 in ./.venv_train/lib/python3.11/site-packages (from requests>=2.19.0->tensorflow_datasets==4.9.3->embodied-cot==1.0) (2.5.0)
+Requirement already satisfied: certifi>=2017.4.17 in ./.venv_train/lib/python3.11/site-packages (from requests>=2.19.0->tensorflow_datasets==4.9.3->embodied-cot==1.0) (2025.10.5)
+Requirement already satisfied: pyasn1>=0.1.3 in ./.venv_train/lib/python3.11/site-packages (from rsa<5,>=3.1.4->google-auth<3,>=1.6.3->tensorboard<2.16,>=2.15->tensorflow==2.15.0->embodied-cot==1.0) (0.6.1)
+Requirement already satisfied: mypy-extensions>=0.3.0 in ./.venv_train/lib/python3.11/site-packages (from typing-inspect~=0.9.0->draccus==0.8.0->embodied-cot==1.0) (1.1.0)
+Requirement already satisfied: wheel<1.0,>=0.23.0 in ./.venv_train/lib/python3.11/site-packages (from astunparse>=1.6.0->tensorflow==2.15.0->embodied-cot==1.0) (0.45.1)
+Requirement already satisfied: importlib_resources in ./.venv_train/lib/python3.11/site-packages (from etils[enp,epath,etree]>=0.9.0->tensorflow_datasets==4.9.3->embodied-cot==1.0) (6.5.2)
+Requirement already satisfied: zipp in ./.venv_train/lib/python3.11/site-packages (from etils[enp,epath,etree]>=0.9.0->tensorflow_datasets==4.9.3->embodied-cot==1.0) (3.23.0)
+Requirement already satisfied: ctranslate2<5,>=4.0 in ./.venv_train/lib/python3.11/site-packages (from faster-whisper>=1.2.1->embodied-cot==1.0) (4.6.1)
+Requirement already satisfied: onnxruntime<2,>=1.14 in ./.venv_train/lib/python3.11/site-packages (from faster-whisper>=1.2.1->embodied-cot==1.0) (1.23.2)
+Requirement already satisfied: av>=11 in ./.venv_train/lib/python3.11/site-packages (from faster-whisper>=1.2.1->embodied-cot==1.0) (16.0.1)
+Requirement already satisfied: coloredlogs in ./.venv_train/lib/python3.11/site-packages (from onnxruntime<2,>=1.14->faster-whisper>=1.2.1->embodied-cot==1.0) (15.0.1)
+Requirement already satisfied: contourpy>=1.0.1 in ./.venv_train/lib/python3.11/site-packages (from matplotlib->embodied-cot==1.0) (1.3.3)
+Requirement already satisfied: cycler>=0.10 in ./.venv_train/lib/python3.11/site-packages (from matplotlib->embodied-cot==1.0) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in ./.venv_train/lib/python3.11/site-packages (from matplotlib->embodied-cot==1.0) (4.60.1)
+Requirement already satisfied: kiwisolver>=1.3.1 in ./.venv_train/lib/python3.11/site-packages (from matplotlib->embodied-cot==1.0) (1.4.9)
+Requirement already satisfied: pillow>=8 in ./.venv_train/lib/python3.11/site-packages (from matplotlib->embodied-cot==1.0) (12.0.0)
+Requirement already satisfied: pyparsing>=3 in ./.venv_train/lib/python3.11/site-packages (from matplotlib->embodied-cot==1.0) (3.2.5)
+Requirement already satisfied: python-dateutil>=2.7 in ./.venv_train/lib/python3.11/site-packages (from matplotlib->embodied-cot==1.0) (2.9.0.post0)
+Requirement already satisfied: more-itertools in ./.venv_train/lib/python3.11/site-packages (from openai-whisper>=20250625->embodied-cot==1.0) (10.8.0)
+Requirement already satisfied: numba in ./.venv_train/lib/python3.11/site-packages (from openai-whisper>=20250625->embodied-cot==1.0) (0.62.1)
+Requirement already satisfied: tiktoken in ./.venv_train/lib/python3.11/site-packages (from openai-whisper>=20250625->embodied-cot==1.0) (0.12.0)
+Requirement already satisfied: pytz>=2020.1 in ./.venv_train/lib/python3.11/site-packages (from pandas>=2.3.3->embodied-cot==1.0) (2025.2)
+Requirement already satisfied: tzdata>=2022.7 in ./.venv_train/lib/python3.11/site-packages (from pandas>=2.3.3->embodied-cot==1.0) (2025.2)
+Requirement already satisfied: rerun-sdk==0.22.1 in ./.venv_train/lib/python3.11/site-packages (from projectaria-tools>=2.0.0->embodied-cot==1.0) (0.22.1)
+Requirement already satisfied: attrs>=23.1.0 in ./.venv_train/lib/python3.11/site-packages (from rerun-sdk==0.22.1->projectaria-tools>=2.0.0->embodied-cot==1.0) (25.4.0)
+Requirement already satisfied: pyarrow>=14.0.2 in ./.venv_train/lib/python3.11/site-packages (from rerun-sdk==0.22.1->projectaria-tools>=2.0.0->embodied-cot==1.0) (22.0.0)
+Requirement already satisfied: oauthlib>=3.0.0 in ./.venv_train/lib/python3.11/site-packages (from requests-oauthlib>=0.7.0->google-auth-oauthlib<2,>=0.5->tensorboard<2.16,>=2.15->tensorflow==2.15.0->embodied-cot==1.0) (3.3.1)
+Requirement already satisfied: typeguard<3.0.0,>=2.7 in ./.venv_train/lib/python3.11/site-packages (from tensorflow-addons>=0.10.0->tensorflow_graphics==2021.12.3->embodied-cot==1.0) (2.13.3)
+Requirement already satisfied: MarkupSafe>=2.1.1 in ./.venv_train/lib/python3.11/site-packages (from werkzeug>=1.0.1->tensorboard<2.16,>=2.15->tensorflow==2.15.0->embodied-cot==1.0) (3.0.3)
+Requirement already satisfied: humanfriendly>=9.1 in ./.venv_train/lib/python3.11/site-packages (from coloredlogs->onnxruntime<2,>=1.14->faster-whisper>=1.2.1->embodied-cot==1.0) (10.0)
+Requirement already satisfied: llvmlite<0.46,>=0.45.0dev0 in ./.venv_train/lib/python3.11/site-packages (from numba->openai-whisper>=20250625->embodied-cot==1.0) (0.45.1)
+Requirement already satisfied: markdown-it-py>=2.2.0 in ./.venv_train/lib/python3.11/site-packages (from rich->embodied-cot==1.0) (4.0.0)
+Requirement already satisfied: pygments<3.0.0,>=2.13.0 in ./.venv_train/lib/python3.11/site-packages (from rich->embodied-cot==1.0) (2.19.2)
+Requirement already satisfied: mdurl~=0.1 in ./.venv_train/lib/python3.11/site-packages (from markdown-it-py>=2.2.0->rich->embodied-cot==1.0) (0.1.2)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in ./.venv_train/lib/python3.11/site-packages (from sympy->torch==2.2.0->embodied-cot==1.0) (1.3.0)
+Requirement already satisfied: googleapis-common-protos<2,>=1.56.4 in ./.venv_train/lib/python3.11/site-packages (from tensorflow-metadata->tensorflow_datasets==4.9.3->embodied-cot==1.0) (1.72.0)
+Requirement already satisfied: gitpython!=3.1.29,>=1.0.0 in ./.venv_train/lib/python3.11/site-packages (from wandb->embodied-cot==1.0) (3.1.45)
+Requirement already satisfied: platformdirs in ./.venv_train/lib/python3.11/site-packages (from wandb->embodied-cot==1.0) (4.5.0)
+Requirement already satisfied: pydantic<3 in ./.venv_train/lib/python3.11/site-packages (from wandb->embodied-cot==1.0) (2.12.4)
+Requirement already satisfied: sentry-sdk>=2.0.0 in ./.venv_train/lib/python3.11/site-packages (from wandb->embodied-cot==1.0) (2.43.0)
+Requirement already satisfied: annotated-types>=0.6.0 in ./.venv_train/lib/python3.11/site-packages (from pydantic<3->wandb->embodied-cot==1.0) (0.7.0)
+Requirement already satisfied: pydantic-core==2.41.5 in ./.venv_train/lib/python3.11/site-packages (from pydantic<3->wandb->embodied-cot==1.0) (2.41.5)
+Requirement already satisfied: typing-inspection>=0.4.2 in ./.venv_train/lib/python3.11/site-packages (from pydantic<3->wandb->embodied-cot==1.0) (0.4.2)
+Requirement already satisfied: gitdb<5,>=4.0.1 in ./.venv_train/lib/python3.11/site-packages (from gitpython!=3.1.29,>=1.0.0->wandb->embodied-cot==1.0) (4.0.12)
+Requirement already satisfied: smmap<6,>=3.0.1 in ./.venv_train/lib/python3.11/site-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.29,>=1.0.0->wandb->embodied-cot==1.0) (5.0.2)
+Building wheels for collected packages: embodied-cot
+  Building editable for embodied-cot (pyproject.toml): started
+  Building editable for embodied-cot (pyproject.toml): finished with status 'done'
+  Created wheel for embodied-cot: filename=embodied_cot-1.0-0.editable-py3-none-any.whl size=9162 sha256=f5eeee1cfce6157525b8ea5584c639b1c4604d40c452e148095d4950cf930d08
+  Stored in directory: /cluster/scratch/jterrassier/embodied-CoT-aria/.tmp/pip-ephem-wheel-cache-nk_sxdpn/wheels/10/c6/fa/93a1fac94525dce244c2799af71a7bf0b1f53e93d2e40ef90c
+Successfully built embodied-cot
+Installing collected packages: embodied-cot
+  Attempting uninstall: embodied-cot
+    Found existing installation: embodied-cot 1.0
+    Uninstalling embodied-cot-1.0:
+      Successfully uninstalled embodied-cot-1.0
+Successfully installed embodied-cot-1.0
+Requirement already satisfied: zmq in ./.venv_train/lib/python3.11/site-packages (0.0.0)
+Requirement already satisfied: pyzmq in ./.venv_train/lib/python3.11/site-packages (from zmq) (27.1.0)
+Collecting tensorrt==10.13.2.6
+  Downloading tensorrt-10.13.2.6.tar.gz (40 kB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting tensorrt_cu13==10.13.2.6 (from tensorrt==10.13.2.6)
+  Downloading tensorrt_cu13-10.13.2.6.tar.gz (18 kB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Installing backend dependencies: started
+  Installing backend dependencies: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting tensorrt_cu13_libs==10.13.2.6 (from tensorrt_cu13==10.13.2.6->tensorrt==10.13.2.6)
+  Downloading tensorrt_cu13_libs-10.13.2.6.tar.gz (704 bytes)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting tensorrt_cu13_bindings==10.13.2.6 (from tensorrt_cu13==10.13.2.6->tensorrt==10.13.2.6)
+  Downloading tensorrt_cu13_bindings-10.13.2.6-cp311-none-manylinux_2_28_x86_64.whl.metadata (606 bytes)
+Collecting nvidia-cuda-runtime-cu13 (from tensorrt_cu13_libs==10.13.2.6->tensorrt_cu13==10.13.2.6->tensorrt==10.13.2.6)
+  Downloading nvidia_cuda_runtime_cu13-0.0.1.tar.gz (1.4 kB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Downloading tensorrt_cu13_bindings-10.13.2.6-cp311-none-manylinux_2_28_x86_64.whl (1.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 37.5 MB/s  0:00:00
+Building wheels for collected packages: tensorrt, tensorrt_cu13, tensorrt_cu13_libs, nvidia-cuda-runtime-cu13
+  Building wheel for tensorrt (pyproject.toml): started
+  Building wheel for tensorrt (pyproject.toml): finished with status 'done'
+  Created wheel for tensorrt: filename=tensorrt-10.13.2.6-py2.py3-none-any.whl size=46653 sha256=36d8e15c4ef731a8532aa50e26333ba6acb2a5b6474ceb0f5b388e6e3a08fbd8
+  Stored in directory: /cluster/scratch/jterrassier/embodied-CoT-aria/.tmp/pip-ephem-wheel-cache-sftvu_vq/wheels/c6/c3/4f/b5a62d55edf240d6a6e82bdba1994887a4c861d7a1ed415d0d
+  Building wheel for tensorrt_cu13 (pyproject.toml): started
+  Building wheel for tensorrt_cu13 (pyproject.toml): finished with status 'done'
+  Created wheel for tensorrt_cu13: filename=tensorrt_cu13-10.13.2.6-py2.py3-none-any.whl size=17713 sha256=be82690ed4a268bdcac77df885b177fbfe35bb4ab6e876dee505bbe6ccfc22ef
+  Stored in directory: /cluster/scratch/jterrassier/embodied-CoT-aria/.tmp/pip-ephem-wheel-cache-sftvu_vq/wheels/25/74/87/c19c3dec6eb4d121b960b20e01306caea68b42a6bd82279a2e
+  Building wheel for tensorrt_cu13_libs (pyproject.toml): started
+  Building wheel for tensorrt_cu13_libs (pyproject.toml): finished with status 'done'
+  Created wheel for tensorrt_cu13_libs: filename=tensorrt_cu13_libs-10.13.2.6-py2.py3-none-manylinux_2_28_x86_64.whl size=2740427176 sha256=044468b0705728c0c8f0e95325ba881ff3e23bd2eebce0b1e628953ff90bbb5f
+  Stored in directory: /cluster/scratch/jterrassier/embodied-CoT-aria/.tmp/pip-ephem-wheel-cache-sftvu_vq/wheels/6c/9f/8c/e380b752b4def86473a5c50fa3b4566cdcc7d1df774c97a505
+  Building wheel for nvidia-cuda-runtime-cu13 (pyproject.toml): started
+  Building wheel for nvidia-cuda-runtime-cu13 (pyproject.toml): finished with status 'error'
+  error: subprocess-exited-with-error
+  
+  × Building wheel for nvidia-cuda-runtime-cu13 (pyproject.toml) did not run successfully.
+  │ exit code: 1
+  ╰─> [10 lines of output]
+      ⚠️ THIS PROJECT 'nvidia-cuda-runtime-cu13' IS DEPRECATED.
+      Please use 'nvidia-cuda-runtime' instead.
+      
+      To install the correct package, use:
+      
+          pip install nvidia-cuda-runtime
+      
+      For more information, visit: https://pypi.org/project/nvidia-cuda-runtime/
+      
+      
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for nvidia-cuda-runtime-cu13
+Successfully built tensorrt tensorrt_cu13 tensorrt_cu13_libs
+Failed to build nvidia-cuda-runtime-cu13
+error: failed-wheel-build-for-install
+
+× Failed to build installable wheels for some pyproject.toml based projects
+╰─> nvidia-cuda-runtime-cu13
+Requirement already satisfied: nvidia-cuda-runtime-cu12 in ./.venv_train/lib/python3.11/site-packages (12.1.105)
+Requirement already satisfied: huggingface_hub in ./.venv_train/lib/python3.11/site-packages (0.36.0)
+Requirement already satisfied: filelock in ./.venv_train/lib/python3.11/site-packages (from huggingface_hub) (3.20.0)
+Requirement already satisfied: fsspec>=2023.5.0 in ./.venv_train/lib/python3.11/site-packages (from huggingface_hub) (2025.10.0)
+Requirement already satisfied: packaging>=20.9 in ./.venv_train/lib/python3.11/site-packages (from huggingface_hub) (25.0)
+Requirement already satisfied: pyyaml>=5.1 in ./.venv_train/lib/python3.11/site-packages (from huggingface_hub) (6.0.3)
+Requirement already satisfied: requests in ./.venv_train/lib/python3.11/site-packages (from huggingface_hub) (2.32.5)
+Requirement already satisfied: tqdm>=4.42.1 in ./.venv_train/lib/python3.11/site-packages (from huggingface_hub) (4.67.1)
+Requirement already satisfied: typing-extensions>=3.7.4.3 in ./.venv_train/lib/python3.11/site-packages (from huggingface_hub) (4.15.0)
+Requirement already satisfied: hf-xet<2.0.0,>=1.1.3 in ./.venv_train/lib/python3.11/site-packages (from huggingface_hub) (1.2.0)
+Requirement already satisfied: charset_normalizer<4,>=2 in ./.venv_train/lib/python3.11/site-packages (from requests->huggingface_hub) (3.4.4)
+Requirement already satisfied: idna<4,>=2.5 in ./.venv_train/lib/python3.11/site-packages (from requests->huggingface_hub) (3.11)
+Requirement already satisfied: urllib3<3,>=1.21.1 in ./.venv_train/lib/python3.11/site-packages (from requests->huggingface_hub) (2.5.0)
+Requirement already satisfied: certifi>=2017.4.17 in ./.venv_train/lib/python3.11/site-packages (from requests->huggingface_hub) (2025.10.5)
+Found existing installation: flash-attn 2.7.3
+Uninstalling flash-attn-2.7.3:
+  Successfully uninstalled flash-attn-2.7.3
+Collecting flash-attn==2.7.3
+  Using cached flash_attn-2.7.3-cp311-cp311-linux_x86_64.whl
+Requirement already satisfied: torch in ./.venv_train/lib/python3.11/site-packages (from flash-attn==2.7.3) (2.2.0)
+Requirement already satisfied: einops in ./.venv_train/lib/python3.11/site-packages (from flash-attn==2.7.3) (0.8.1)
+Requirement already satisfied: filelock in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (3.20.0)
+Requirement already satisfied: typing-extensions>=4.8.0 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (4.15.0)
+Requirement already satisfied: sympy in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (1.14.0)
+Requirement already satisfied: networkx in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (3.5)
+Requirement already satisfied: jinja2 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (3.1.6)
+Requirement already satisfied: fsspec in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (2025.10.0)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.1.105 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (12.1.105)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.1.105 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (12.1.105)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.1.105 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (12.1.105)
+Requirement already satisfied: nvidia-cudnn-cu12==8.9.2.26 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (8.9.2.26)
+Requirement already satisfied: nvidia-cublas-cu12==12.1.3.1 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (12.1.3.1)
+Requirement already satisfied: nvidia-cufft-cu12==11.0.2.54 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (11.0.2.54)
+Requirement already satisfied: nvidia-curand-cu12==10.3.2.106 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (10.3.2.106)
+Requirement already satisfied: nvidia-cusolver-cu12==11.4.5.107 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (11.4.5.107)
+Requirement already satisfied: nvidia-cusparse-cu12==12.1.0.106 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (12.1.0.106)
+Requirement already satisfied: nvidia-nccl-cu12==2.19.3 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (2.19.3)
+Requirement already satisfied: nvidia-nvtx-cu12==12.1.105 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (12.1.105)
+Requirement already satisfied: triton==2.2.0 in ./.venv_train/lib/python3.11/site-packages (from torch->flash-attn==2.7.3) (2.2.0)
+Requirement already satisfied: nvidia-nvjitlink-cu12 in ./.venv_train/lib/python3.11/site-packages (from nvidia-cusolver-cu12==11.4.5.107->torch->flash-attn==2.7.3) (12.9.86)
+Requirement already satisfied: MarkupSafe>=2.0 in ./.venv_train/lib/python3.11/site-packages (from jinja2->torch->flash-attn==2.7.3) (3.0.3)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in ./.venv_train/lib/python3.11/site-packages (from sympy->torch->flash-attn==2.7.3) (1.3.0)
+Installing collected packages: flash-attn
+Successfully installed flash-attn-2.7.3
+2025-11-14 17:07:21.687514: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-11-14 17:07:21.687535: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-11-14 17:07:21.691216: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-11-14 17:07:21.691228: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-11-14 17:07:22.449648: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-11-14 17:07:22.449669: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-11-14 17:07:23.893081: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-11-14 17:07:23.893108: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-11-14 17:07:36.860833: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2025-11-14 17:07:36.860835: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/vla-scripts/train.py", line 263, in <module>
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/vla-scripts/train.py", line 263, in <module>
+    train()
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/argparsing.py", line 202, in wrapper_inner
+    train()
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/argparsing.py", line 202, in wrapper_inner
+    cfg = parse(config_class=argtype, config_path=config_path, preferred_help=preferred_help)
+       cfg = parse(config_class=argtype, config_path=config_path, preferred_help=preferred_help) 
+           ^ ^ ^ ^ ^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/argparsing.py", line 193, in parse
+^^^
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/argparsing.py", line 193, in parse
+    return parser.parse_args(args)
+             return parser.parse_args(args) 
+ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^^^^^^^^^^^^^^^^^^^^^^^^
+^^  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/argparsing.py", line 102, in parse_args
+^^^^^^^^^
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/argparsing.py", line 102, in parse_args
+    args, argv = self.parse_known_args(args, namespace)
+    args, argv = self.parse_known_args(args, namespace)
+                                 ^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/argparsing.py", line 131, in parse_known_args
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/argparsing.py", line 131, in parse_known_args
+    parsed_t = self._postprocessing(parsed_args)
+           parsed_t = self._postprocessing(parsed_args) 
+             ^ ^ ^ ^ ^ ^ ^ ^ ^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/argparsing.py", line 162, in _postprocessing
+^^^^^^^
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/argparsing.py", line 162, in _postprocessing
+    cfg = decoding.decode(self.config_class, deflat_d)
+      cfg = decoding.decode(self.config_class, deflat_d) 
+            ^ ^ ^ ^ ^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/parsers/registry_utils.py", line 78, in wrapper
+^^^
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/parsers/registry_utils.py", line 78, in wrapper
+    return base_func(*args, **kw)
+               return base_func(*args, **kw)^
+^^^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^^^^^^^^^^^^^^^^
+^^  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/parsers/decoding.py", line 48, in decode
+^^^^^^^^^^^^
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/parsers/decoding.py", line 48, in decode
+    return get_decoding_fn(cls)(raw_value, ())  # type: ignore
+            return get_decoding_fn(cls)(raw_value, ())  # type: ignore 
+   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/parsers/decoding.py", line 101, in decode_dataclass
+^^^^^^^^
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/parsers/decoding.py", line 101, in decode_dataclass
+    raise e
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/parsers/decoding.py", line 99, in decode_dataclass
+    raise e
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/parsers/decoding.py", line 99, in decode_dataclass
+    field_value = get_decoding_fn(field_type)(raw_value, (*path, name))  # type: ignore
+                  ^^^^^^^^^^^^^^^    ^field_value = get_decoding_fn(field_type)(raw_value, (*path, name))  # type: ignore^
+^^^^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/parsers/decoding.py", line 164, in decode_choice_class
+^^^^^^^^^^^^^^^^^^^^^^^^^^    ^raise ParsingError(f"Expected a dict with a '{CHOICE_TYPE_KEY}' key for {cls}, got {raw_value}")^
+^^^draccus.utils^.^ParsingError^: ^Expected a dict with a 'type' key for <class 'prismatic.conf.vla.VLAConfig'>, got {'expected_world_size': 2, 'global_batch_size': 64, 'per_device_batch_size': 32}^
+^
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/draccus/parsers/decoding.py", line 164, in decode_choice_class
+    raise ParsingError(f"Expected a dict with a '{CHOICE_TYPE_KEY}' key for {cls}, got {raw_value}")
+draccus.utils.ParsingError: Expected a dict with a 'type' key for <class 'prismatic.conf.vla.VLAConfig'>, got {'expected_world_size': 2, 'global_batch_size': 64, 'per_device_batch_size': 32}
+[2025-11-14 17:08:32,167] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 3369684) of binary: /cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/bin/python
+Traceback (most recent call last):
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 347, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/torch/distributed/run.py", line 812, in main
+    run(args)
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/torch/distributed/run.py", line 803, in run
+    elastic_launch(
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 135, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cluster/scratch/jterrassier/embodied-CoT-aria/.venv_train/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 268, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+vla-scripts/train.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2025-11-14_17:08:32
+  host      : eu-a65-05.euler.ethz.ch
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 3369685)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-11-14_17:08:32
+  host      : eu-a65-05.euler.ethz.ch
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 3369684)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+/var/spool/slurm/slurmd/state/job48728362/slurm_script: line 43: --vla.type: command not found

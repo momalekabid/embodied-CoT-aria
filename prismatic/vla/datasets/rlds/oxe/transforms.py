@@ -824,6 +824,188 @@ def tdroid_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
     return trajectory
 
 
+def aria_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    transform aria bimanual (2, 7) format to openvla right-hand-only format
+
+    aria state/action format: (2, 7) where:
+      - row 0: left hand [x, y, z, roll, pitch, yaw, open_state]
+      - row 1: right hand [x, y, z, roll, pitch, yaw, open_state]
+
+    openvla expects:
+      - state: [x, y, z, roll, pitch, yaw, <pad>, gripper] (8d)
+      - action: [dx, dy, dz, droll, dpitch, dyaw, dgripper] (7d)
+
+    note: aria actions are velocities (m/s, rad/s), not position deltas
+    """
+    import os
+    import sys
+    from pathlib import Path
+
+    # add utils to path for gaze classification
+    utils_path = str(Path(__file__).parent.parent.parent.parent.parent.parent / "utils")
+    if utils_path not in sys.path:
+        sys.path.append(utils_path)
+
+    # extract right hand (index 1) from bimanual state
+    right_hand_state = trajectory["observation"]["state"][:, 1, :]  # (T, 7)
+
+    # build state components: xyz + rpy (6d) and gripper (1d)
+    trajectory["observation"]["EEF_state"] = right_hand_state[:, :6]  # xyz + rpy
+    trajectory["observation"]["gripper_state"] = right_hand_state[:, 6:7]  # open_state
+
+    # extract right hand from bimanual action
+    right_hand_action = trajectory["action"][:, 1, :]  # (T, 7)
+
+    # build 7d action: [dxyz (3) + drpy (3) + dgripper (1)]
+    # actions are already velocities, which work as deltas at the control frequency
+    trajectory["action"] = right_hand_action
+
+    # language_instruction is stored at trajectory level in rlds
+    # no need to move it - already in the right place
+
+    # optional: add bbox classification using eye gaze
+    use_gaze_classification = os.environ.get("USE_GAZE_CLASSIFICATION", "False") == "True"
+
+    if use_gaze_classification:
+        trajectory = _add_gaze_classified_bboxes(trajectory)
+
+    return trajectory
+
+
+def _add_gaze_classified_bboxes(trajectory: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    add gaze-aware bbox detection to trajectory
+
+    detects all objects and marks the one closest to gaze:
+    - finds object with minimum distance to gaze point
+    - marks it with "is_gaze_target": True
+    - all other objects are unmarked
+    """
+    import numpy as np
+    import sys
+    from pathlib import Path
+
+    # lazy import grounding dino and gaze utils
+    try:
+        import torch
+        from PIL import Image
+        from transformers import AutoModelForZeroShotObjectDetection, AutoProcessor
+        from gaze_guided_bbox_filter import classify_bbox_by_gaze
+    except ImportError as e:
+        print(f"warning: could not import required modules for bbox classification: {e}")
+        return trajectory
+
+    # wrap entire processing in try/except to prevent crashes during training
+    try:
+        # get instruction for detection
+        instruction = trajectory.get("language_instruction", b"").decode().lower() if isinstance(
+            trajectory.get("language_instruction", ""), bytes
+        ) else trajectory.get("language_instruction", "").lower()
+
+        # build detection prompt from instruction
+        detection_prompt = instruction + ". hand. table. desk."
+
+        # lazy load grounding dino model (global singleton)
+        global _grounding_dino_model, _grounding_dino_processor
+        if '_grounding_dino_model' not in globals() or _grounding_dino_model is None:
+            model_id = "IDEA-Research/grounding-dino-base"
+            device = "cuda:0" if torch.cuda.is_available() else "cpu"
+            _grounding_dino_processor = AutoProcessor.from_pretrained(
+                model_id, size={"shortest_edge": 256, "longest_edge": 256}
+            )
+            _grounding_dino_model = AutoModelForZeroShotObjectDetection.from_pretrained(model_id).to(device)
+            _grounding_dino_model.eval()
+
+        # process each frame in trajectory
+        classified_bboxes_per_frame = []
+        images = trajectory["observation"]["image_primary"]  # (T, H, W, 3)
+
+        # check if gaze data exists in trajectory
+        has_gaze = "gaze_point" in trajectory.get("observation", {})
+
+        for t in range(len(images)):
+            image_np = images[t].numpy() if hasattr(images[t], 'numpy') else np.array(images[t])
+            pil_image = Image.fromarray(image_np.astype(np.uint8))
+
+            # get gaze point for this frame if available
+            gaze_point = None
+            if has_gaze:
+                gaze_data = trajectory["observation"]["gaze_point"][t]
+                if gaze_data is not None and len(gaze_data) == 2:
+                    gaze_point = (float(gaze_data[0]), float(gaze_data[1]))
+
+            # run object detection
+            inputs = _grounding_dino_processor(
+                images=pil_image,
+                text=detection_prompt,
+                return_tensors="pt"
+            ).to(_grounding_dino_model.device)
+
+            with torch.no_grad():
+                outputs = _grounding_dino_model(**inputs)
+
+            detection_results = _grounding_dino_processor.post_process_grounded_object_detection(
+                outputs,
+                inputs.input_ids,
+                box_threshold=0.3,
+                text_threshold=0.2,
+                target_sizes=[pil_image.size[::-1]]
+            )[0]
+
+            # collect all detected bboxes
+            frame_bboxes = []
+            boxes = detection_results["boxes"].cpu().numpy()
+            labels = detection_results["labels"]
+            scores = detection_results["scores"].cpu().numpy()
+
+            for box, label, score in zip(boxes, labels, scores):
+                bbox_dict = {
+                    "bbox": box.tolist(),
+                    "label": label,
+                    "confidence": float(score)
+                }
+
+                # compute gaze distance if gaze available
+                if gaze_point is not None:
+                    _, gaze_dist = classify_bbox_by_gaze(
+                        bbox_dict, gaze_point, primary_threshold=100.0
+                    )
+                    bbox_dict["gaze_distance"] = float(gaze_dist)
+
+                frame_bboxes.append(bbox_dict)
+
+            # find the object closest to gaze (the one being looked at)
+            if gaze_point is not None and len(frame_bboxes) > 0:
+                gaze_target_idx = None
+                min_dist = float('inf')
+                for i, bbox in enumerate(frame_bboxes):
+                    if "gaze_distance" in bbox:
+                        if bbox["gaze_distance"] < min_dist:
+                            min_dist = bbox["gaze_distance"]
+                            gaze_target_idx = i
+
+                # mark the gaze target
+                if gaze_target_idx is not None:
+                    frame_bboxes[gaze_target_idx]["is_gaze_target"] = True
+
+            classified_bboxes_per_frame.append(frame_bboxes)
+
+            # add classified bboxes to trajectory observation
+            # convert to tf tensors for consistency
+            import tensorflow as tf
+            trajectory["observation"]["classified_bboxes"] = tf.constant(
+                str(classified_bboxes_per_frame), dtype=tf.string
+            )
+
+    except Exception as e:
+        # if anything fails during bbox classification, log warning and return trajectory unchanged
+        # this prevents training crashes due to detection/gaze issues
+        print(f"warning: bbox classification failed, skipping for this trajectory: {e}")
+
+    return trajectory
+
+
 # === Registry ===
 OXE_STANDARDIZATION_TRANSFORMS = {
     "bridge_oxe": bridge_oxe_dataset_transform,
@@ -897,4 +1079,6 @@ OXE_STANDARDIZATION_TRANSFORMS = {
     "tdroid_cover_object_with_towel": tdroid_dataset_transform,
     ### DROID Finetuning datasets
     "droid_wipe": droid_finetuning_transform,
+    ### Aria hand tracking dataset
+    "aria_dataset": aria_dataset_transform,
 }

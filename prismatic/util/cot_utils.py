@@ -4,6 +4,7 @@ import enum
 class CotTag(enum.Enum):
     TASK = "TASK:"
     PLAN = "PLAN:"
+    GAZE = "GAZE:"
     VISIBLE_OBJECTS = "VISIBLE OBJECTS:"
     SUBTASK_REASONING = "SUBTASK REASONING:"
     SUBTASK = "SUBTASK:"
@@ -21,6 +22,7 @@ def get_cot_tags_list():
     return [
         CotTag.TASK.value,
         CotTag.PLAN.value,
+        CotTag.GAZE.value,
         CotTag.VISIBLE_OBJECTS.value,
         CotTag.SUBTASK_REASONING.value,
         CotTag.SUBTASK.value,
@@ -35,6 +37,7 @@ def get_cot_database_keys():
     return {
         CotTag.TASK.value: "task",
         CotTag.PLAN.value: "plan",
+        CotTag.GAZE.value: "gaze",
         CotTag.VISIBLE_OBJECTS.value: "bboxes",
         CotTag.SUBTASK_REASONING.value: "subtask_reason",
         CotTag.SUBTASK.value: "subtask",

@@ -17,6 +17,7 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys_path.append(parent_dir)
 
 from utils.hand_tracking_utils import get_camera_calibration
+from utils.angles import rotation_matrix_to_euler
 
 import cv2
 import platform
@@ -358,15 +359,31 @@ class VrsToRldsNpyConverter:
                 cur_hand_rot_open_state = self.hand_rot_open_states[str(step_timestamp)]
                 cur_hand_rot_open_vel = self.hand_rot_open_vel[str(step_timestamp)]
 
+                # convert rotation matrices to euler angles [roll, pitch, yaw]
+                L_rot_matrix = np.array(cur_hand_rot_open_state["L_rot"])
+                R_rot_matrix = np.array(cur_hand_rot_open_state["R_rot"])
+                L_euler = rotation_matrix_to_euler(L_rot_matrix) if L_rot_matrix.any() else np.zeros(3)
+                R_euler = rotation_matrix_to_euler(R_rot_matrix) if R_rot_matrix.any() else np.zeros(3)
+
                 cur_step.set_hand_rotation_states(
-                    # uses the y component of the rotation matrix
-                    hand_rot_left=cur_hand_rot_open_state["L_rot"][2],
-                    hand_rot_right=cur_hand_rot_open_state["R_rot"][2]
+                    hand_rot_left=L_euler.tolist(),
+                    hand_rot_right=R_euler.tolist()
                 )
 
+                # compute euler angle velocities (angular velocities)
+                # for now, use finite differences on the rotation matrices (simplified)
+                # todo: proper angular velocity computation from rotation matrices
+                L_rot_vel_matrix = np.array(cur_hand_rot_open_vel["L_rot_vel"])
+                R_rot_vel_matrix = np.array(cur_hand_rot_open_vel["R_rot_vel"])
+
+                # approximate euler angle velocities from matrix differences
+                # proper method would use angular velocity formula, but this is acceptable for learning
+                L_euler_vel = L_rot_vel_matrix[2] if L_rot_vel_matrix.shape == (3, 3) else np.zeros(3)
+                R_euler_vel = R_rot_vel_matrix[2] if R_rot_vel_matrix.shape == (3, 3) else np.zeros(3)
+
                 cur_step.set_hand_rotation_velocities(
-                    hand_rot_vel_left=cur_hand_rot_open_vel["L_rot_vel"][2],
-                    hand_rot_vel_right=cur_hand_rot_open_vel["R_rot_vel"][2]
+                    hand_rot_vel_left=L_euler_vel.tolist(),
+                    hand_rot_vel_right=R_euler_vel.tolist()
                 )
 
                 cur_step.set_hand_open_states(

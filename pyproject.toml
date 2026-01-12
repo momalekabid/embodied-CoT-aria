@@ -82,10 +82,26 @@ documentation = "https://embodied-cot.github.io"
 
 [tool.setuptools.packages.find]
 where = ["."]
-exclude = ["cache"]
+exclude = [
+    "cache",
+    "logs*",
+    "media*",
+    "aria_vrs*",
+    "checkpoints*",
+    "adapter_tmp*",
+    "huggingface*",
+    "aria_dataset*",
+    "training_logs*",
+    ".venv*",
+    ".tmp*",
+    "*.egg-info"
+]
 
 [tool.setuptools.package-data]
 "prismatic" = ["py.typed"]
+
+[tool.uv]
+no-build-isolation-package = ["flash-attn"]
 
 [tool.black]
 line-length = 121

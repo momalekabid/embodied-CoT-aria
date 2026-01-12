@@ -18,6 +18,12 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 from huggingface_hub import hf_hub_download
 
+# import custom dataset builders so tfds can find them
+try:
+    import aria_dataset
+except ImportError:
+    pass  # aria_dataset not installed
+
 from prismatic.overwatch import initialize_overwatch
 from prismatic.util.cot_utils import get_cot_database_keys, get_cot_tags_list
 from prismatic.vla.datasets.rlds import obs_transforms, traj_transforms
@@ -311,7 +317,18 @@ def make_dataset_from_rlds(
 
         return traj
 
-    builder = tfds.builder(name, data_dir=data_dir)
+    # try to load from existing dataset directory first (no builder class needed)
+    # this works for pre-built datasets without requiring the builder to be registered
+    dataset_path = os.path.join(data_dir, name)
+    if os.path.exists(dataset_path):
+        try:
+            builder = tfds.builder_from_directory(dataset_path)
+            overwatch.info(f"Loaded dataset from directory: {dataset_path}")
+        except Exception as e:
+            overwatch.warning(f"Failed to load from directory ({e}), trying tfds.builder...")
+            builder = tfds.builder(name, data_dir=data_dir)
+    else:
+        builder = tfds.builder(name, data_dir=data_dir)
 
     # load or compute dataset statistics
     if isinstance(dataset_statistics, str):
